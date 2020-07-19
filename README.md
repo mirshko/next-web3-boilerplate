@@ -1,4 +1,10 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a default [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app), customized as the default boilerplate for new Web3 projects.
+
+## Features
+
+- Hooks-first approach to fetching and caching data from Contracts and memoization for performance with SWR
+- web3-react for ease of connecting to Web3 providers with a solid API
+- Tailwind.css for utility-first styling. Set up to purge unused styles by default.
 
 ## Getting Started
 
