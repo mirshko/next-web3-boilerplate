@@ -4,18 +4,18 @@ import { parseBalance } from "../util";
 import useKeepSWRDataLiveAsBlocksArrive from "./useKeepSWRDataLiveAsBlocksArrive";
 
 function getETHBalance(library) {
-  return async (address) => {
+  return async (address, _) => {
     return library.getBalance(address).then((balance) => parseBalance(balance));
   };
 }
 
 export default function useETHBalance(address, suspense = false) {
-  const { library } = useWeb3React();
+  const { library, chainId } = useWeb3React();
 
   const shouldFetch = typeof address === "string" && !!library;
 
   const result = useSWR(
-    shouldFetch ? [address, "ETHBalance"] : null,
+    shouldFetch ? [address, chainId, "ETHBalance"] : null,
     getETHBalance(library),
     {
       suspense,
