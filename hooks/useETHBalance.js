@@ -1,10 +1,11 @@
 import { useWeb3React } from "@web3-react/core";
 import useSWR from "swr";
+import { parseBalance } from "../util";
 import useKeepSWRDataLiveAsBlocksArrive from "./useKeepSWRDataLiveAsBlocksArrive";
 
 function getETHBalance(library) {
   return async (address) => {
-    return library.getBalance(address).then((balance) => balance.toString());
+    return library.getBalance(address).then((balance) => parseBalance(balance));
   };
 }
 
