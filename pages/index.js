@@ -37,7 +37,10 @@ export default function Home() {
 
       <main>
         <h1>
-          Welcome to <a href="https://nextjs.org">Next</a> Web3 Boilerplate
+          Welcome to{" "}
+          <a href="https://github.com/mirshko/next-web3-boilerplate">
+            Next Web3 Boilerplate
+          </a>
         </h1>
 
         {typeof account === "string" && !!library && (
