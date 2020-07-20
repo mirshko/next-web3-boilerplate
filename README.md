@@ -7,6 +7,10 @@ This is a default [Next.js](https://nextjs.org/) project bootstrapped with [`cre
 - web3-react for ease of connecting to Web3 providers with a solid API
 - Tailwind.css for utility-first styling. Set up to purge unused styles by default.
 
+## Previous Art
+
+- [NoahZinsmeister/hypertext](https://github.com/NoahZinsmeister/hypertext)
+
 ## Getting Started
 
 First, run the development server:
