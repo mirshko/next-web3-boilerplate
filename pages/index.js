@@ -65,6 +65,24 @@ export default function Home() {
           text-align: center;
         }
       `}</style>
+
+      <style jsx global>{`
+        body {
+          margin: 0;
+        }
+
+        html {
+          font-family: sans-serif, Apple Color Emoji, Segoe UI Emoji,
+            Segoe UI Symbol, Noto Color Emoji;
+          line-height: 1.5;
+        }
+
+        *,
+        *::after,
+        *::before {
+          box-sizing: border-box;
+        }
+      `}</style>
     </div>
   );
 }
