@@ -3,20 +3,24 @@ import { useWeb3React } from "@web3-react/core";
 import Head from "next/head";
 import Link from "next/link";
 import Account from "../components/Account";
-import useBlockNumber from "../hooks/useBlockNumber";
+import ETHBalance from "../components/ETHBalance";
 import useEagerConnect from "../hooks/useEagerConnect";
-import useETHBalance from "../hooks/useETHBalance";
 import usePersonalSign from "../hooks/usePersonalSign";
 
 export default function Home() {
-  const { account, library, chainId } = useWeb3React();
+  const { account, library } = useWeb3React();
 
   const triedToEagerConnect = useEagerConnect();
 
   const sign = usePersonalSign();
 
-  const { data: ethBalance } = useETHBalance(account);
-  const { data: blockNumber } = useBlockNumber();
+  const handleSign = async () => {
+    const msg = "Next Web3 Boilerplate Rules!";
+    const sig = await sign(msg);
+    console.log("isValid", verifyMessage(msg, sig) === account);
+  };
+
+  const isConnected = typeof account === "string" && !!library;
 
   return (
     <div>
@@ -43,26 +47,10 @@ export default function Home() {
           </a>
         </h1>
 
-        {typeof account === "string" && !!library && (
+        {isConnected && (
           <section>
-            <p>ETH Balance: {ethBalance}</p>
-            <p>Block Number: {blockNumber}</p>
-            <p>Chain Id: {chainId}</p>
-
-            <button
-              onClick={async () => {
-                const message = "Next Web3 Boilerplate Rules!";
-
-                const signature = await sign(message);
-
-                console.log(
-                  "isValid",
-                  verifyMessage(message, signature) === account
-                );
-              }}
-            >
-              Personal Sign
-            </button>
+            <ETHBalance />
+            <button onClick={handleSign}>Personal Sign</button>
           </section>
         )}
       </main>
