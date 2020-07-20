@@ -5,7 +5,6 @@ This is a default [Next.js](https://nextjs.org/) project bootstrapped with [`cre
 - Separate packages from ethers.js for improved tree-shaking, often only ethers Contracts
 - Hooks-first approach to fetching and caching data from Contracts and memoization for performance with SWR
 - web3-react for ease of connecting to Web3 providers with a solid API
-- Tailwind.css for utility-first styling. Set up to purge unused styles by default.
 
 ## Previous Art
 
