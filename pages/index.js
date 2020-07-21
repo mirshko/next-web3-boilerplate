@@ -15,7 +15,7 @@ export default function Home() {
   const sign = usePersonalSign();
 
   const handleSign = async () => {
-    const msg = "Next Web3 Boilerplate Rules!";
+    const msg = "Next Web3 Boilerplate Rules";
     const sig = await sign(msg);
     console.log("isValid", verifyMessage(msg, sig) === account);
   };
