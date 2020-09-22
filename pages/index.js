@@ -5,7 +5,7 @@ import Link from "next/link";
 import Account from "../components/Account";
 import ETHBalance from "../components/ETHBalance";
 import useEagerConnect from "../hooks/useEagerConnect";
-import usePersonalSign from "../hooks/usePersonalSign";
+import usePersonalSign, { hexlify } from "../hooks/usePersonalSign";
 
 export default function Home() {
   const { account, library } = useWeb3React();
@@ -17,6 +17,7 @@ export default function Home() {
   const handleSign = async () => {
     const msg = "Next Web3 Boilerplate Rules";
     const sig = await sign(msg);
+    console.log(sig);
     console.log("isValid", verifyMessage(msg, sig) === account);
   };
 
