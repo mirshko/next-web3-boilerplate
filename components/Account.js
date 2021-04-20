@@ -52,7 +52,6 @@ const Account = ({ triedToEagerConnect }) => {
       <div>
         {hasMetaMaskOrWeb3Available ? (
           <button
-            isLoading={connecting}
             onClick={() => {
               setConnecting(true);
 
