@@ -6,7 +6,11 @@ import { injected } from "../connectors";
 import useENSName from "../hooks/useENSName";
 import { formatEtherscanLink, shortenHex } from "../util";
 
-const Account = ({ triedToEagerConnect }) => {
+type Props = {
+  triedToEagerConnect: boolean;
+};
+
+const Account = ({ triedToEagerConnect }: Props) => {
   const {
     active,
     error,
@@ -17,7 +21,7 @@ const Account = ({ triedToEagerConnect }) => {
   } = useWeb3React();
 
   // initialize metamask onboarding
-  const onboarding = useRef();
+  const onboarding = useRef<MetaMaskOnboarding>();
 
   useLayoutEffect(() => {
     onboarding.current = new MetaMaskOnboarding();
@@ -45,8 +49,8 @@ const Account = ({ triedToEagerConnect }) => {
   if (typeof account !== "string") {
     const hasMetaMaskOrWeb3Available =
       MetaMaskOnboarding.isMetaMaskInstalled() ||
-      window?.ethereum ||
-      window?.web3;
+      (window as any)?.ethereum ||
+      (window as any)?.web3;
 
     return (
       <div>
