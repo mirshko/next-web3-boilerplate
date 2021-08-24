@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@ethersproject/bignumber": "^5.4.1",
@@ -16,13 +17,15 @@
     "@metamask/onboarding": "^1.0.1",
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
-    "next": "^11.1.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "next": "11.1.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
     "swr": "^0.5.6"
   },
   "devDependencies": {
     "@types/react": "^17.0.19",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.0"
   }
 }
