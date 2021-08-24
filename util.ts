@@ -32,7 +32,7 @@ export function formatEtherscanLink(
 }
 
 export const parseBalance = (
-  balance: BigNumberish,
+  value: BigNumberish,
   decimals = 18,
   decimalsToDisplay = 3
-) => Number(formatUnits(balance, decimals)).toFixed(decimalsToDisplay);
+) => parseFloat(formatUnits(value, decimals)).toFixed(decimalsToDisplay);
