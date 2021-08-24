@@ -1,11 +1,5 @@
 This is a default [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app), customized as the default boilerplate for new Web3 projects.
 
-## Update
-
-Just added a TypeScript version of this boilerplate and upgrade the dependencies for the regular JavaScript version as well.
-
-[with-typescript Branch](https://github.com/mirshko/next-web3-boilerplate/tree/with-typescript)
-
 ## Features
 
 - Separate packages from ethers.js for improved tree-shaking, often only ethers Contracts
