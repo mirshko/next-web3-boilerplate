@@ -1,5 +1,4 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Fmirshko%2Fnext-web3-boilerplate&project-name=next-web3-boilerplate&repo-name=next-web3-boilerplate&demo-title=Next%20Web3%20Boilerplate&demo-description=Slightly%20opinionated%20Web3%20boilerplate%20based%20on%20Next.js%20and%20SWR.&demo-url=https%3A%2F%2Fnext-web3-boilerplate.vercel.app)
-
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmirshko%2Fnext-web3-boilerplate)
 
 This is a default [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app), customized as the default boilerplate for new Web3 projects.
 
