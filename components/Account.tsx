@@ -1,10 +1,10 @@
 import MetaMaskOnboarding from "@metamask/onboarding";
 import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError } from "@web3-react/injected-connector";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { injected } from "../connectors";
 import useENSName from "../hooks/useENSName";
-import { formatEtherscanLink, shortenHex } from "../util";
+import { useIsomorphicLayoutEffect, formatEtherscanLink, shortenHex } from "../util";
 
 type Props = {
   triedToEagerConnect: boolean;
@@ -23,7 +23,7 @@ const Account = ({ triedToEagerConnect }: Props) => {
   // initialize metamask onboarding
   const onboarding = useRef<MetaMaskOnboarding>();
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     onboarding.current = new MetaMaskOnboarding();
   }, []);
 
