@@ -30,7 +30,7 @@
     "@types/react": "^17.0.29",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",
-    "ethers": "^5.4.5",
+    "ethers": "^5.4.7",
     "typechain": "^5.2.0",
     "typescript": "^4.4.4"
   }
