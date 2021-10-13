@@ -4,9 +4,9 @@ This is a default [Next.js](https://nextjs.org/) project bootstrapped with [`cre
 
 ## Features
 
-- Separate packages from ethers.js for improved tree-shaking, often only ethers Contracts
-- Hooks-first approach to fetching and caching data from Contracts and memoization for performance with SWR
-- web3-react for ease of connecting to Web3 providers with a solid API
+- Separate packages from [ethers.js](https://docs.ethers.io/v5/) for improved tree-shaking, often only ethers Contracts
+- Hooks-first approach to fetching and caching data from Contracts and memoization for performance with [SWR](https://swr.vercel.app)
+- [web3-react](https://github.com/NoahZinsmeister/web3-react) for ease of connecting to Web3 providers with a solid API
 - Auto-generates types for the contract ABIs in the `/contracts` folder via [TypeChain](https://github.com/ethereum-ts/TypeChain)
 
 ### Auto Contract Type Generation
