@@ -1,9 +1,9 @@
-import MetaMaskOnboarding from "@metamask/onboarding";
 import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError } from "@web3-react/injected-connector";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { injected } from "../connectors";
 import useENSName from "../hooks/useENSName";
+import useMetaMaskOnboarding from "../hooks/useMetaMaskOnboarding";
 import { formatEtherscanLink, shortenHex } from "../util";
 
 type Props = {
@@ -11,28 +11,22 @@ type Props = {
 };
 
 const Account = ({ triedToEagerConnect }: Props) => {
+  const { active, error, activate, chainId, account, setError } =
+    useWeb3React();
+
   const {
-    active,
-    error,
-    activate,
-    chainId,
-    account,
-    setError,
-  } = useWeb3React();
-
-  // initialize metamask onboarding
-  const onboarding = useRef<MetaMaskOnboarding>();
-
-  useLayoutEffect(() => {
-    onboarding.current = new MetaMaskOnboarding();
-  }, []);
+    isMetaMaskInstalled,
+    isWeb3Available,
+    startOnboarding,
+    stopOnboarding,
+  } = useMetaMaskOnboarding();
 
   // manage connecting state for injected connector
   const [connecting, setConnecting] = useState(false);
   useEffect(() => {
     if (active || error) {
       setConnecting(false);
-      onboarding.current?.stopOnboarding();
+      stopOnboarding();
     }
   }, [active, error]);
 
@@ -47,15 +41,11 @@ const Account = ({ triedToEagerConnect }: Props) => {
   }
 
   if (typeof account !== "string") {
-    const hasMetaMaskOrWeb3Available =
-      MetaMaskOnboarding.isMetaMaskInstalled() ||
-      (window as any)?.ethereum ||
-      (window as any)?.web3;
-
     return (
       <div>
-        {hasMetaMaskOrWeb3Available ? (
+        {isWeb3Available ? (
           <button
+            disabled={connecting}
             onClick={() => {
               setConnecting(true);
 
@@ -69,14 +59,10 @@ const Account = ({ triedToEagerConnect }: Props) => {
               });
             }}
           >
-            {MetaMaskOnboarding.isMetaMaskInstalled()
-              ? "Connect to MetaMask"
-              : "Connect to Wallet"}
+            {isMetaMaskInstalled ? "Connect to MetaMask" : "Connect to Wallet"}
           </button>
         ) : (
-          <button onClick={() => onboarding.current?.startOnboarding()}>
-            Install Metamask
-          </button>
+          <button onClick={startOnboarding}>Install Metamask</button>
         )}
       </div>
     );
