@@ -28,7 +28,7 @@ const Account = ({ triedToEagerConnect }: Props) => {
       setConnecting(false);
       stopOnboarding();
     }
-  }, [active, error]);
+  }, [active, error, stopOnboarding]);
 
   const ENSName = useENSName(account);
 
