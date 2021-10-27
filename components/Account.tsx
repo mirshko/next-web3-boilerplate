@@ -6,11 +6,11 @@ import useENSName from "../hooks/useENSName";
 import useMetaMaskOnboarding from "../hooks/useMetaMaskOnboarding";
 import { formatEtherscanLink, shortenHex } from "../util";
 
-type Props = {
+type AccountProps = {
   triedToEagerConnect: boolean;
 };
 
-const Account = ({ triedToEagerConnect }: Props) => {
+const Account = ({ triedToEagerConnect }: AccountProps) => {
   const { active, error, activate, chainId, account, setError } =
     useWeb3React();
 
