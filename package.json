@@ -13,25 +13,25 @@
   "dependencies": {
     "@ethersproject/bignumber": "^5.5.0",
     "@ethersproject/contracts": "^5.5.0",
-    "@ethersproject/providers": "^5.5.1",
+    "@ethersproject/providers": "^5.5.2",
     "@ethersproject/units": "^5.5.0",
     "@ethersproject/wallet": "^5.5.0",
     "@metamask/detect-provider": "^1.2.0",
     "@metamask/onboarding": "^1.0.1",
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
-    "next": "12.0.7",
+    "next": "12.0.8",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "swr": "^1.1.1"
+    "swr": "^1.1.2"
   },
   "devDependencies": {
     "@typechain/ethers-v5": "^8.0.5",
-    "@types/react": "^17.0.37",
+    "@types/react": "^17.0.38",
     "eslint": "7.32.0",
-    "eslint-config-next": "12.0.7",
-    "ethers": "^5.5.2",
+    "eslint-config-next": "12.0.8",
+    "ethers": "^5.5.3",
     "typechain": "^6.0.5",
-    "typescript": "^4.5.3"
+    "typescript": "^4.5.4"
   }
 }
