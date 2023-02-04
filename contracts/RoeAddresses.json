@@ -1,0 +1,312 @@
+{
+  "1": {
+    "network": "Ethereum",
+    "roeRouter": "0xB956C1eeb6Ad0f29bf183e55bE58E1351C217Ddc",
+    "rangerPositionManager": "0x61E97f6e2880ba0944C3cbdf12F39CA7A65E621d",
+    "optionsPositionManager": "0x4c21e6087f260f10829207613ee50f5D44ef2b32",
+    "longgPositionManager": "0x5A51B9e6eca32c398633De21450d4A68C683e1b0",
+    "lendingPools": [
+      {
+        "name": "ETH-USDC",
+        "ohlcUrl": "https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=",
+        "address": "0x4D39CBBf7368a68F62AD1a1a0aB873044A7c5ee1",
+        "priceOracle": "0x8A4236F5eF6158546C34Bd7BC2908B8106Ab1Ea1",
+        "poolId": 0, 
+        "ranges": [
+          {
+            "address": "0x6A7c030f80FC4f80489E6109bE414bE1b7D189c3",
+            "roeAddress": "0x77faB6A9dA204E88F2B89246eb9B1152948d304F",
+            "price": "750-1250"
+          },
+          {
+            "address": "0xe752BE91Fb66dd894DdA57AAE3FcA83C5C109568",
+            "roeAddress": "0xaE7CABbaA74E6CF7Cda84026E79C98CB8AC97C7E",
+            "price": "1250-1750"
+          },
+          {
+            "address": "0x5330FfEE45204858FbDDE8952612694AC4AB3C6e",
+            "roeAddress": "0x4bf3c42e7a78CB0b0CE2c19265efFCa16aC8D35D",
+            "price": "1750-2250"
+          }
+        ],
+        "ticks": [],
+        "token0": {
+          "name": "USDC", 
+          "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "roeAddress": "0xE1fF95f7a96e447e9F13d8502e0b21F1A5cB3f31",
+          "decimals": 6
+        },
+        "token1": {
+          "name": "ETH", 
+          "address": "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          "roeAddress": "0xf2456dE51138F67a1B41Aced4fD52d9ccB2AE434",
+          "decimals": 18
+        },
+        "lpToken": {
+          "name": "Uniswap ETH-USDC LPv2",
+          "address": "0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc",
+          "roeAddress": "0xA53ebFe249863a3341098bE83B0a00d09f2a63eF",
+          "ammRouter": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"
+        }
+      }
+    ]
+  },
+  "137": {
+    "network": "Polygon",
+    "roeRouter": "0xe7CB1c67752cBb975a56815Af242ce2Ce63d3113",
+    "rangerPositionManager": "0xE92E591c9661fe380Bb0949D22d27432E9f5b7F6",
+    "optionsPositionManager": "0x58fD869249E60AbBb84A34C64ec9C70f3D9a6254",
+    "longgPositionManager": "0x5A51B9e6eca32c398633De21450d4A68C683e1b0",
+    "lendingPools": [
+      {
+        "name": "ETH-USDC",
+        "ohlcUrl": "https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=",
+        "address": "0x4D39CBBf7368a68F62AD1a1a0aB873044A7c5ee1",
+        "priceOracle": "0xbe4e7883a893189bE8AbE949c1DA4c70462982D3",
+        "poolId": 0,
+        "ranges": [
+          {
+            "address": "0x6A7c030f80FC4f80489E6109bE414bE1b7D189c3",
+            "roeAddress": "0x77faB6A9dA204E88F2B89246eb9B1152948d304F",
+            "debtAddress": "0x5055aEE286a1b0945138bfF6d5EE839AaEbCf149",
+            "price": "750-1250"
+          },
+          {
+            "address": "0xe752BE91Fb66dd894DdA57AAE3FcA83C5C109568",
+            "roeAddress": "0xaE7CABbaA74E6CF7Cda84026E79C98CB8AC97C7E",
+            "debtAddress": "0x8410376Af94a2EA792872f13AC8611f19082cDfA",
+            "price": "1250-1750"
+          },
+          {
+            "address": "0x5330FfEE45204858FbDDE8952612694AC4AB3C6e",
+            "roeAddress": "0x4bf3c42e7a78CB0b0CE2c19265efFCa16aC8D35D",
+            "debtAddress": "0x9F2c27236F8417515ff84B632be5a305A59bffA1",
+            "price": "1750-2250"
+          },
+          {
+            "address": "0xD9A7a066C856Bc01E3719959f374b6E2500b11A0",
+            "roeAddress": "0x44E94259fE18f06527789d5DcBf017dDF8ad3157",
+            "debtAddress": "0xed50299FD3BAf08D7fCa5B92efE3F3BB293a42Fb",
+            "price": "250-750"
+          },
+          {
+            "address": "0xAF772bf0C3F0fd8f77bBD88AC59d9301A9508453",
+            "roeAddress": "0x4C0E41fb7B6eBB8bFf984e9E8574C5a63b73dEc2",
+            "debtAddress": "0x5F4b4021A5291bBd3491Ee37B8Dc15005C4534EA",
+            "price": "1750-2250"
+          }
+        ],
+        "ticks": [
+          {
+            "address": "0xE811aa8900f274F2B27930e49091B52c64A11921",
+            "roeAddress": "0xa626847074bF231b4Fb880b6824E143eC76A46E7",
+            "debtAddress": "0x54e5155DD228972389777076F5a4E0b42Feed709",
+            "price": "500"
+          },
+          {
+            "address": "0xFadFB9cd2EF850d8108f9f154f964a0FFB5C250D",
+            "roeAddress": "0x87B73ae6329B3e2Bf57177aB33fb9743461Eeb6b",
+            "debtAddress": "0x0053ec49E1273d1709E3E751F9899047ce192865",
+            "price": "1000"
+          },
+          {
+            "address": "0x02C5AA983CBAc479F854e4E01cDE30dAce7d8514",
+            "roeAddress": "0x34aB1035328430748ba2F4F068985C2a4f473540",
+            "debtAddress": "0x2873a308af29A835d82755f796804294D0fFFe85",
+            "price": "1500"
+          },
+          {
+            "address": "0xA4f9eCCAA637846b9C7721A167Fd67f9B24b591F",
+            "roeAddress": "0x8352615D9D6Cc766ba3A141349B88E6Cc85C3a5a",
+            "debtAddress": "0xc9f8575C59BBD1AEae2edCC9E0F741218138E6BB",
+            "price": "2000"
+          },
+          {
+            "address": "0x10014FaA9D894b27f8eD7028a57eDf36f4F5bEfF",
+            "roeAddress": "0x584FC4000C79FaB01d80D47919c3C721a2f2ea92",
+            "debtAddress": "0x9e93A7e397a9A0B396F3C4E469DC0a844428f823",
+            "price": "2500"
+          }
+        ],
+        "token0": {
+          "name": "USDC", 
+          "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "roeAddress": "0xE1fF95f7a96e447e9F13d8502e0b21F1A5cB3f31",
+          "debtAddress": "0xaa19B502D4EF24D9d3507E7A52bc07330E83CcaA",
+          "decimals": 6
+        },
+        "token1": {
+          "name": "ETH", 
+          "address": "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+          "roeAddress": "0xf2456dE51138F67a1B41Aced4fD52d9ccB2AE434",
+          "debtAddress": "0xb900BA6ECe28cd3769f71F07F6394821F2A2e1aC",
+          "decimals": 18
+        },
+        "lpToken": {
+          "name": "Quickswap ETH-USDC LPv2",
+          "address": "0x853ee4b2a13f8a742d64c8f088be7ba2131f670d",
+          "roeAddress": "0xA7B3d92b590C97aF7F8B3686Cbff9D5bAB4f1775",
+          "debtAddress": "0xE83F7D726EA7F00D4448c1F13F24b0eE267c548c",
+          "ammRouter": "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff"
+        }
+      },
+      {
+        "name": "MATIC-USDC",
+        "ohlcUrl": "https://api.binance.com/api/v3/klines?symbol=MATICUSDT&interval=",
+        "address": "0xBfdDD4a965BdB753dcEAA386ED9B19B655407967",
+        "priceOracle": "0xbe4e7883a893189bE8AbE949c1DA4c70462982D3",
+        "poolId": 1,
+        "ranges": [
+          {
+            "address": "0x6A7c030f80FC4f80489E6109bE414bE1b7D189c3",
+            "roeAddress": "0x77faB6A9dA204E88F2B89246eb9B1152948d304F",
+            "price": "750-1250"
+          },
+          {
+            "address": "0xe752BE91Fb66dd894DdA57AAE3FcA83C5C109568",
+            "roeAddress": "0xaE7CABbaA74E6CF7Cda84026E79C98CB8AC97C7E",
+            "price": "1250-1750"
+          },
+          {
+            "address": "0x5330FfEE45204858FbDDE8952612694AC4AB3C6e",
+            "roeAddress": "0x4bf3c42e7a78CB0b0CE2c19265efFCa16aC8D35D",
+            "price": "1750-2250"
+          }
+        ],
+        "ticks": [],
+        "token0": {
+          "name": "MATIC", 
+          "address": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
+          "roeAddress": "0x8c1040ec75C724e159aaCC2a40ba808Fea3AA35a",
+          "decimals": 18
+        },
+        "token1": {
+          "name": "USDC", 
+          "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+          "roeAddress": "0xAdE800738cd024F4a384F882bbCe72c56d27Bb27",
+          "decimals": 6
+        },
+        "lpToken": {
+          "name": "Quickswap MATIC-USDC LPv2",
+          "address": "0x6e7a5FAFcec6BB1e78bAE2A1F0B612012BF14827",
+          "roeAddress": "0x6e7a5FAFcec6BB1e78bAE2A1F0B612012BF14827",
+          "ammRouter": "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff"
+        }
+      }
+    ]
+  }
+  ,
+  "42161": {
+    "network": "Arbitrum",
+    "roeRouter": "0x5430A027CC128c7fcC2208Fd78E56Aa0EBF083F2",
+    "rangerPositionManager": "0x04600EaAE7F937Af3e91423BcA4AC096D1cD092D",
+    "optionsPositionManager": "0x5FdEB1AaE09bea05502Fa3C2c3C256B603193c6c",
+    "longgPositionManager": "0xD5f0C593981B53f57B95f403CB319E9dee03A896",
+    "lendingPools": [
+      {
+        "name": "ETH-USDC",
+        "ohlcUrl": "https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=",
+        "address": "0x60b3f0C7709075776C38eC5812C8A1EF9fD522d7",
+        "priceOracle": "0x8A4236F5eF6158546C34Bd7BC2908B8106Ab1Ea1",
+        "poolId": 0,
+        "ranges": [
+          {
+            "address": "0x5e583a91bCa0E04614Bafd23F10E568653Abb12f",
+            "roeAddress": "0x48DE4c541066893412a00844d7237325EeFE156f",
+            "debtAddress": "0x0b82Cf583B8ccf73574b8aD773FD7D6C7F839bbe",
+            "price": "1450-1550"
+          },
+          {
+            "address": "0x344E571E5D9Dff5B7ECC4D9F6dbAa0613eC11f2E",
+            "roeAddress": "0x70684e8FC256Ec58Ff6582B7174b9Ebb97458A2A",
+            "debtAddress": "0xDf16dB8745Ed444d8a0AA09fD32E8eE4e23d0013",
+            "price": "1550-1650"
+          },
+          {
+            "address": "0xCB49E1692A3AFF1BAc0957A2B599Dc513E8d69Bd",
+            "roeAddress": "0xff27d43A10a36aF4e703AEb3705f503a6B2b5fD7",
+            "debtAddress": "0x6E10874E156383f24588D78B135d1e57675FD545",
+            "price": "1650-1750"
+          },
+          {
+            "address": "0xB670585c292cF8cB2DABCddbda6260910483501D",
+            "roeAddress": "0x84eF5a238A49ab8ae49D09a9d76110692254E90C",
+            "debtAddress": "0xFd6F5a749a6AD3d9564BaaCFb0d765A3d74ef750",
+            "price": "1750-1850"
+          },
+          {
+            "address": "0xe7d3509479f5a62590F103D4a3454592068aF5f6",
+            "roeAddress": "0x9FE24aCdD7038ac329ec52185D7CDEb20918D40E",
+            "debtAddress": "0x349E1975ef102c5601406Aca483BdFd5725e1B0d",
+            "price": "1850-1950"
+          },
+          {
+            "address": "0x6A8dCe6B260000457EFD40854DEbc5a0706E88F0",
+            "roeAddress": "0xA2aCCe50470BF4b379483CEe0a91D4734e61aB32",
+            "debtAddress": "0xA2e5653DC59FBdffED616C982D0acCef232c88D8",
+            "price": "1950-2050"
+          }
+        ],
+        "ticks": [
+          {
+            "address": "0x004Be10fE897214aE9BFE33c07AE4D509c717dEC",
+            "roeAddress": "0x43d69a806eB299A9213A96988aC471b383c4188c",
+            "debtAddress": "0x1c21E97eE30556123CC414194aE62b8399CA7610",
+            "price": "1500"
+          },
+          {
+            "address": "0xf4cDD6e5c9bd827C52C192D73eE1E3Ab5899A3E1",
+            "roeAddress": "0xe23cA248a225299cFDCF6C4517E337bC5C706E78",
+            "debtAddress": "0x5988a0891Cf76CB84eB8c07e6d4fCa4E091DE0E3",
+            "price": "1600"
+          },
+          {
+            "address": "0x637FEB4C431e8b1E353bB45c194D4A128eC28cBe",
+            "roeAddress": "0xD7F9199d724382cbD2b4D701882E0a1Eb889aa6D",
+            "debtAddress": "0xB43D8612D28f9732a92696f78e8FD9696B00D71A",
+            "price": "1700"
+          },
+          {
+            "address": "0x7c620F66E1A53119c4e69eC3923222452C8A8EB9",
+            "roeAddress": "0x6f9F4b09D221F4F25A8c23D1E486c856EfC8e4D3",
+            "debtAddress": "0x75Fdc6bE8EBa782266aF7d990F73d48B0C32fbaC",
+            "price": "1800"
+          },
+          {
+            "address": "0x61DaA6C5b9a51A550F0eB87a0dd626D1007240D1",
+            "roeAddress": "0x3349c5813a94Efd2E6209Be9368107978d37dB33",
+            "debtAddress": "0x78c9234de620Deb0C728cC8cCA55937187d5C0eE",
+            "price": "1900"
+          },
+          {
+            "address": "0x5A7C2F756C5f67bD91552D8891aC3cAcD32ad49c",
+            "roeAddress": "0x30B12B7000F9A4a17A4e13AE3bcF33442B4add84",
+            "debtAddress": "0xA29A63b977910ea51b395D885285a2e3E04f417D",
+            "price": "2000"
+          }
+        ],
+        "token0": {
+          "name": "ETH", 
+          "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+          "roeAddress": "0x0381411306C289B2259ea8606A120FF0e9489f06",
+          "debtAddress": "0x9A429DD419Ac1287a0C1Eb4F8bB57c636C023e23",
+          "decimals": 18
+        },
+        "token1": {
+          "name": "USDC", 
+          "address": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+          "roeAddress": "0xa756937ECF00982b82C6995c2891e3148c460A54",
+          "debtAddress": "0x6135B89e5b2D871c7D55954Cf0eB33F7d008439c",
+          "decimals": 6
+        },
+        "lpToken": {
+          "name": "SushiSwap ETH-USDC SLP",
+          "address": "0x905dfcd5649217c42684f23958568e533c711aa3",
+          "roeAddress": "0xEE154455354d9E0E78bb955C7CA5ceCc4639d164",
+          "debtAddress": "0xA9BAB0BE2DE31CEe4311C1B88Eb9CAC4EB43824c",
+          "ammRouter": "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506"
+        }
+      }
+    ]
+  }
+}

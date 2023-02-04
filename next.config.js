@@ -4,5 +4,10 @@
  * @type {import('next').NextConfig}
  **/
 module.exports = {
-  reactStrictMode: true,
+  transpilePackages: ['lightweight-charts', 'fancy-canvas'],
+  trailingSlash: true,
+  reactStrictMode: false,
+  typescript: {
+    ignoreBuildErrors: true,
+  }
 };

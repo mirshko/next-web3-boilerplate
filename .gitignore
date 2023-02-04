@@ -36,3 +36,9 @@ yarn-error.log*
 
 # typescript
 tsconfig.buildinfo
+
+# Dev stuff
+TODO.md
+TEST.py
+TEST-arbitrum.py
+/public/

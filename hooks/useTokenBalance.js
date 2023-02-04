@@ -3,9 +3,9 @@ import useKeepSWRDataLiveAsBlocksArrive from "./useKeepSWRDataLiveAsBlocksArrive
 import useTokenContract from "./useTokenContract";
 
 export default function useTokenBalance(
-  address: string,
-  tokenAddress: string,
-  suspense = false
+  address,
+  tokenAddress,
+  suspense
 ) {
   const contract = useTokenContract(tokenAddress);
 
@@ -23,6 +23,5 @@ export default function useTokenBalance(
   );
 
   useKeepSWRDataLiveAsBlocksArrive(result.mutate);
-
   return result;
 }

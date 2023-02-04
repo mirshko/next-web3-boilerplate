@@ -1,0 +1,46 @@
+import { Web3ReactProvider } from "@web3-react/core";
+import type { AppProps } from "next/app";
+import getLibrary from "../getLibrary";
+import "../styles/pico.css";
+import "../styles/globals.css";
+
+function NextWeb3App({ Component, pageProps }: AppProps) {
+  return (
+    <Web3ReactProvider getLibrary={getLibrary}>
+    <div>
+      <Head>
+        <title>next-web3-boilerplate</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <header>
+        <nav>
+          <Link href="/">next-web3-boilerplate</Link>
+          <div>
+          
+          </div>
+          <Account triedToEagerConnect={triedToEagerConnect} />
+        </nav>
+      </header>
+
+      <main>
+        <Component {...pageProps} />
+      </main>
+
+      <style jsx>{`
+        nav {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        main {
+          text-align: center;
+        }
+      `}</style>
+    </div>
+      
+    </Web3ReactProvider>
+  );
+}
+
+export default NextWeb3App;

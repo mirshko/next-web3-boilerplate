@@ -57,3 +57,33 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+
+## Flow
+
+The UX flow is based on impermax/tarot.to to start with:
+- User is presented with a number of vaults with several assets to deposit, mainly: token0 - token1 - LPv2 - LPv3 (as a group)
+- User can enter vault to see stats + deposit assets to earn
+  - Simple Token0 / token1 deposit for single assets exposure
+  - LPv2 deposit (and potentially leveraged farming but non essential: requires smart contract dev)
+  - LPv3: sends to ranger page
+- Ranger: provides range farming
+  - Present available ranges (currently just use fixed dont care about querying contracts)
+    - how to present multiple ranges? one solution is all ranges as boxes. we can also select a number of active ranges, e.g 
+    - strategies: multi ranges suggestions, "extended crab" "bear crab" "bull crab"
+    
+    
+## TODO
+
+- Deposit regular assets in the lending pool: EARN
+  - Deposit withdraw popup
+  - hook approve
+  - hook deposit
+- Deposit LPv2 in lending pool
+  - not urgent as same as impermax
+- Deposit LPv3 in the lending pool
+  - way 0: 1x, no need for loan, just deposit and put in ROE so higher APY
+  - way 1: borrow LPv2, split, range
+  - way 2: deposit any collateral: to express a view. position uses what's in the LP
+- CDS style interface
+  - borrow LPv2 + split
