@@ -1,16 +1,38 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Dropdown, Button, Card, theme } from 'antd'
 import { DownOutlined } from '@ant-design/icons';
+import axios from 'axios'
 const { useToken } = theme;
 
-const Infobar = ({vaults, current, selectVault, price, change24, low24, high24}) => {
+const Infobar = ({vaults, current, selectVault }) => {
   const { token } = useToken();
+  let [dailyCandle, setDailyCandle] = useState({})
   let [isDropdownVisible, setDropdownvisible ] = useState(false)
   let currentVault = vaults[current];
-  
-  let vaultsNames = vaults.map( (v, index) => { return {key: index, label: v.name} } )
-  let change = change24 ?? "0 0.00%"
 
+  useEffect( () => {
+    // get candles from geckoterminal
+    async function getdata() {
+      try {
+        let apiUrl = currentVault.ohlcUrl + '1d'
+        console.log(apiUrl)
+        const data = await axios.get(apiUrl, {withCredentials: false,})
+        let candles = []
+        console.log(data)
+        let dailyCandle = data.data[data.data.length-1]
+        console.log(dailyCandle)
+        // push price up to main page
+        setDailyCandle(dailyCandle)
+      } catch(e) {console.log(e)}
+    }
+    getdata()
+  }, [currentVault])
+
+let change = dailyCandle[1] - dailyCandle[4]
+let changePercent = 100 * (dailyCandle[1] - dailyCandle[4]) / ( dailyCandle[1] || 1 )
+
+  let red = '#e57673' 
+  let green = '#55d17c'
   
   return (<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 40 }}>
     <div className="dropdownPerp">
@@ -24,20 +46,20 @@ const Infobar = ({vaults, current, selectVault, price, change24, low24, high24})
       </Card>
     </div>
     
-    <span style={{ fontSize: 'larger' }}>{price}</span>
+    <span style={{ fontSize: 'larger' }}>{dailyCandle[4]}</span>
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <span style={{ fontSize: 'x-small', color: 'grey' }}>24h Change</span>
-      <span style={{ fontSize: 'smaller', color: change.substring(0, 1) == '-' ? '#e57673' : '#55d17c' }}>82 +5.21%</span>
+      <span style={{ fontSize: 'smaller', color: change > 0 ? green:red }}>{change.toFixed(2)} {change>0?'+':'-'}{changePercent.toFixed(2)}%</span>
     </div> 
     
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <span style={{ fontSize: 'x-small', color: 'grey' }}>24h High</span>
-      <span style={{ fontSize: 'smaller' }}>82 +5.21%</span>
+      <span style={{ fontSize: 'smaller'}}>{parseFloat(dailyCandle[2]??0).toFixed(2)}</span>
     </div> 
     
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <span style={{ fontSize: 'x-small', color: 'grey' }}>24h Low</span>
-      <span style={{ fontSize: 'smaller' }}>82 +5.21%</span>
+      <span style={{ fontSize: 'smaller'}}>{parseFloat(dailyCandle[3]??0).toFixed(2)}</span>
     </div>
     
   </div>)
