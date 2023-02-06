@@ -31,14 +31,13 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
   const openPosition = async () => {
     if (inputValue == 0) return;
     setSpinning(true)
-    console.log('Open', direction, tokenAmounts, parseFloat(tokenAmounts.amount0) || parseFloat(tokenAmounts.amount1))
     try {
       let tickerAmount = inputValue / (parseFloat(tokenAmounts.amount0) || parseFloat(tokenAmounts.amount1) )  // whichever is non null
       
       const abi = ethers.utils.defaultAbiCoder;
       let params = abi.encode(["uint8", "uint", "address", "address[]"], [0, vault.poolId, account, [ethers.constants.AddressZero] ]);
       // flashloan( receiver, tokens, amounts, modes[2 for open debt], onBehalfOf, calldata params, refcode)
-      console.log(opmAddress, [strike.address], [ethers.utils.parseUnits(tickerAmount.toString(), 18)], [2], account, params, 0)
+      //console.log(opmAddress, [strike.address], [ethers.utils.parseUnits(tickerAmount.toString(), 18)], [2], account, params, 0)
       let res = await lpContract.flashLoan(opmAddress, [strike.address], [ethers.utils.parseUnits(tickerAmount.toString(), 18)], [2], account, params, 0)
       openNotification("success", "Tx Sent", "Tx mined")
     }
@@ -52,7 +51,6 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
   useEffect(()=>{
     for (let k of vault.ticks){
       if ( k.price > price){
-        console.log(k)
         setStrike({ price: k.price, address: k.address });
         break;
       }

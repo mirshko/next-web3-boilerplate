@@ -15,12 +15,9 @@ const Infobar = ({vaults, current, selectVault }) => {
     async function getdata() {
       try {
         let apiUrl = currentVault.ohlcUrl + '1d'
-        console.log(apiUrl)
         const data = await axios.get(apiUrl, {withCredentials: false,})
         let candles = []
-        console.log(data)
         let dailyCandle = data.data[data.data.length-1]
-        console.log(dailyCandle)
         // push price up to main page
         setDailyCandle(dailyCandle)
       } catch(e) {console.log(e)}
