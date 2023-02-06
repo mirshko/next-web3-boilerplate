@@ -23,11 +23,9 @@ const VaultPositions = ({vault}) => {
   
   // Vault-level data
   const userAccountData = getUserLendingPoolData(vault.address) 
-  var healthFactor = ethers.utils.formatUnits(userAccountData ? userAccountData.healthFactor : 0, 18)
-  var availableCollateral = ethers.utils.formatUnits(userAccountData ? userAccountData.availableBorrowsETH : 0, 8)
-  var totalDebt = ethers.utils.formatUnits(userAccountData ? userAccountData.totalDebtETH : 0, 8)
-
-
+  var healthFactor = ethers.utils.formatUnits(userAccountData.healthFactor ?? 0, 18)
+  var availableCollateral = ethers.utils.formatUnits(userAccountData.availableBorrowsETH ?? 0, 8)
+  var totalDebt = ethers.utils.formatUnits(userAccountData.totalDebtETH ?? 0, 8)
 
   const columns = [
     { key: 'asset', title: 'Position', dataIndex: 'name' },

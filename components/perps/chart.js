@@ -28,25 +28,20 @@ function Chart({ohlcUrl, setPrice}) {
     // get candles from geckoterminal
     async function getdata() {
       try {
-        console.log(apiUrl)
         const data = await axios.get(apiUrl, {withCredentials: false,})
         let candles = []
-        console.log(data)
         for (let c of data.data ) candles.push({time: c[0]/1000, open: c[1], high: c[2], low: c[3], close: c[4]})
-        console.log(candles)
+
         // push price up to main page
         setPrice( parseFloat(candles[candles.length-1].close) )
       
         var mycs = cs ?? chart.addCandlestickSeries(candlesColors);
-
         mycs.setData(candles);
         setCs(mycs)
-
       } catch(e) {console.log(e)}
     }
     if (chart) getdata()
   }, [apiUrl, chart])
-
 
 
   useEffect(() => {

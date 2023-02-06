@@ -17,7 +17,7 @@ const VaultCard = ({vault}) => {
   console.log(token0, token1)
 
   const userAccountData = getUserLendingPoolData(vault.address) 
-  var availableCollateral = ethers.utils.formatUnits(userAccountData ? userAccountData.availableBorrowsETH : 0, 8)
+  var availableCollateral = ethers.utils.formatUnits(userAccountData.availableBorrowsETH ?? 0, 8)
   
   return (
     <Card style={{ marginBottom: 20 }}>

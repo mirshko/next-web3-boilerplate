@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 
 /// Get an array with all data related to a symbol, eg USDC or ETH, including user balances and vault balance
 export default function getUserLendingPoolData(vault) {
-  const [userData, setUserData ] = useState()
+  const [userData, setUserData ] = useState({})
   const { account } = useWeb3React();
   const lendingPool = useLendingPoolContract(vault);
 

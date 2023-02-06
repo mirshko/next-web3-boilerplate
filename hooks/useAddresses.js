@@ -8,8 +8,8 @@ export default function useAddresses(pool) {
 
   // deep copy object
   if (chainId == 1337 ) chainAddresses = JSON.parse(JSON.stringify(addresses["137"]));
-  else chainAddresses = addresses[chainId] ? JSON.parse(JSON.stringify(addresses[chainId])) : JSON.parse(JSON.stringify(addresses[1])) ;
-
+  else chainAddresses = (addresses[chainId] ? JSON.parse(JSON.stringify(addresses[chainId])) : JSON.parse(JSON.stringify(addresses[1])) );
+  
   // if pool is specified, it acts as a filter for the lendingPools
   if (pool){
     let lp = []

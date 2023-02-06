@@ -13,7 +13,7 @@ export default function useTokenBalance(
     typeof address === "string" &&
     typeof tokenAddress === "string" &&
     !!contract;
-
+    
   const result = useSWR(
     shouldFetch ? ["TokenBalance", address, tokenAddress] : null,
     ([, address]) => contract.balanceOf(address),

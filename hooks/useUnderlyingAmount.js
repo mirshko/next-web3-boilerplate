@@ -8,7 +8,8 @@ import { ethers } from "ethers";
 export default function useUnderlyingAmount(rangeAddress, vault){
   const [tokenAmounts, setTokenAmounts] = useState({amount0: 0, amount1: 0})
   
-  const type = rangeAddress == vault['lpToken'].address ? "v2" : "v3"
+  var type = 'v3';
+  if ( vault['lpToken'] && vault['lpToken'].address == rangeAddress ) type = "v2"
   
   const ranger = useContract(rangeAddress, type=="v2" ? UniswapV2Pair_ABI : TR_ABI);
   const oracle = usePriceOracle(vault['priceOracle'])

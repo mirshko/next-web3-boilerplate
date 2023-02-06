@@ -5,7 +5,7 @@ import VaultPerpsForm from "../components/perps/vaultPerpsForm"
 import Positions from "../components/perps/positions"
 import Infobar from '../components/perps/infobar'
 import useAddresses from '../hooks/useAddresses';
-import Chart from '../components/chart'
+import Chart from '../components/perps/chart'
 
 // Display all user assets and positions in all ROE LPs
 const ProtectedPerps = () => {
@@ -13,14 +13,6 @@ const ProtectedPerps = () => {
   const [price, setPrice] = useState(1666.68);
   const ADDRESSES = useAddresses();
   let vaults = ADDRESSES['lendingPools'];
-  
-
-
-  /*useEffect( () => {
-    // get
-    
-  }, [])*/
-
 
   return (
     <div style={{ minWidth: 1200, display: 'flex', flexDirection: 'row' }}>

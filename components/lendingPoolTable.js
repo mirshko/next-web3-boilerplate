@@ -4,8 +4,8 @@ import DepositWithdrawalModal from "./depositWithdrawalModal"
 
 export default function LendingPoolTable ({lendingPool, assets, isMinimal}) {
   let columns = [
-    { key: "name", dataIndex: "name", title: "Asset", render: (text) => <div style={{display: 'flex', alignItems: 'center'}}>
-      <img src={"/icons/"+text.toLowerCase()+".svg"} width={24} style={{marginRight: 5}} alt="tokenImage" />
+    { key: "name", dataIndex: "name", title: "Asset", render: (text, record) => <div style={{display: 'flex', alignItems: 'center'}}>
+      <img src={record.icon} width={24} style={{marginRight: 5}} alt="tokenImage" />
         {text}
       </div>},
     { key: "apr", dataIndex: "apr", title: "Supply APR", render: (text) => <>{text}%</> },

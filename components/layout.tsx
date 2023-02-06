@@ -8,7 +8,6 @@ const { useToken } = theme;
 
 const MyLayout = ({ children }) =>  {
   const { token } = useToken();
-  console.log(token);
   
   return (
     <Layout style={{ display: 'flex', alignItems: 'center', minHeight: '100vh'}}>

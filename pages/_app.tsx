@@ -20,7 +20,7 @@ function NextWeb3App({ Component, pageProps }: AppProps) {
         fontSizeHeading2: 20,
       },
     }
-  console.log(roetheme);
+  //console.log(roetheme);
   
   return (
     <ConfigProvider theme={roetheme}>

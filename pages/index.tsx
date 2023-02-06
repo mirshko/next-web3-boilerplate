@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Table, Button, Card, Typography } from 'antd';
 import VaultCard from '../components/vaultCard';
 import useVaultData from "../hooks/useVaultData";
+import { useWeb3React } from "@web3-react/core";
 
 function Home() {
   let activeChainOnly = true;
