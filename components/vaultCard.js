@@ -2,14 +2,22 @@ import { useState } from "react";
 import { Card, Typography, Table, Divider, Row, Col, Button, Tooltip } from "antd";
 import { DownOutlined, UpOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import LendingPoolTable from "./lendingPoolTable";
+import getUserLendingPoolData from '../hooks/getUserLendingPoolData';
+import useAssetData from '../hooks/useAssetData';
+import {ethers} from 'ethers'
+
 
 const VaultCard = ({vault}) => {
   const [isVaultOpen, setOpen] = useState(false);
   const toggleOpen = () => { setOpen(!isVaultOpen) }
-  const assetNames = vault.vault.split('-');
-  const asset0 = vault.assets.asset0;
-  const asset1 = vault.assets.asset1;
+  const assetNames = vault.name.split('-');
+  console.log(vault)
+  const token0 = useAssetData(vault.token0.address, vault.address);
+  const token1 = useAssetData(vault.token1.address, vault.address);
+  console.log(token0, token1)
 
+  const userAccountData = getUserLendingPoolData(vault.address) 
+  var availableCollateral = ethers.utils.formatUnits(userAccountData ? userAccountData.availableBorrowsETH : 0, 8)
   
   return (
     <Card style={{ marginBottom: 20 }}>
@@ -20,13 +28,13 @@ const VaultCard = ({vault}) => {
         <div style={{width: 300, display: 'flex', alignItems: 'center'}}>
           <img src={"/icons/"+assetNames[0].toLowerCase()+".svg"} width={24} height={24} alt="token0" />
           <img src={"/icons/"+assetNames[1].toLowerCase()+".svg"} width={24} height={24} alt="token1" />&nbsp;
-          {vault.vault}
+          {vault.name}
         </div>
         <div style={{width: 300, display: 'flex', alignItems: 'center'}}>
           <img src={"/icons/"+vault.network.toLowerCase()+".svg"} width={24} height={24} alt="network" />&nbsp;{vault.network}
         </div>
-        <div style={{width: 300}}>{'TLV: $' + vault.tlv+'k'}</div>
-        <div style={{width: 100 }}>My: ${vault.tlv}</div>
+        <div style={{width: 300}}>{'TLV: $' + vault.tlv}</div>
+        <div style={{width: 100 }}>My Assets: ${availableCollateral}</div>
       </div>
       
       <div style={{ display: (isVaultOpen ? 'block' : 'none') }}>
@@ -37,7 +45,7 @@ const VaultCard = ({vault}) => {
               Single Asset Yield&nbsp;<Tooltip placement="right" title="Stable performance in any type of market"><QuestionCircleOutlined /></Tooltip>
             </>}
               >
-              <LendingPoolTable assets={[asset0, asset1]} isMinimal={true} lendingPool={vault} />  
+              <LendingPoolTable assets={[token0, token1]} isMinimal={true} lendingPool={vault} />  
             </Card>
           </Col>
           <Col span={12} type="flex">

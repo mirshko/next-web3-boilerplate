@@ -11,7 +11,8 @@
         "ohlcUrl": "https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=",
         "address": "0x4D39CBBf7368a68F62AD1a1a0aB873044A7c5ee1",
         "priceOracle": "0x8A4236F5eF6158546C34Bd7BC2908B8106Ab1Ea1",
-        "poolId": 0, 
+        "poolId": 0,
+        "tlv": "248k",
         "ranges": [
           {
             "address": "0x6A7c030f80FC4f80489E6109bE414bE1b7D189c3",
@@ -64,6 +65,7 @@
         "address": "0x4D39CBBf7368a68F62AD1a1a0aB873044A7c5ee1",
         "priceOracle": "0xbe4e7883a893189bE8AbE949c1DA4c70462982D3",
         "poolId": 0,
+        "tlv": "55k",
         "ranges": [
           {
             "address": "0x6A7c030f80FC4f80489E6109bE414bE1b7D189c3",
@@ -156,6 +158,7 @@
         "address": "0xBfdDD4a965BdB753dcEAA386ED9B19B655407967",
         "priceOracle": "0xbe4e7883a893189bE8AbE949c1DA4c70462982D3",
         "poolId": 1,
+        "tlv": "0",
         "ranges": [
           {
             "address": "0x6A7c030f80FC4f80489E6109bE414bE1b7D189c3",
@@ -199,9 +202,9 @@
   "42161": {
     "network": "Arbitrum",
     "roeRouter": "0x5430A027CC128c7fcC2208Fd78E56Aa0EBF083F2",
-    "rangerPositionManager": "0x04600EaAE7F937Af3e91423BcA4AC096D1cD092D",
-    "optionsPositionManager": "0x5FdEB1AaE09bea05502Fa3C2c3C256B603193c6c",
-    "longgPositionManager": "0xD5f0C593981B53f57B95f403CB319E9dee03A896",
+    "rangerPositionManager": "0x0Fc3995715E30d610FD42b6E54cA80C9d490bf27",
+    "optionsPositionManager": "0xd42Ad27650d571CA8488dB6E6567120F6835E0FC",
+    "longgPositionManager": "0x1056b5664341487679d5B68854249318693dc53D",
     "lendingPools": [
       {
         "name": "ETH-USDC",
@@ -209,6 +212,7 @@
         "address": "0x60b3f0C7709075776C38eC5812C8A1EF9fD522d7",
         "priceOracle": "0x8A4236F5eF6158546C34Bd7BC2908B8106Ab1Ea1",
         "poolId": 0,
+        "tlv": "1k",
         "ranges": [
           {
             "address": "0x5e583a91bCa0E04614Bafd23F10E568653Abb12f",

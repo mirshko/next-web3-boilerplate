@@ -1,21 +1,16 @@
 import ADDRESSES from "../contracts/RoeAddresses.json";
 import { useWeb3React } from "@web3-react/core";
 export default function useVaultData(activeChainOnly) {
-  // later: filter by chain later when more pools avail?
+  const { chainId } = useWeb3React();
+  
   var vaults = []
   for ( let chain in ADDRESSES ) { 
-    
+    if (!activeChainOnly || chain == chainId)
     for ( let lp in ADDRESSES[chain].lendingPools){
       vaults.push({
         key: vaults.length,
         network: ADDRESSES[chain].network,
-        vault: ADDRESSES[chain].lendingPools[lp].name,
-        assets: {
-          asset0: ADDRESSES[chain].lendingPools[lp].token0,
-          asset1: ADDRESSES[chain].lendingPools[lp].token1,
-        },
-        tlv: 15,
-        address: ADDRESSES[chain].lendingPools[lp].address
+        ...ADDRESSES[chain].lendingPools[lp]
       })
     }
   }

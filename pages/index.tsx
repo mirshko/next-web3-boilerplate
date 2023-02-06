@@ -4,7 +4,8 @@ import VaultCard from '../components/vaultCard';
 import useVaultData from "../hooks/useVaultData";
 
 function Home() {
-  var vaults = useVaultData();
+  let activeChainOnly = true;
+  var vaults = useVaultData(activeChainOnly);
  
   return (
     <div style={{width: '100%', minWidth: '1200px'}}>
