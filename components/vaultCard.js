@@ -57,8 +57,9 @@ const VaultCard = ({vault}) => {
                 <Button  style={{  float:'right' }} type="primary" href={'/ranger/'+vault.address}>Farm</Button>
               </>} >
                 <div style={{ display: 'flex', justifyContent: 'center'}}>
-                  50% APR (1x) &rarr; &nbsp;
-                  <Typography.Text type="success" strong >550% APR (10x)</Typography.Text>
+                  45% APR (Uni v3) &rarr; &nbsp;
+                  50% APR (ROE 1x) &rarr; &nbsp;
+                  <Typography.Text type="success" strong >550% APR (ROE 10x)</Typography.Text>
                 </div>
             </Card>
             <Card style={{  }} title={<>
