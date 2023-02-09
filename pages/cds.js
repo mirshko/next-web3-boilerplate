@@ -39,7 +39,6 @@ function CDS() {
   var token0 = useAssetData(lendingPool.token0 ? lendingPool.token0.address : null, lpAddress)
   var token1 = useAssetData(lendingPool.token1 ? lendingPool.token1.address : null, lpAddress)
   var cdsAsset = useAssetData( asset, lpAddress )
-  console.log('cdsaw', cdsAsset)
   var lpContract = useLendingPoolContract(lpAddress)
 
   var assets = [
