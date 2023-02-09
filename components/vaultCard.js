@@ -11,10 +11,9 @@ const VaultCard = ({vault}) => {
   const [isVaultOpen, setOpen] = useState(false);
   const toggleOpen = () => { setOpen(!isVaultOpen) }
   const assetNames = vault.name.split('-');
-  console.log(vault)
+
   const token0 = useAssetData(vault.token0.address, vault.address);
   const token1 = useAssetData(vault.token1.address, vault.address);
-  console.log(token0, token1)
 
   const userAccountData = getUserLendingPoolData(vault.address) 
   var availableCollateral = ethers.utils.formatUnits(userAccountData.availableBorrowsETH ?? 0, 8)
@@ -34,7 +33,7 @@ const VaultCard = ({vault}) => {
           <img src={"/icons/"+vault.network.toLowerCase()+".svg"} width={24} height={24} alt="network" />&nbsp;{vault.network}
         </div>
         <div style={{width: 300}}>{'TLV: $' + vault.tlv}</div>
-        <div style={{width: 100 }}>My Assets: ${availableCollateral}</div>
+        <div style={{width: 100 }}>My Assets: ${parseFloat(availableCollateral).toFixed(0)}</div>
       </div>
       
       <div style={{ display: (isVaultOpen ? 'block' : 'none') }}>
@@ -51,33 +50,32 @@ const VaultCard = ({vault}) => {
           <Col span={12} type="flex">
             <Card style={{ marginBottom: 16 }} 
               title={<>
-                Crab Strategies&nbsp;
-                <Tooltip placement="right" title="Outperforming yield in ranged markets"><QuestionCircleOutlined /></Tooltip>
+                <span>
+                  Crab Strategies&nbsp;
+                  <Tooltip placement="right" title="Outperforming yield in ranging market conditions"><QuestionCircleOutlined /></Tooltip>
+                </span>
+                <Button  style={{  float:'right' }} type="primary" href={'/ranger/'+vault.address}>Farm</Button>
               </>} >
-              <Row justify="space-between">
-                <Col span={10} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                  <strong>Full Range Strategy</strong><br/>
-                   7% APR (1x)<br/>
-                   <Typography.Text type="success" strong >60% APR (10x)</Typography.Text>
-                   <Button disabled style={{ marginTop: 16 }}>Farm LPv2</Button>
-                </Col>
-                <Col type="flex">
-                  <Divider type="vertical" style={{ height: "100%" }} />
-                </Col>
-                <Col span={10} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                  <strong>V3 Range Strategy</strong><br/>
-                   40% APR (1x)<br/>
-                   <Typography.Text type="success" strong >300% APR (10x)</Typography.Text>
-                   <Button  style={{ marginTop: 16 }} type="primary" href={'/ranger/'+vault.address}>Farm LPv3</Button>
-                </Col>
-              </Row>
+                <div style={{ display: 'flex', justifyContent: 'center'}}>
+                  50% APR (1x) &rarr; &nbsp;
+                  <Typography.Text type="success" strong >550% APR (10x)</Typography.Text>
+                </div>
             </Card>
             <Card style={{  }} title={<>
                 MOVE Strategies&nbsp;
                 <Tooltip placement="right" title="Outperforming in trending markets"><QuestionCircleOutlined /></Tooltip>
               </>}>
-              LongG v2 v3
-              ...
+              <Row justify="space-between">
+                <Col span={10} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                  <Button  style={{  float:'right' }} type="primary" href={'/protected'}>Protected Perps</Button>
+                </Col>
+                <Col type="flex">
+                  <Divider type="vertical" style={{ height: "100%" }} />
+                </Col>
+                <Col span={10} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                  <Button  style={{  float:'right' }} type="primary" href={'/dashboard'}>Dashboard</Button>
+                </Col>
+              </Row>
             </Card>
           </Col>
         </Row>

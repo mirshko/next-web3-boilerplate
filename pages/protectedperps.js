@@ -24,7 +24,7 @@ const ProtectedPerps = () => {
         <Positions vaults={vaults}/>
       </div>
       <Card style={{ marginLeft: 24, height: '100%', minWidth: 300 }}>
-        <VaultPerpsForm vault={vaults[currentVault]} price={price} opmAddress={ADDRESSES['optionsPositionManager']} />
+        <VaultPerpsForm vault={vaults[currentVault]} price={price} />
       </Card>
     </div>
 );

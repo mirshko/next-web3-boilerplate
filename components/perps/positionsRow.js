@@ -1,8 +1,9 @@
 import useAssetData from '../../hooks/useAssetData'
 import useUnderlyingAmount from "../../hooks/useUnderlyingAmount";
 import CloseTrPositionButton from '../closeTrPositionButton'
+import useAddresses from '../../hooks/useAddresses';
 
-const PositionsRow = ({address, vault, price, opmAddress}) => {
+const PositionsRow = ({address, vault, price}) => {
   const asset = useAssetData(address)
   const tokenAmounts = useUnderlyingAmount(address, vault)
   
@@ -24,7 +25,7 @@ const PositionsRow = ({address, vault, price, opmAddress}) => {
     <td align='right'>{ (asset.debtApr / 365 / 24).toFixed(4) }%</td>
     <td align='right'>0</td>
     <td align='right'>
-      <CloseTrPositionButton address={address} vault={vault} opmAddress={opmAddress} />
+      <CloseTrPositionButton address={address} vault={vault} />
     </td>
   </tr>
   )

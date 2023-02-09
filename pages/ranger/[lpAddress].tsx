@@ -1,11 +1,13 @@
 import { useWeb3React } from "@web3-react/core";
-import { useState } from 'react';
-import { Col, Row, Button, Card, Input, Slider, Typography, Spin, Tooltip } from 'antd';
+import { useState, useEffect } from 'react';
+import { Col, Row, Button, Card, Input, Slider, Typography, Spin, Tooltip, Divider } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import Link from "next/link";
 import { useRouter } from 'next/router';
 import Range from "../../components/range";
 import LendingPoolTable from "../../components/lendingPoolTable";
+import DepositNoLevModal from "../../components/depositNoLevModal"
+import Chart from '../../components/perps/chart'
 
 import useUnderlyingAmount from "../../hooks/useUnderlyingAmount";
 import useAddresses from "../../hooks/useAddresses";
@@ -15,12 +17,14 @@ import useLendingPoolContract from "../../hooks/useLendingPoolContract";
 import {ethers} from "ethers";
 
 function Ranger() {
-  const { chainId } = useWeb3React();
   const { account } = useWeb3React();
   const router = useRouter()
   let { lpAddress } = router.query
 
+  const [price, setPrice] = useState(0)
   const [selectedRange, selectRange] = useState(0);
+  const [ranges, setRanges] = useState([])
+  const [noLevInputs, setNoLevInputs] = useState([0,0])
   const [leverage, setLeverage] = useState(1);
   const [percentDebt, setPercentDebt] = useState(90);
   const [isSpinning, setSpinning] = useState(false);
@@ -30,6 +34,40 @@ function Ranger() {
   const lendingPool = vaultAddresses['lendingPools'].length > 0 ?  vaultAddresses['lendingPools'][0] : {}
   const rangeAddresses = lendingPool['lpToken'] ? [ lendingPool['lpToken'] ] : []
   for (let p in lendingPool.ranges) rangeAddresses.push(lendingPool.ranges[p])
+    
+  // Selecting ranges to show: default is v2, if v3 ranges exist assume length >= 3
+  let jsonRangeAddresses = JSON.stringify(rangeAddresses)
+  useEffect ( () => { 
+    if (!rangeAddresses || rangeAddresses.length == 0) { setRanges([]); return; }
+    if (!price) { setRanges(rangeAddresses.slice(0, 4)); selectRange(0); return; }
+    
+    // first item is v2 pair
+    let subset = [rangeAddresses[0]]
+
+    for( let k = 1; k<rangeAddresses.length; k++){
+      let prices = rangeAddresses[k].price.split('-')
+      // if current active range: push previous, current and next range
+      if ( price > prices[0] && price < prices[1] ){
+        if ( k > 1 && k < rangeAddresses.length -1 ){ 
+          //there's a range before and one after
+          subset = [...subset, ...rangeAddresses.slice(k-1,k+2)]
+          selectRange(2);
+          break;
+        }
+        else if ( k == rangeAddresses.length -1){
+          subset = [...subset, ...rangeAddresses.slice(k-2,k+1)]
+          selectRange(3)
+          break;
+        }
+        else if ( k == 1 ){
+          selectRange(1)
+          subset = [...subset, ...rangeAddresses.slice(1,4)]
+          break;
+        }
+      }
+    }
+    setRanges(subset)
+  }, [jsonRangeAddresses, price])
 
   var token0 = useAssetData(lendingPool.token0 ? lendingPool.token0.address : null, lpAddress)
   var token1 = useAssetData(lendingPool.token1 ? lendingPool.token1.address : null, lpAddress)
@@ -49,7 +87,7 @@ function Ranger() {
   ]
   
   // Token amounts: if v3, use values from the TR smart contract - useCLPValues return $1 worth of tokens
-  const tokenAmounts = useUnderlyingAmount(rangeAddresses.length > 0 ? rangeAddresses[selectedRange].address : null, lendingPool )
+  const tokenAmounts = useUnderlyingAmount(ranges.length > 0 ? ranges[selectedRange].address : null, lendingPool )
   
   const userAccountData = getUserLendingPoolData(lpAddress) 
   var healthFactor = ethers.utils.formatUnits(userAccountData.healthFactor ?? 0, 18)
@@ -72,6 +110,13 @@ function Ranger() {
     } catch(e) {console.log('farm error', e)}
   }
 
+  // rebalance no leverage inputs based on asset ratio and user input
+  const setNoLevValues = (val) => {
+    if ( val.asset0 == 0 || val.asset1 == 0 ) return setNoLevInputs([0,0])
+    if (val.asset0 && tokenAmounts.amount0 > 0) return setNoLevInputs([val.asset0, tokenAmounts.amount1 * val.asset0 / tokenAmounts.amount0])
+    if (val.asset1 && tokenAmounts.amount1 > 0) return setNoLevInputs([tokenAmounts.amount0 * val.asset1 / tokenAmounts.amount1, val.asset1])
+  }
+
 
   return (
     <div>
@@ -80,35 +125,65 @@ function Ranger() {
       </Typography.Title>
       <Typography.Title level={2}>Pick a Range</Typography.Title>
 
-      <img src="/ranger-dummy.png"  alt="explanation" width="100%"  />
-      <Row gutter={16}>
-        { rangeAddresses.map( (item, index) => <Col key={item.address + index}span={6}  type="flex">
-          <Range address={item.address}
-            lendingPool={lpAddress}
-            priceRange={item.price? item.price : "Full"}
-            yields={yields[index]}
-            availableCollateral={availableCollateral}
-            bordered={selectedRange == index}
-            onClick={()=>{selectRange(index)}}
-            />
+      <Row gutter={16} style={{marginTop: 16}}>
+        <Col span={12}>
+          <Row gutter={[16, 16]}>
+            { ranges.map( (item, index) => <Col key={item.address + index} span={12}  className="gutter-row" type="flex">
+              <Range address={item.address}
+                lendingPool={lpAddress}
+                priceRange={item.price? item.price : "Full"}
+                yields={yields[index]}
+                availableCollateral={availableCollateral}
+                bordered={selectedRange == index}
+                onClick={()=>{selectRange(index)}}
+                />
+            </Col>
+            )}
+          </Row>
         </Col>
-        )}
+        <Col span={12}>
+          <Chart ohlcUrl={lendingPool.ohlcUrl} setPrice={setPrice} defaultInterval='4h' height={180} width={530} />
+        </Col>
       </Row>
 
       <Typography.Title level={2}>Collateral</Typography.Title>
-        <Typography.Paragraph>Base debt available: ${availableCollateral}</Typography.Paragraph>
-        <Typography.Paragraph>Health ratio: 
+        <Typography.Paragraph>Base debt available: <span style={{ fontWeight: 'bold'}}>${availableCollateral} </span>
+         - Health ratio: 
           <span style={{ color: (healthFactor > 1.01 ? "green" : (healthFactor > 1 ? "orange" : "red" ) ) }}>
-            {parseFloat(healthFactor).toFixed(2)} 
+            {healthFactor > 100 ? <span style={{fontSize: 'larger'}}> &infin; </span> : parseFloat(healthFactor).toFixed(3)}
           </span>&nbsp;    
           <Tooltip placement="right" title="Keep your health factor above 1.01 to avoid liquidations"><QuestionCircleOutlined /></Tooltip>
         </Typography.Paragraph>
         <LendingPoolTable assets={assets} lendingPool={lendingPool} />
       
-      <Typography.Title level={2}>Farm</Typography.Title>
       
-      <Row gutter={16} >
-        <Col span={8}>
+      <Typography.Title level={2}>Farm</Typography.Title>
+      <Row gutter={16}>
+        <Col span={6} type="flex">
+          <Card title="No Leverage" bordered={false} style={{ height: '100%' }} bodyStyle={{height: '100%'}}>
+            <div style={{}}>
+              <span>{token0.name}<span style={{ float: 'right', fontSize: 'smaller'}}>{parseFloat(token0.wallet).toFixed(3)}</span></span>
+              <Input value={noLevInputs[0]} style={{ marginBottom: 12 }} 
+                onChange={(e)=> setNoLevValues({asset0: e.target.value})}
+              />
+              <span>{token1.name}<span style={{ float: 'right', fontSize: 'smaller'}}>{parseFloat(token1.wallet).toFixed(3)}</span></span>
+              <Input value={noLevInputs[1]} style={{ marginBottom: 12 }}
+                onChange={(e)=> setNoLevValues({asset1: e.target.value})}
+              />
+              <DepositNoLevModal 
+                vaultAddresses={vaultAddresses} 
+                rangeAddress={rangeAddresses.length > 0 ? rangeAddresses[selectedRange].address : null} 
+                token0={token0} token1={token1}
+                token0Amount={noLevInputs[0]}
+                token1Amount={noLevInputs[1]}
+                isLpV2={selectedRange == 0}
+              />
+            </div>
+          </Card>
+        </Col>
+        <Col span={1} style={{}}><Divider type="vertical" style={{ height: '100%', margin: '0 50%'}} />
+        </Col>
+        <Col span={6}>
           <Card title="Base Amounts" bordered={false}>
             Debt available: {availableCollateral}
             <Row gutter={8} style={{ display: "flex", alignItems: 'center'}}>
@@ -117,15 +192,15 @@ function Ranger() {
             </Row>
             
             {token0.name}
-            <Input value={(tokenAmounts.amount0 * availableCollateral * percentDebt /100).toFixed(token0.decimals)} />{/* TODO: properly calculate, here we just say tokenAmounts is $1 */}
-              {token1.name}
+            <Input value={(tokenAmounts.amount0 * availableCollateral * percentDebt /100).toFixed(token0.decimals)} />
+            {token1.name}
             <Input value={(tokenAmounts.amount1 * availableCollateral * percentDebt /100).toFixed(token1.decimals)} />
             <br />
             Total value: ${availableCollateral * percentDebt /100}
 
           </Card>
         </Col>
-        <Col span={8}>
+        <Col span={6}>
           <Card title="Choose a Leverage" bordered={false} style={{height: '100%'}}>
               <Row gutter={8} style={{ display: "flex", alignItems: 'center'}}>
                 <Col span={20}><Slider min={1} max={10}  onChange={onChangeLeverage} /></Col>
@@ -147,7 +222,7 @@ function Ranger() {
           </Card>
         </Col>
         
-        <Col span={8}>
+        <Col span={5}>
           <Card title="Execute"  bordered={false} style={{height: '100%'}}>
             {/* Collateral is already in LP, so need to have a smart contract function that flashloans the required assets and deposit in TR
                 Assets amount are leverage * asset in base amount form
@@ -185,4 +260,4 @@ export async function getStaticProps(context) {
     // Passed to the page component as props
     props: { post: {} },
   }
-}
+} 

@@ -14,10 +14,10 @@ const candlesColors = {
 }
 
 
-function Chart({ohlcUrl, setPrice}) {
+function Chart({ohlcUrl, setPrice, width, height, defaultInterval}) {
   const [ chart, setChart ] = useState()
   const [ cs, setCs ] = useState()
-  const [ interval, setInterval ] = useState('1h')
+  const [ interval, setInterval ] = useState(defaultInterval ?? '1h')
   const [ candles, setCandles ] = useState()
   const { token } = useToken();
   const ref = React.useRef();
@@ -46,8 +46,8 @@ function Chart({ohlcUrl, setPrice}) {
 
   useEffect(() => {
     const chart1 = createChart(ref.current, {
-      width: 800,
-      height: 400,
+      width: width ?? 800,
+      height: height ?? 400,
       layout: {
         backgroundColor: 'rgba(0,0,0,0)',
         textColor: 'rgba(255, 255, 255, 0.9)',

@@ -1,8 +1,10 @@
-import { useWeb3React } from "@web3-react/core";
 import useContract from './useContract';
+import useAddresses from '../hooks/useAddresses';
 import IPriceOracle_ABI from '../contracts/IPriceOracle.json';
 
-export default function usePriceOracle(oracleAddress) {
-  const oracleContract = useContract(oracleAddress, IPriceOracle_ABI)
+export default function usePriceOracle() {
+  const chainAddresses = useAddresses();
+  
+  const oracleContract = useContract(chainAddresses['priceOracle'], IPriceOracle_ABI)
   return oracleContract;
 }

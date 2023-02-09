@@ -5,7 +5,7 @@
  **/
 module.exports = {
   transpilePackages: ['lightweight-charts', 'fancy-canvas'],
-  trailingSlash: true,
+  //trailingSlash: true,
   reactStrictMode: false,
   typescript: {
     ignoreBuildErrors: true,

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import useAddresses from "./useAddresses";
 import useTokenBalance from "./useTokenBalance"
 import useTokenContract from "./useTokenContract"
+import usePriceOracle from "./usePriceOracle"
 import useLendingPoolContract from "./useLendingPoolContract"
 import { ethers } from "ethers";
 
@@ -12,11 +13,11 @@ export default function useAssetData(address, vaultAddress) {
   const { account } = useWeb3React()
   const [roeSupply, setRoeSupply] = useState()
   const [ debt, setDebt ] = useState(0)
+  const [price, setPrice] = useState(0)
   const [variableRate, setVariableRate] = useState(0)
   const [supplyRate, setSupplyRate] = useState(0)
   const ADDRESSES = useAddresses(vaultAddress)
   let lp = ADDRESSES['lendingPools'][0] || {};
-  
   var asset;
 
   // will fail with Error: Rendered more hooks than during the previous render. if the asset address isnt found here, since it would skip some hooks
@@ -41,10 +42,20 @@ export default function useAssetData(address, vaultAddress) {
     wallet: 0, deposited: 0, tlv: 0, 
     debt: debt,
     tlv: roeSupply,
+    oraclePrice: price,
     ...asset
   }
   if (asset.name) asset.icon = "/icons/"+asset.name.split(/[\ -]/)[0].toLowerCase()+".svg";
   else asset.icon ="/favicon.ico";
+
+  const oracle = usePriceOracle()
+  const getPrice = async () => {
+    try {
+      var data = await oracle.getAssetPrice(address)
+      setPrice( ethers.utils.formatUnits(data, 8) )
+    } catch(e){console.error}
+  }
+  getPrice()
 
   // get token supply = TLV
   const roeToken = useTokenContract(asset.roeAddress);
@@ -69,12 +80,12 @@ export default function useAssetData(address, vaultAddress) {
   // Get variable debt/supply rates
   const lpContract = useLendingPoolContract(lp.address)
   const getVariableRate = async () => {
-    if (!lp.address || !lpContract) return;
+    if (!address || !lp.address || !lpContract) return;
     try {
       var data = await lpContract.getReserveData(asset.address)
       setVariableRate( (data.currentVariableBorrowRate / 1e25).toFixed(2) )      
       setSupplyRate( (data.currentLiquidityRate / 1e25).toFixed(2) )      
-    } catch(e){console.log('Get variable rate', e)}
+    } catch(e){console.log('Get variable rate', e, asset.address)}
   }
   getVariableRate()
 

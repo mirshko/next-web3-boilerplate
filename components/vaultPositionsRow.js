@@ -22,6 +22,7 @@ const VaultPositionsRow = ({assetAddress, vault, hideEmpty}) => {
   const ADDRESSES = useAddresses();
   const asset = useAssetData(assetAddress, vault.address)
 
+  if (hideEmpty && asset.deposited == 0 && asset.debt == 0  ) return (<></>);
   const columns = [
     { key: 'asset', title: 'Position', dataIndex: 'name' },
     { key: 'deposited', title: 'Balance', dataIndex: 'deposited' },
@@ -37,7 +38,7 @@ const VaultPositionsRow = ({assetAddress, vault, hideEmpty}) => {
         <CloseDebt asset={asset} type='closeV2' vault={vault} />
       </>
     asset.debtAction = <>
-        <Button type="primary" size="small" disabled>Buy CDS</Button>&nbsp;
+        <Button type="primary" size="small" href={'/cds?vault='+vault.address+'&asset='+asset.address}>Buy CDS</Button>&nbsp;
         <CloseDebt asset={asset} type="closeV2longg"  vault={vault} />
       </>
   }
@@ -47,7 +48,7 @@ const VaultPositionsRow = ({assetAddress, vault, hideEmpty}) => {
         <CloseDebt asset={asset} type='closeV2' vault={vault} />
       </>
     asset.debtAction = <>
-        <Button type="primary" size="small" disabled>Buy CDS</Button>&nbsp;
+        <Button type="primary" size="small" href={'/cds?vault='+vault.address+'&asset='+asset.address}>Buy CDS</Button>&nbsp;
         <CloseTrPositionButton address={assetAddress} vault={vault} opmAddress={ADDRESSES['optionsPositionManager']} />
       </>
   }
@@ -59,7 +60,6 @@ const VaultPositionsRow = ({assetAddress, vault, hideEmpty}) => {
       </>
   }
 
-  if (hideEmpty && asset.deposited == 0 && asset.debt == 0  ) return (<></>);
 
   return (<>
     <tr>

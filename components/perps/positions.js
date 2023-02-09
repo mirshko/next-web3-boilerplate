@@ -6,6 +6,7 @@ import PositionsRow from './positionsRow'
 // show all positions
 // unlike the rest, it should show positions from other pools as well
 const Positions = ({vaults}) => {
+  
   return (<Card style={{ marginTop: 24 }}>
     <strong>Positions</strong>
     <table>
@@ -15,6 +16,7 @@ const Positions = ({vaults}) => {
           <th align='left'>Amount</th>
           <th align='right'>Funding <Tooltip placement="right" title="Hourly funding rate"><QuestionCircleOutlined /></Tooltip></th>
           <th align='right'>PnL</th>
+          <th> </th>
         </tr>
       </thead>
       <tbody>
@@ -22,7 +24,7 @@ const Positions = ({vaults}) => {
         return (<React.Fragment key={vault.address}>
           {
             vault.ticks.map((tick) => {
-              return <PositionsRow key={tick.address} address={tick.address} vault={vault} opmAddress={vaults.opmAddress} />
+              return <PositionsRow key={tick.address} address={tick.address} vault={vault} />
             })
             }
         </React.Fragment>)

@@ -12,7 +12,7 @@ export default function useUnderlyingAmount(rangeAddress, vault){
   if ( vault['lpToken'] && vault['lpToken'].address == rangeAddress ) type = "v2"
   
   const ranger = useContract(rangeAddress, type=="v2" ? UniswapV2Pair_ABI : TR_ABI);
-  const oracle = usePriceOracle(vault['priceOracle'])
+  const oracle = usePriceOracle()
 
   // Get the underlying token amounts for the Ranger
   useEffect( () => {

@@ -10,7 +10,7 @@ import useOptionsPositionManager from "../hooks/useOptionsPositionManager";
 import useAssetData from "../hooks/useAssetData";
 import { useWeb3React } from "@web3-react/core";
 
-const DepositWithdrawalTickerModal = ({asset, vault, size, opmAddress}) =>  {
+const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
   const [visible, setVisible] = useState(false);
   const [inputValue, setInputValue] = useState("0");
   const [lpAllowance, setLpAllowance] = useState(ethers.constants.Zero);
@@ -23,15 +23,15 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, opmAddress}) =>  {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, title, message) => { api[type]({message: title, description: message }); }
   
-  const lendingPoolContract = useLendingPoolContract(vault.address )
+  const lendingPoolContract = useLendingPoolContract(vault.address)
   
 	const openModal = () => { setVisible(true)}
 	const closeModal = () => {setVisible(false)}
   
   const tokenAmounts = useUnderlyingAmount(asset.address, vault)
-  const underlyingAsset = useAssetData(tokenAmounts.amount0 > 0 ? vault.token0.address : vault.token1.address, vault.address)
+  const underlyingAsset = useAssetData(tokenAmounts.amount0 > 0 ? vault.token0.address : vault.token1.address, vault.address, oracleAddress)
   const tokenContract = useTokenContract(underlyingAsset.address)
-  const opm = useOptionsPositionManager(opmAddress) 
+  const opm = useOptionsPositionManager() 
   
   useEffect(() => {
     if (!tokenContract) return;

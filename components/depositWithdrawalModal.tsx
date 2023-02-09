@@ -26,9 +26,12 @@ const DepositWithdrawalModal = ({asset, lendingPool, size}) =>  {
 	const openModal = () => { setVisible(true)}
 	const closeModal = () => {setVisible(false)}
   
+  var nativeToken = false;
+  if ( asset.name == 'ETH' && (chainId == 1 || chainId == 42161 )) nativeToken = true;
+  if (asset.name == 'MATIC' && (chainId == 137 || chainId == 1337) ) nativeToken = true;
   
   useEffect(() => {
-    if (!tokenContract) return;
+    if (nativeToken || !tokenContract) return;
     // to deposit an ERC20 asset we check allowance
     const checkAllowance = async () => {
       const result = await tokenContract.allowance(account, lendingPool.address)
@@ -49,7 +52,12 @@ const DepositWithdrawalModal = ({asset, lendingPool, size}) =>  {
         result = await tokenContract.approve(lendingPool.address, ethers.constants.MaxUint256)
       }
       else if (action =="Supply"){
-        result = await lendingPoolContract.deposit(asset.address, ethers.utils.parseUnits(inputValue, asset.decimals), account, 0)
+        if (nativeToken){
+          result = await lendingPoolContract
+        } 
+        else {
+          result = await lendingPoolContract.deposit(asset.address, ethers.utils.parseUnits(inputValue, asset.decimals), account, 0)
+        }
         closeModal()
       }
       else if (action == "Withdraw") {
@@ -64,10 +72,9 @@ const DepositWithdrawalModal = ({asset, lendingPool, size}) =>  {
     }
     setSpinning(false);
   }
-  
-  
+
   var actionComponent = action+" "+asset.name;
-  if ( inputValue && (asset.name != "ETH" || chainId != 1 ) && action == "Supply" && ethers.utils.parseUnits(parseFloat(inputValue).toFixed(asset.decimals), asset.decimals).gt(lpAllowance) ){
+  if ( !nativeToken && inputValue && action == "Supply" && ethers.utils.parseUnits(parseFloat(inputValue).toFixed(asset.decimals), asset.decimals).gt(lpAllowance) ){
       actionComponent = "Approve "+asset.name;
       setAction("Approve")
     }
