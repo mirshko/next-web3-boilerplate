@@ -4,6 +4,7 @@ import useAddresses from "./useAddresses";
 import useTokenBalance from "./useTokenBalance"
 import useTokenContract from "./useTokenContract"
 import usePriceOracle from "./usePriceOracle"
+import useRangeStats from "./useRangeStats"
 import useLendingPoolContract from "./useLendingPoolContract"
 import { ethers } from "ethers";
 
@@ -36,13 +37,17 @@ export default function useAssetData(address, vaultAddress) {
     }
   }
   
+  const rangeData = useRangeStats(asset && asset.tokenId)
+  const baseApr = (rangeData.history_24h && rangeData.history_24h.length > 0) ? parseFloat(rangeData.history_24h[0].fee_apr).toFixed(2) : 5.1
   asset = { 
-    apr: supplyRate, 
+    supplyApr: supplyRate, 
+    baseApr: baseApr,
     debtApr: variableRate,
     wallet: 0, deposited: 0, tlv: 0, 
     debt: debt,
     tlv: roeSupply,
     oraclePrice: price,
+    rangeData: rangeData,
     ...asset
   }
   if (asset.name) asset.icon = "/icons/"+asset.name.split(/[\ -]/)[0].toLowerCase()+".svg";

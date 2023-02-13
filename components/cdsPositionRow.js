@@ -6,15 +6,16 @@ import CloseLonggPositionButton from './closeLonggPositionButton'
 const CdsPositionRow = ({vault, assetAddress}) => {
   const asset = useAssetData(assetAddress)
 
-  if ( asset.deposited == 0) return <></>
+  if ( asset.debt == 0) return <></>
   
   return (<>
     <tr>
       <td>{asset.name}</td>
-      <td>{asset.deposited}</td>
+      <td>{asset.debt}</td>
+      <td>{asset.oraclePrice * asset.debt}</td>
       <td>0</td>
       <td>0</td>
-      <td><CloseLonggPositionButton address={address} vault={vault} /></td>
+      <td><CloseLonggPositionButton address={assetAddress} vault={vault} /></td>
     </tr>
   </>)
 }

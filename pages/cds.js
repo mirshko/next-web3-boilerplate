@@ -1,6 +1,6 @@
 import { useWeb3React } from "@web3-react/core";
 import { useState, useEffect } from 'react';
-import { Col, Row, Button, Card, Input, Slider, Typography, Spin, Tooltip, Divider } from 'antd';
+import { Col, Row, Button, Card, Input, Slider, Typography, Spin, Tooltip, Divider, notification} from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import Link from "next/link";
 import { useRouter } from 'next/router';
@@ -14,7 +14,9 @@ import useAddresses from "../hooks/useAddresses";
 import useAssetData from "../hooks/useAssetData";
 import getUserLendingPoolData from "../hooks/getUserLendingPoolData";
 import useLendingPoolContract from "../hooks/useLendingPoolContract";
+import useLonggPositionManager from "../hooks/useLonggPositionManager";
 import {ethers} from "ethers";
+
 
 function CDS() {
   const { account } = useWeb3React();
@@ -30,6 +32,8 @@ function CDS() {
   const [percentDebt, setPercentDebt] = useState(90);
   const [isSpinning, setSpinning] = useState(false);
   const onChangeLeverage = (newVal) => { setLeverage(newVal) }
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (type, title, message) => { api[type]({message: title, description: message }); }
 
   const vaultAddresses = useAddresses(lpAddress)
   const lendingPool = vaultAddresses['lendingPools'].length > 0 ?  vaultAddresses['lendingPools'][0] : {}
@@ -40,6 +44,7 @@ function CDS() {
   var token1 = useAssetData(lendingPool.token1 ? lendingPool.token1.address : null, lpAddress)
   var cdsAsset = useAssetData( asset, lpAddress )
   var lpContract = useLendingPoolContract(lpAddress)
+  var lpm = useLonggPositionManager()
 
   var assets = [
     { key: 0, ...token0 },
@@ -53,17 +58,21 @@ function CDS() {
   var healthFactor = ethers.utils.formatUnits(userAccountData.healthFactor ?? 0, 18)
   var availableCollateral = ethers.utils.formatUnits(userAccountData.availableBorrowsETH ?? 0, 8)
 
-  // Farm position
-  const farm = async () => {
-    const abi = ethers.utils.defaultAbiCoder;
-    const POOL_ID = lendingPool.poolId;
-    const farmMode = (selectedRange == 0? 1 : 0); // Full range UNIv2: mode 1, UNIv3-TokenisableRange mode 0
-    let params = abi.encode(["uint", "uint8", "address", "address"], [POOL_ID, farmMode, account, rangeAddresses[selectedRange].address ]);
+  // Longg position
+  const longg = async () => {
     try {
-      //console.log('flashhh', vaultAddresses["rangerPositionManager"], [token0.address, token1.address], amounts, [2, 2], account, params, 0 )
-    // flashloan( receiver, tokens, amounts, modes[2 for open debt], onBehalfOf, calldata params, refcode)
-    let res = await lpContract.flashLoan(vaultAddresses["rangerPositionManager"], [token0.address, token1.address], amounts, [2, 2], account, params, 0)
-    } catch(e) {console.log('farm error', e)}
+      //bytes memory params = abi.encode(0, msg.sender, assetSold, amountSoldInPercent, address(0x0), poolId); (uint8, address, address, uint, address, uint)
+      //LP.flashLoan( address(this), assets, amounts, flashtype, msg.sender, params, 0);
+      const abi = ethers.utils.defaultAbiCoder;
+      let params = abi.encode(
+        ["uint8", "address", "address", "uint", "address", "uint"], 
+        [0, account, ethers.constants.AddressZero, 0, ethers.constants.AddressZero, lendingPool.poolId]
+      );
+      console.log('inerte', inputValue)
+      console.log( lpm.address, [cdsAsset.address], [ethers.utils.parseUnits(parseFloat(inputValue).toFixed(18), 18).toString()], [2], account, params, 0);
+      let res = await lpContract.flashLoan( lpm.address, [cdsAsset.address], [ethers.utils.parseUnits(parseFloat(inputValue).toFixed(18), 18)], [2], account, params, 0);
+      openNotification("success", "Tx Sent", "Longg Position Opened")
+    } catch(e) {console.log('longg error', e); openNotification("error", e.code, e.message)}
   }
 
   // rebalance no leverage inputs based on asset ratio and user input
@@ -81,7 +90,8 @@ function CDS() {
   return (
     <div>
       <Typography.Title>
-        Impermanent Gainooor: {token0.name}-{token1.name}
+        Impermanent Gainooor: {token0.name}-{token1.name} 
+        {contextHolder}
       </Typography.Title>
 
       <Row gutter={16} style={{marginTop: 16}}>
@@ -105,12 +115,14 @@ function CDS() {
             <div style={{}}>
               <span>{cdsAsset.name}<span onClick={()=>{setInputValue(maxBorrow)}} style={{ float: 'right', fontSize: 'smaller'}}>Max: {maxBorrow}</span></span>
               <Input value={inputValue} style={{ marginBottom: 12 }} 
-                onChange={(e)=> setInputValue(e.target.value)}
+                onChange={(e)=> {console.log(e.target.value); setInputValue(e.target.value)} }
               />
               <span>Position value: ${(inputValue * cdsAsset.oraclePrice).toFixed(2)}</span><br/>
 
-              <Button type='primary' disabled={availableCollateral < 1} style={{ marginTop:16}}>
-                {availableCollateral<1 ? <>Add more collateral</>: <>Open Position</>}
+              <Button type='primary' disabled={availableCollateral < 1} style={{ marginTop:16}}
+                onClick={longg}
+              >
+                {availableCollateral == 0 || availableCollateral < 0.9*inputValue*cdsAsset.price/1e8 ? <>Not enough collateral</>: <>Open Position</>}
               </Button>
               <Divider />
               
@@ -127,16 +139,17 @@ function CDS() {
             <thead><tr>
               <th align='left'>Asset</th>
               <th align='left'>Amount</th>
-              <th align='right'>Funding <Tooltip placement="right" title="Hourly funding rate"><QuestionCircleOutlined /></Tooltip></th>
-              <th align='right'>PnL</th>
+              <th align='left'>Value</th>
+              <th align='left'>Funding <Tooltip placement="right" title="Hourly funding rate"><QuestionCircleOutlined /></Tooltip></th>
+              <th align='left'>PnL</th>
             </tr></thead>
             <tbody>
               {
-                lendingPool['lpToken'] && <CdsPositionRow asset={lendingPool['lpToken'].address} vault={lendingPool} />
+                lendingPool['lpToken'] && <CdsPositionRow assetAddress={lendingPool['lpToken'].address} vault={lendingPool} />
               }
               {
                 lendingPool['ranges'] && lendingPool['ranges'].length > 0 &&
-                lendingPool['ranges'].map( range => <CdsPositionRow key={range.address} assetAddress={range.address} vault={lendingPool} /> )
+                  lendingPool['ranges'].map( range => <CdsPositionRow key={range.address} assetAddress={range.address} vault={lendingPool} /> )
               }
             </tbody>
           </table>

@@ -28,16 +28,16 @@ const NavChain = () => {
       label: "Polygon",
       icon: <img src="/icons/polygon.svg" height={16} width={16} />
     },
-    {
+    /*{
       key: '1',
       label: "Ethereum",
       icon: <img src="/icons/ethereum.svg" height={16} width={16} />
     },
     {
       key: '1337',
-      label: "Polygon-Fork",
+      label: "Arbitrum-Fork",
       icon: <img src="/icons/polygon.svg" height={16} width={16} />
-    },
+    },*/
   ];
 
   let label = {};

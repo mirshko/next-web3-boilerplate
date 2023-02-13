@@ -40,7 +40,7 @@ const DepositWithdrawalModal = ({asset, lendingPool, size}) =>  {
     try {
       checkAllowance()
     } catch(e){console.log('check allowance dWM', e)}
-  }, [account, asset, tokenContract])
+  }, [account, asset, tokenContract, nativeToken, lendingPool.address])
   
 
 
@@ -53,7 +53,7 @@ const DepositWithdrawalModal = ({asset, lendingPool, size}) =>  {
       }
       else if (action =="Supply"){
         if (nativeToken){
-          result = await lendingPoolContract
+          result = await lendingPoolContract // TODO
         } 
         else {
           result = await lendingPoolContract.deposit(asset.address, ethers.utils.parseUnits(inputValue, asset.decimals), account, 0)

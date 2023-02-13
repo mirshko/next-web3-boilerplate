@@ -4,8 +4,9 @@ import { CheckCircleOutlined, HourglassOutlined, LoadingOutlined, ExclamationCir
 import { ethers } from "ethers";
 import useLendingPoolContract from "../hooks/useLendingPoolContract";
 import useTokenContract from "../hooks/useTokenContract";
-import useZapboxContract from "../hooks/useZapboxContract";
-import useOptionsPositionManager from "../hooks/useOptionsPositionManager";
+import useZapbox from "../hooks/useZapbox";
+import useZapboxTR from "../hooks/useZapboxTR";
+import useRangeManager from "../hooks/useRangeManager";
 import { useWeb3React } from "@web3-react/core";
 import useTheme from "../hooks/useTheme"
 
@@ -16,11 +17,14 @@ const DepositWithdrawalModal = ({ vaultAddresses, rangeAddress, token0, token0Am
     setVisible(true)
     setRunningTx(0)
   }
-	const closeModal = () => {setVisible(false)}
+	const closeModal = () => {
+    setVisible(false)
+    setRunningTx(-1)
+  }
 
   const [lpAllowance0, setLpAllowance0] = useState(ethers.constants.Zero);
   const [lpAllowance1, setLpAllowance1] = useState(ethers.constants.Zero);
-  const [runningTx, setRunningTx] = useState(0)
+  const [runningTx, setRunningTx] = useState(-1)
   const [errorTx, setErrorTx] = useState(false)
 
   const { account, chainId } = useWeb3React();
@@ -30,12 +34,14 @@ const DepositWithdrawalModal = ({ vaultAddresses, rangeAddress, token0, token0Am
   const openNotification = (type, title, message) => { api[type]({message: title, description: message }); }
   
   const lendingPool = vaultAddresses['lendingPools'].length > 0 ?  vaultAddresses['lendingPools'][0] : {}
-  const zapboxContract = useZapboxContract(vaultAddresses['zapbox'])
-  const opmContract = useOptionsPositionManager(vaultAddresses['optionsPositionManager'])
-  const destContract = isLpV2 ? zapboxContract : opmContract
+  const zapboxContract = useZapbox()
+  const zapboxTRContract = useZapboxTR()
+  const rmContract = useRangeManager(lendingPool.address)
+  const destContract = isLpV2 ? zapboxContract : zapboxTRContract
   const lendingPoolContract = useLendingPoolContract(lendingPool.address )
   const token0Contract = useTokenContract(token0.address)
   const token1Contract = useTokenContract(token1.address)
+  
   
   useEffect( () => {
     const process = async () => {
@@ -43,33 +49,37 @@ const DepositWithdrawalModal = ({ vaultAddresses, rangeAddress, token0, token0Am
       try {
         if(runningTx == 0){
           let result = await token0Contract.allowance(account, destContract.address)
-          await setLpAllowance0(result)
+          setLpAllowance0(result)
+          console.log('allow0', result.toString())
           result = await token1Contract.allowance(account, destContract.address)
-          await setLpAllowance1(result)
+          setLpAllowance1(result)
+          console.log('allow1', result.toString())
           setRunningTx(1)
         }
         else if(runningTx == 1){
-          if (lpAllowance0 < token0Amount){
+          if (lpAllowance0.lt(token0Amount) ){
             let result = await token0Contract.approve(destContract.address, ethers.constants.MaxUint256)
             openNotification("success", "Tx Sent", "Tx mined")
-            await setLpAllowance0(ethers.constants.MaxUint256)
+            setLpAllowance0(ethers.constants.MaxUint256)
           }
           setRunningTx(2)
         }
         else if (runningTx == 2){
-          if (lpAllowance1 < token1Amount){
+          if (lpAllowance1.lt(token1Amount) ){
             let result = await token1Contract.approve(destContract.address, ethers.constants.MaxUint256)
             openNotification("success", "Tx Sent", "Tx mined")
-            await setLpAllowance1(ethers.constants.MaxUint256)
+            setLpAllowance1(ethers.constants.MaxUint256)
           }
           setRunningTx(3)
         }
         else if (runningTx == 3) {
           if (isLpV2){
+            console.log('v2 liq', lendingPool.poolId, token0.address, token0Amount.toString(), token1.address, token1Amount.toString())
             let result = await zapboxContract.zapIn(lendingPool.poolId, token0.address, token0Amount, token1.address, token1Amount)
           }
           else {
-            let result = await opmContract.sellOptions(lendingPool.poolId, rangeAddress, token0Amount, token1Amount)
+            console.log('v3 liq', zapboxTRContract.address, lendingPool.poolId, rangeAddress, token0Amount.toString(), token1Amount.toString())
+            let result = await zapboxTRContract.zapIn(lendingPool.poolId, rangeAddress, token0Amount, token1Amount)
           }
           openNotification("success", "Tx Sent", "Tx mined")
           closeModal()
@@ -81,7 +91,7 @@ const DepositWithdrawalModal = ({ vaultAddresses, rangeAddress, token0, token0Am
         openNotification("error", e.code, e.message)
       }
     }
-    if (visible) process()
+    if (runningTx >= 0) process()
   }, [runningTx])
 
   const GetIcon = ({index}) => {
@@ -93,7 +103,7 @@ const DepositWithdrawalModal = ({ vaultAddresses, rangeAddress, token0, token0Am
   return (
     <>
       <Button type="primary" onClick={openModal} size={'default'} disabled={token0Amount == 0 && token1Amount==0}>
-        Deposit
+        Farm
       </Button>
       <Modal open={visible} onOk={closeModal} onCancel={closeModal}
         width={500}

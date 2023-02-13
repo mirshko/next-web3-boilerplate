@@ -1,6 +1,6 @@
 import { useWeb3React } from "@web3-react/core";
 import { useState, useEffect } from 'react';
-import { Card, Row, Col, Typography, Table, Checkbox, Button } from 'antd';
+import { Card, Row, Col, Typography, Table, Checkbox, Button, Tooltip } from 'antd';
 const { Column, ColumnGroup } = Table;
 import useAddresses from '../hooks/useAddresses';
 import useAssetData from '../hooks/useAssetData';
@@ -45,10 +45,9 @@ const VaultPositionsRow = ({assetAddress, vault, hideEmpty}) => {
   else if (asset.type == 'ranger'){
     asset.depositedAction = <>
         <Button size="small" type="primary" href={'/ranger/'+vault.address}>Farm {vault.name}</Button>&nbsp;
-        <CloseDebt asset={asset} type='closeV2' vault={vault} />
+        <CloseDebt asset={asset} type='closeRange' vault={vault} />
       </>
     asset.debtAction = <>
-        <Button type="primary" size="small" href={'/cds?vault='+vault.address+'&asset='+asset.address}>Buy CDS</Button>&nbsp;
         <CloseTrPositionButton address={assetAddress} vault={vault} opmAddress={ADDRESSES['optionsPositionManager']} />
       </>
   }
@@ -60,7 +59,6 @@ const VaultPositionsRow = ({assetAddress, vault, hideEmpty}) => {
       </>
   }
 
-
   return (<>
     <tr>
       <td>
@@ -70,7 +68,14 @@ const VaultPositionsRow = ({assetAddress, vault, hideEmpty}) => {
         </div>
       </td>
       <td>{asset.deposited == 0 ? <>0</> : parseFloat(asset.deposited).toFixed(6)}</td>
-      <td>{asset.apr} %</td>
+      <td>
+        <Tooltip placement="right" title={<>
+          ROE APR: {asset.supplyApr}%<br/>
+          Fees APR: {asset.baseApr}%
+        </>}>
+          <span style={{textDecoration: 'underline #ccc dotted' }}>{(parseFloat(asset.supplyApr) + parseFloat(asset.baseApr)).toFixed(2)} %</span>
+        </Tooltip>
+      </td>
       <td>{asset.depositedAction}</td>
       <td>{asset.debt == 0 ? <>0</> : parseFloat(asset.debt).toFixed(6)}</td>
       <td>{asset.debtApr} %</td>

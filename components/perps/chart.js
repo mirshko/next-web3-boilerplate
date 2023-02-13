@@ -40,7 +40,7 @@ function Chart({ohlcUrl, setPrice, width, height, defaultInterval}) {
         setCs(mycs)
       } catch(e) {console.log(e)}
     }
-    if (chart) getdata()
+    if (chart && ohlcUrl) getdata()
   }, [apiUrl, chart])
 
 

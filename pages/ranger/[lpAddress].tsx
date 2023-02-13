@@ -1,6 +1,6 @@
 import { useWeb3React } from "@web3-react/core";
 import { useState, useEffect } from 'react';
-import { Col, Row, Button, Card, Input, Slider, Typography, Spin, Tooltip, Divider } from 'antd';
+import { Col, Row, Button, Card, Input, InputNumber, Slider, Typography, Spin, Tooltip, Divider } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import Link from "next/link";
 import { useRouter } from 'next/router';
@@ -73,18 +73,7 @@ function Ranger() {
   var token1 = useAssetData(lendingPool.token1 ? lendingPool.token1.address : null, lpAddress)
   var lpToken = useAssetData( lendingPool.lpToken ? lendingPool.lpToken.address : null, lpAddress )
   var lpContract = useLendingPoolContract(lpAddress)
-
-  var assets = [
-    { key: 0, ...token0 },
-    { key: 1, ...token1 },
-    //{ key: 2, ...lpToken},
-  ];
-  var yields = [
-    {week: 14, month: 25.77, halfyear: 9.2},
-    {week: 12.5, month: 39.9, halfyear: 42.3},
-    {week: 0, month: 0, halfyear: 2.5},
-    {week: 1, month: 1, halfyear: 2.5},
-  ]
+  const selectedAsset =  useAssetData(ranges.length > 0 ? ranges[selectedRange].address : null, lpAddress)
   
   // Token amounts: if v3, use values from the TR smart contract - useCLPValues return $1 worth of tokens
   const tokenAmounts = useUnderlyingAmount(ranges.length > 0 ? ranges[selectedRange].address : null, lendingPool )
@@ -101,7 +90,7 @@ function Ranger() {
     ]
     const abi = ethers.utils.defaultAbiCoder;
     const POOL_ID = lendingPool.poolId;
-    const farmMode = (selectedRange == 0? 1 : 0); // Full range UNIv2: mode 1, UNIv3-TokenisableRange mode 0
+    const farmMode = (selectedRange == 0 ? 1 : 0); // Full range UNIv2: mode 1, UNIv3-TokenisableRange mode 0
     let params = abi.encode(["uint", "uint8", "address", "address"], [POOL_ID, farmMode, account, rangeAddresses[selectedRange].address ]);
     try {
       //console.log('flashhh', vaultAddresses["rangerPositionManager"], [token0.address, token1.address], amounts, [2, 2], account, params, 0 )
@@ -117,6 +106,14 @@ function Ranger() {
     if (val.asset1 && tokenAmounts.amount1 > 0) return setNoLevInputs([tokenAmounts.amount0 * val.asset1 / tokenAmounts.amount1, val.asset1])
   }
 
+  const token0Amount = ethers.utils.parseUnits(
+      parseFloat(noLevInputs[0]).toFixed(token0.decimals),
+      token0.decimals
+    )
+  const token1Amount = ethers.utils.parseUnits(
+      parseFloat(noLevInputs[1]).toFixed(token1.decimals),
+      token1.decimals
+    )
 
   return (
     <div>
@@ -132,10 +129,9 @@ function Ranger() {
               <Range address={item.address}
                 lendingPool={lpAddress}
                 priceRange={item.price? item.price : "Full"}
-                yields={yields[index]}
                 availableCollateral={availableCollateral}
                 bordered={selectedRange == index}
-                onClick={()=>{selectRange(index)}}
+                onClick={()=>{setNoLevInputs([0,0]); selectRange(index)}}
                 />
             </Col>
             )}
@@ -154,28 +150,40 @@ function Ranger() {
           </span>&nbsp;    
           <Tooltip placement="right" title="Keep your health factor above 1.01 to avoid liquidations"><QuestionCircleOutlined /></Tooltip>
         </Typography.Paragraph>
-        <LendingPoolTable assets={assets} lendingPool={lendingPool} />
+        <LendingPoolTable assets={[token0, token1, selectedAsset]} lendingPool={lendingPool} />
       
       
-      <Typography.Title level={2}>Farm</Typography.Title>
+      <Row gutter={16}>
+        <Col span={7} type="flex">
+          <Typography.Title level={2}>Farm<span style={{float:'right', fontSize: 'small', marginRight: 8, marginTop: 7}}>or</span></Typography.Title>
+          
+        </Col>
+        <Col span={6} type="flex">
+          <Typography.Title level={2}>Farm with Leverage</Typography.Title>
+        </Col>
+      </Row>
       <Row gutter={16}>
         <Col span={6} type="flex">
           <Card title="No Leverage" bordered={false} style={{ height: '100%' }} bodyStyle={{height: '100%'}}>
             <div style={{}}>
               <span>{token0.name}<span style={{ float: 'right', fontSize: 'smaller'}}>{parseFloat(token0.wallet).toFixed(3)}</span></span>
-              <Input value={noLevInputs[0]} style={{ marginBottom: 12 }} 
-                onChange={(e)=> setNoLevValues({asset0: e.target.value})}
+              
+              <br/>
+              <InputNumber value={noLevInputs[0]} style={{ marginBottom: 12, width: '100%' }} 
+                onChange={(e)=> setNoLevValues({asset0: e})}
               />
-              <span>{token1.name}<span style={{ float: 'right', fontSize: 'smaller'}}>{parseFloat(token1.wallet).toFixed(3)}</span></span>
-              <Input value={noLevInputs[1]} style={{ marginBottom: 12 }}
-                onChange={(e)=> setNoLevValues({asset1: e.target.value})}
+              <br/>
+              <span style={{ width: '100%'}}>{token1.name}<span style={{ float: 'right', fontSize: 'smaller'}}>{parseFloat(token1.wallet).toFixed(3)}</span></span>
+              <br/>
+              <InputNumber value={noLevInputs[1]} style={{ marginBottom: 24, width: '100%' }}
+                onChange={(e)=> setNoLevValues({asset1: e})}
               />
               <DepositNoLevModal 
-                vaultAddresses={vaultAddresses} 
+                vaultAddresses={vaultAddresses}
                 rangeAddress={rangeAddresses.length > 0 ? rangeAddresses[selectedRange].address : null} 
                 token0={token0} token1={token1}
-                token0Amount={noLevInputs[0]}
-                token1Amount={noLevInputs[1]}
+                token0Amount={token0Amount}
+                token1Amount={token1Amount}
                 isLpV2={selectedRange == 0}
               />
             </div>
@@ -192,7 +200,7 @@ function Ranger() {
             </Row>
             
             {token0.name}
-            <Input value={(tokenAmounts.amount0 * availableCollateral * percentDebt /100).toFixed(token0.decimals)} />
+            <Input value={(tokenAmounts.amount0 * availableCollateral * percentDebt /100).toFixed(token0.decimals)}  style={{ marginBottom: 12 }} />
             {token1.name}
             <Input value={(tokenAmounts.amount1 * availableCollateral * percentDebt /100).toFixed(token1.decimals)} />
             <br />
@@ -200,29 +208,26 @@ function Ranger() {
 
           </Card>
         </Col>
-        <Col span={6}>
+        <Col span={5}>
           <Card title="Choose a Leverage" bordered={false} style={{height: '100%'}}>
               <Row gutter={8} style={{ display: "flex", alignItems: 'center'}}>
                 <Col span={20}><Slider min={1} max={10}  onChange={onChangeLeverage} /></Col>
                 <Col span={4}>{leverage}x</Col>
               </Row>
 
-              <h5 style={{marginBottom: -10, color: 'grey'}}>Potential Yield</h5>
+              <h5 style={{marginBottom: 10, color: 'grey'}}>Potential Yield</h5>
               <Row gutter={2} justify="space-between">
-                <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'column'}}>
-                  <p>1 Week</p><p>{yields[selectedRange] ? (leverage * yields[selectedRange].week).toFixed(2) : 0 }%</p>
-                </Col>
-                <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'column'}}>
-                  <p>1 Month</p><p>{yields[selectedRange] ? (leverage * yields[selectedRange].month).toFixed(2) : 0 }%</p>
-                </Col>
-                <Col style={{ alignItems: 'center', display: 'flex', flexDirection: 'column'}}>
-                  <p>6 Months</p><p>{yields[selectedRange] ? (leverage * yields[selectedRange].halfyear).toFixed(2) : 0 }%</p>
+                <Col>24h (1x)<br />{(parseFloat(selectedAsset.baseApr)+parseFloat(selectedAsset.supplyApr)).toFixed(2)}%</Col>
+                <Col style={{margin: 'auto'}}>&rarr;</Col>
+                <Col>
+                  24h ({leverage}x)<br />
+                  <span style={{color: 'lightgreen', fontWeight: 'bold'}}>{( leverage*(parseFloat(selectedAsset.baseApr)+parseFloat(selectedAsset.supplyApr)) ).toFixed(2)}%</span>
                 </Col>
               </Row>
           </Card>
         </Col>
         
-        <Col span={5}>
+        <Col span={6}>
           <Card title="Execute"  bordered={false} style={{height: '100%'}}>
             {/* Collateral is already in LP, so need to have a smart contract function that flashloans the required assets and deposit in TR
                 Assets amount are leverage * asset in base amount form

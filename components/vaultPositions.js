@@ -52,8 +52,15 @@ const VaultPositions = ({vault}) => {
     <Card style={{borderWidth: 0}} bodyStyle={{padding: 0}}>
       <table>
         <thead>
-          <tr><th> </th><th colSpan={3}>Crab Strategies</th><th colSpan={3}>MOVE Strategies</th></tr>
-          <tr><th>Asset</th><th>Balance</th><th>APR</th><th>Actions</th> <th>Debt</th><th>Debt APR</th><th>Actions</th></tr>
+          <tr><th> </th><th style={{textAlign: 'left'}} colSpan={3}>Crab Strategies</th><th style={{textAlign: 'left'}} colSpan={3}>MOVE Strategies</th></tr>
+          <tr>
+            <th style={{textAlign: 'left'}}>Asset</th>
+            <th style={{textAlign: 'left'}}>Balance</th>
+            <th style={{textAlign: 'left'}}>APR</th>
+            <th style={{textAlign: 'left'}}>Actions</th>
+            <th style={{textAlign: 'left'}}>Debt</th><th>Debt APR</th>
+            <th style={{textAlign: 'left'}}>Actions</th>
+          </tr>
         </thead>
         <tbody>
         {
