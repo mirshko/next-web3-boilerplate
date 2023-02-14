@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Dropdown, Button, Card, theme } from 'antd'
-import { DownOutlined } from '@ant-design/icons';
+import { Dropdown, Button, Card } from 'antd'
 import axios from 'axios'
-const { useToken } = theme;
+import VaultsDropdown from '../vaultsDropdown'
 
 const Infobar = ({vaults, current, selectVault }) => {
-  const { token } = useToken();
   let [dailyCandle, setDailyCandle] = useState({})
   let [isDropdownVisible, setDropdownvisible ] = useState(false)
   let currentVault = vaults[current];
@@ -32,16 +30,7 @@ let changePercent = 100 * (dailyCandle[1] - dailyCandle[4]) / ( dailyCandle[1] |
   let green = '#55d17c'
   
   return (<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 40 }}>
-    <div className="dropdownPerp">
-      <Button type="text" style={{ padding: '0px 0px 0 16px'}}><span style={{ fontWeight: 'bold', fontSize: 'large'}}>{currentVault.name}</span> <DownOutlined /></Button>
-      <Card className="dropdownPerp-content" bodyStyle={{ backgroundColor: token.colorBgContainer, padding: 0 }}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {
-          vaults.map( (v, index) => <Button key={v.name} style={{ textAlign: 'left'}} type="text" onClick={()=>selectVault(index)}>{v.name}</Button> )
-        }
-        </div>
-      </Card>
-    </div>
+    <VaultsDropdown selectVault={selectVault} vaults={vaults} currentVault={currentVault} />
     
     <span style={{ fontSize: 'larger' }}>{dailyCandle[4]}</span>
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>

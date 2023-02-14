@@ -13,7 +13,6 @@ const CloseDebt = ({ asset, type, vault }) => {
   const [isSpinning, setSpinning] = useState(false);
   const openNotification = (type, title, message) => { api[type]({message: title, description: message }); }
   
-  console.log('casdld', asset)
   var balance = 0
   if (type == "closeV2" || type == "closeRange" ) balance = asset.deposited;
   else balance = asset.debt;

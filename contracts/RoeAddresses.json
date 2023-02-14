@@ -175,7 +175,7 @@
   "42161": {
     "network": "Arbitrum",
     "roeRouter": "0x5430A027CC128c7fcC2208Fd78E56Aa0EBF083F2",
-    "rangerPositionManager": "0x3EbF54363552bbCeEFacA481BebD832E978482F3",
+    "rangerPositionManager": "0x0Fc3995715E30d610FD42b6E54cA80C9d490bf27",
     "optionsPositionManager": "0xd42Ad27650d571CA8488dB6E6567120F6835E0FC",
     "longgPositionManager": "0x1056b5664341487679d5B68854249318693dc53D",
     "zapbox": "0xB90240106d7Fcff6566ab83299D90d81753eA19c",
@@ -195,6 +195,7 @@
             "roeAddress": "0x48DE4c541066893412a00844d7237325EeFE156f",
             "debtAddress": "0x0b82Cf583B8ccf73574b8aD773FD7D6C7F839bbe",
             "price": "1450-1550",
+            "insuranceAsset": "0x004Be10fE897214aE9BFE33c07AE4D509c717dEC",
             "tokenId": 300515
           },
           {
@@ -202,6 +203,7 @@
             "roeAddress": "0x70684e8FC256Ec58Ff6582B7174b9Ebb97458A2A",
             "debtAddress": "0xDf16dB8745Ed444d8a0AA09fD32E8eE4e23d0013",
             "price": "1550-1650",
+            "insuranceAsset": "0xf4cDD6e5c9bd827C52C192D73eE1E3Ab5899A3E1",
             "tokenId": 300518
           },
           {
@@ -209,6 +211,7 @@
             "roeAddress": "0xff27d43A10a36aF4e703AEb3705f503a6B2b5fD7",
             "debtAddress": "0x6E10874E156383f24588D78B135d1e57675FD545",
             "price": "1650-1750",
+            "insuranceAsset": "0x637FEB4C431e8b1E353bB45c194D4A128eC28cBe",
             "tokenId": 300521
           },
           {
@@ -216,6 +219,7 @@
             "roeAddress": "0x84eF5a238A49ab8ae49D09a9d76110692254E90C",
             "debtAddress": "0xFd6F5a749a6AD3d9564BaaCFb0d765A3d74ef750",
             "price": "1750-1850",
+            "insuranceAsset": "0x7c620F66E1A53119c4e69eC3923222452C8A8EB9",
             "tokenId": 300523
           },
           {
@@ -223,6 +227,7 @@
             "roeAddress": "0x9FE24aCdD7038ac329ec52185D7CDEb20918D40E",
             "debtAddress": "0x349E1975ef102c5601406Aca483BdFd5725e1B0d",
             "price": "1850-1950",
+            "insuranceAsset": "0x61DaA6C5b9a51A550F0eB87a0dd626D1007240D1",
             "tokenId": 300526
           },
           {
@@ -230,6 +235,7 @@
             "roeAddress": "0xA2aCCe50470BF4b379483CEe0a91D4734e61aB32",
             "debtAddress": "0xA2e5653DC59FBdffED616C982D0acCef232c88D8",
             "price": "1950-2050",
+            "insuranceAsset": "0x5A7C2F756C5f67bD91552D8891aC3cAcD32ad49c",
             "tokenId": 300528
           }
         ],

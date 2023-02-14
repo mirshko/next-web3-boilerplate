@@ -9,7 +9,7 @@ import Chart from '../components/perps/chart'
 
 // Display all user assets and positions in all ROE LPs
 const ProtectedPerps = () => {
-  const [currentVault, setCurrentVault ] = useState(0)
+  const [currentVault, selectVault ] = useState(0)
   const [price, setPrice] = useState(1666.68);
   const ADDRESSES = useAddresses();
   let vaults = ADDRESSES['lendingPools'];
@@ -18,7 +18,7 @@ const ProtectedPerps = () => {
     <div style={{ minWidth: 1200, display: 'flex', flexDirection: 'row' }}>
       <div style={{ width: 850 }}>
         <Card style={{ marginBottom: 24 }} bodyStyle={{ padding: 8 }}>
-          <Infobar vaults={vaults} current={currentVault} selectVault={setCurrentVault} price={price} />
+          <Infobar vaults={vaults} current={currentVault} selectVault={selectVault} price={price} />
         </Card>
         <Chart ohlcUrl={vaults[currentVault].ohlcUrl} setPrice={setPrice} />
         <Positions vaults={vaults}/>

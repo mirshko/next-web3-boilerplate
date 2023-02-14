@@ -38,10 +38,10 @@ export default function useAssetData(address, vaultAddress) {
   }
   
   const rangeData = useRangeStats(asset && asset.tokenId)
-  const baseApr = (rangeData.history_24h && rangeData.history_24h.length > 0) ? parseFloat(rangeData.history_24h[0].fee_apr).toFixed(2) : 5.1
+  const feeApr = (rangeData.history_24h && rangeData.history_24h.length > 0) ? parseFloat(rangeData.history_24h[0].fee_apr).toFixed(2) : 5.1
   asset = { 
     supplyApr: supplyRate, 
-    baseApr: baseApr,
+    feeApr: feeApr,
     debtApr: variableRate,
     wallet: 0, deposited: 0, tlv: 0, 
     debt: debt,

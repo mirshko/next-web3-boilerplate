@@ -71,9 +71,9 @@ const VaultPositionsRow = ({assetAddress, vault, hideEmpty}) => {
       <td>
         <Tooltip placement="right" title={<>
           ROE APR: {asset.supplyApr}%<br/>
-          Fees APR: {asset.baseApr}%
+          Fees APR: {asset.feeApr}%
         </>}>
-          <span style={{textDecoration: 'underline #ccc dotted' }}>{(parseFloat(asset.supplyApr) + parseFloat(asset.baseApr)).toFixed(2)} %</span>
+          <span style={{textDecoration: 'underline #ccc dotted' }}>{(parseFloat(asset.supplyApr) + parseFloat(asset.feeApr)).toFixed(2)} %</span>
         </Tooltip>
       </td>
       <td>{asset.depositedAction}</td>

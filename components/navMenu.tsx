@@ -1,7 +1,7 @@
 // components/layout.js
 import { useState, useEffect } from "react";
 import { Menu } from "antd"
-import { HomeOutlined, FrownOutlined, FundProjectionScreenOutlined, DashboardOutlined, SwapOutlined, BugOutlined } from '@ant-design/icons';
+import { BankOutlined, FrownOutlined, DollarOutlined, DashboardOutlined, SwapOutlined, BugOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 
 function getItem(label, key, icon, children, type) {
@@ -26,16 +26,17 @@ const NavMenu = ({bgColor}) =>  {
   };
 
   const items = [
-    { label: 'Vaults', key: '/', icon: <HomeOutlined /> },
-    //{ label: 'Ranger', key: '/ranger', icon: <FundProjectionScreenOutlined /> },
+    { label: 'Vaults', key: '/', icon: <BankOutlined /> },
+    //{ label: 'Ranger', key: '/ranger', icon: <BugOutlined /> },
     { label: 'Dashboard', key: '/dashboard', icon: <DashboardOutlined /> },
+    { label: 'Protected Farming™', key: '/protectedyield', icon: <DollarOutlined /> },
     { label: 'Protected Perps™', key: '/protectedperps', icon: <SwapOutlined /> },
   ]
   
   return (
     <Menu
       onClick={onClick}
-      style={{ backgroundColor: bgColor, borderWidth: 1, minWidth: 382 }}
+      style={{ backgroundColor: bgColor, borderWidth: 1, minWidth: 570 }}
       defaultSelectedKeys={['1']}
       selectedKeys={[current]}
       defaultOpenKeys={['sub1']}

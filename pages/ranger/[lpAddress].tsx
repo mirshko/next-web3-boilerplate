@@ -127,7 +127,7 @@ function Ranger() {
           <Row gutter={[16, 16]}>
             { ranges.map( (item, index) => <Col key={item.address + index} span={12}  className="gutter-row" type="flex">
               <Range address={item.address}
-                lendingPool={lpAddress}
+                lendingPoolAddress={lpAddress}
                 priceRange={item.price? item.price : "Full"}
                 availableCollateral={availableCollateral}
                 bordered={selectedRange == index}
@@ -217,11 +217,11 @@ function Ranger() {
 
               <h5 style={{marginBottom: 10, color: 'grey'}}>Potential Yield</h5>
               <Row gutter={2} justify="space-between">
-                <Col>24h (1x)<br />{(parseFloat(selectedAsset.baseApr)+parseFloat(selectedAsset.supplyApr)).toFixed(2)}%</Col>
+                <Col>24h (1x)<br />{(parseFloat(selectedAsset.feeApr)+parseFloat(selectedAsset.supplyApr)).toFixed(2)}%</Col>
                 <Col style={{margin: 'auto'}}>&rarr;</Col>
                 <Col>
                   24h ({leverage}x)<br />
-                  <span style={{color: 'lightgreen', fontWeight: 'bold'}}>{( leverage*(parseFloat(selectedAsset.baseApr)+parseFloat(selectedAsset.supplyApr)) ).toFixed(2)}%</span>
+                  <span style={{color: 'lightgreen', fontWeight: 'bold'}}>{( leverage*(parseFloat(selectedAsset.feeApr)+parseFloat(selectedAsset.supplyApr)) ).toFixed(2)}%</span>
                 </Col>
               </Row>
           </Card>
