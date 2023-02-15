@@ -13,7 +13,7 @@
         "ohlcUrl": "https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=",
         "address": "0xD14a7c302051A0F1e9cE8e9a8C4845a45F41B46f",
         "poolId": 0,
-        "tlv": "248k",
+        "tlv": "251k",
         "rangeManager": "0x2846C5d4F2B6db7DA0ed15e3EAd2Ae55b9ED2985",
         "ranges": [],
         "ticks": [],
@@ -55,7 +55,7 @@
         "ohlcUrl": "https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=",
         "address": "0x4D39CBBf7368a68F62AD1a1a0aB873044A7c5ee1",
         "poolId": 0,
-        "tlv": "55k",
+        "tlv": "58k",
         "rangeManager": "0x71C4527Efd60B981215826FF49FBEef4D155c46C",
         "ranges": [
           {
@@ -179,7 +179,7 @@
     "optionsPositionManager": "0xd42Ad27650d571CA8488dB6E6567120F6835E0FC",
     "longgPositionManager": "0x1056b5664341487679d5B68854249318693dc53D",
     "zapbox": "0xB90240106d7Fcff6566ab83299D90d81753eA19c",
-    "zapboxTR": "0x462cf88ff718224e0Fff5314D6dF97d47A3EA59F",
+    "zapboxTR": "0xa17EF93429ab742a04A3B430Bb0aBf3c9e829dCb",
     "priceOracle": "0x8A4236F5eF6158546C34Bd7BC2908B8106Ab1Ea1",
     "lendingPools": [
       {
@@ -187,7 +187,7 @@
         "ohlcUrl": "https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=",
         "address": "0x60b3f0C7709075776C38eC5812C8A1EF9fD522d7",
         "poolId": 0,
-        "tlv": "1k",
+        "tlv": "95k",
         "rangeManager": "0xFB11ABbAbd18a2D86FA99C0950d63C0462e16ee8",
         "ranges": [
           {
@@ -302,6 +302,37 @@
           "address": "0x905dfcd5649217c42684f23958568e533c711aa3",
           "roeAddress": "0xEE154455354d9E0E78bb955C7CA5ceCc4639d164",
           "debtAddress": "0xA9BAB0BE2DE31CEe4311C1B88Eb9CAC4EB43824c",
+          "ammRouter": "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506"
+        }
+      },
+      {
+        "name": "GMX-USDC",
+        "ohlcUrl": "https://api.binance.com/api/v3/klines?symbol=GMXUSDT&interval=",
+        "address": "0x79835a8538f111dD5C226b242afa346FF633E5D4",
+        "poolId": 2,
+        "tlv": "45k",
+        "rangeManager": "0xC2Bd913A49017E62Eb21976071367028C4f8f5bd",
+        "ranges": [],
+        "ticks": [],
+        "token0": {
+          "name": "GMX", 
+          "address": "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a",
+          "roeAddress": "0x566A1F87164Db0524aAD0a0D5968b8755E80B8F3",
+          "debtAddress": "0xEC67D0F6e33a8d5738550da3115F078678a2881D",
+          "decimals": 18
+        },
+        "token1": {
+          "name": "USDC", 
+          "address": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+          "roeAddress": "0x9D323FF60cDb26aaa6589F5EfB7F3c42E4078D18",
+          "debtAddress": "0xa7201F84fdf260614685a9eced397d4cC7B4e79c",
+          "decimals": 6
+        },
+        "lpToken": {
+          "name": "SushiSwap GMX-USDC SLP",
+          "address": "0xB2FA688396F35c93Ba4f054866eF8527902fec07",
+          "roeAddress": "0xF5B11F5c69072a7E3E395E3d31719329c1c5B8a1",
+          "debtAddress": "0xF817fF8f35d3FBd27Ac5ba54B1EB0D006627D2F9",
           "ammRouter": "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506"
         }
       }
