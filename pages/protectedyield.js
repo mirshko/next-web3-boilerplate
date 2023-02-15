@@ -26,6 +26,7 @@ function ProtectedYield() {
   const [ranges, setRanges] = useState([])
   const [currentVault, selectVault ] = useState(0)
   const [useNativeToken, setUseNativeToken] = useState(true)
+  const [isInsuranceSpinning, setInsuranceSpinning] = useState(false)
   
   const [noLevInputs, setNoLevInputs] = useState([0,0])
   const [leverage, setLeverage] = useState(1);
@@ -117,20 +118,28 @@ function ProtectedYield() {
 
   // Farm position
   const buyInsurance = async () => {
+    setInsuranceSpinning(true)
+    console.log(insuranceAsset,
+      coverage / 100 * selectedAsset.deposited * selectedAsset.oraclePrice,
+      coverage / 100 * selectedAsset.deposited * selectedAsset.oraclePrice / insuranceAsset.oraclePrice,
+      parseFloat(coverage / 100 * selectedAsset.deposited * selectedAsset.oraclePrice / insuranceAsset.oraclePrice).toFixed(18),
+      18
+    )
     let amount = ethers.utils.parseUnits( 
-        parseFloat(coverage / 100 * selectedAsset.deposited * selectedAsset.oraclePrice / insuranceAsset.oraclePrice).toFixed(insuranceAsset.decimals), 
-        insuranceAsset.decimals
+        parseFloat(coverage / 100 * selectedAsset.deposited * selectedAsset.oraclePrice / insuranceAsset.oraclePrice).toFixed(18), 
+        18
       )
     const abi = ethers.utils.defaultAbiCoder;
     let params = abi.encode(["uint8", "uint", "address", "address"], [0, lendingPool.poolId, account, ethers.constants.AddressZero]);
     try {
       console.log(["uint8", "uint", "address", "address"], [0, lendingPool.poolId, account, ethers.constants.AddressZero ])
-      console.log('flashhh', ADDRESSES["optionsPositionManager"], [insuranceAsset.address], [amount], [2], account, params, 0 )
+      console.log('flashhh', ADDRESSES["optionsPositionManager"], [insuranceAsset.address], [amount], [2], account, params, 0 , 'amonut:', amount.toString())
       
-      // flashloan( receiver, tokens, amounts, modes[2 for open debt], onBehalfOf, calldata params, refcode)
+      // flashloan( receiver, tokens, amounts, modes[2 for open var.debt], onBehalfOf, calldata params, refcode)
       let res = await lpContract.flashLoan(ADDRESSES["optionsPositionManager"], [insuranceAsset.address], [amount], [2], account, params, 0)
     } 
     catch(e) {console.log('farm error', e)}
+    setInsuranceSpinning(false)
   }
   
 
@@ -269,7 +278,8 @@ function ProtectedYield() {
               <Button type="primary" onClick={buyInsurance}
                 disabled={!selectedAsset.insuranceAsset || insuranceAsset.tlv < selectedAsset.deposited * selectedAsset.oraclePrice / insuranceAsset.oraclePrice * coverage / 100}
                 >
-                { isSpinning ? <Spin /> : 
+                { isInsuranceSpinning ? <Spin /> : 
+                  !selectedAsset.insuranceAsset ? <>Not Available</> :
                   insuranceAsset.tlv < selectedAsset.deposited * selectedAsset.oraclePrice / insuranceAsset.oraclePrice * coverage / 100 ?
                   <>Not enough supply</>
                   :<>Buy Insurance</> 
