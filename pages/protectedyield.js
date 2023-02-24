@@ -1,6 +1,6 @@
 import { useWeb3React } from "@web3-react/core";
 import { useState, useEffect } from 'react';
-import { Col, Row, Button, Card, Input, InputNumber, Slider, Typography, Spin, Tooltip, Divider, Checkbox } from 'antd';
+import { Col, Row, Button, Card, Input, InputNumber, Slider, Typography, Spin, Tooltip, Divider, Checkbox, Modal } from 'antd';
 import { QuestionCircleOutlined, DownOutlined, UpOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import Link from "next/link";
 import { useRouter } from 'next/router';
@@ -27,6 +27,7 @@ function ProtectedYield() {
   const [currentVault, selectVault ] = useState(0)
   const [useNativeToken, setUseNativeToken] = useState(true)
   const [isInsuranceSpinning, setInsuranceSpinning] = useState(false)
+  const [isHelpVisible, toggleHelpVisible] = useState(false)
   
   const [noLevInputs, setNoLevInputs] = useState([0,0])
   const [leverage, setLeverage] = useState(1);
@@ -130,9 +131,10 @@ function ProtectedYield() {
         18
       )
     const abi = ethers.utils.defaultAbiCoder;
-    let params = abi.encode(["uint8", "uint", "address", "address"], [0, lendingPool.poolId, account, ethers.constants.AddressZero]);
+    let params = abi.encode(["uint", "uint8", "address", "address[]"], [0, lendingPool.poolId, account, [ethers.constants.AddressZero]]);
     try {
-      console.log(["uint8", "uint", "address", "address"], [0, lendingPool.poolId, account, ethers.constants.AddressZero ])
+      console.log('wut', ADDRESSES["optionsPositionManager"])
+      console.log(["uint", "uint", "address", "address[]"], [0, lendingPool.poolId, account, ethers.constants.AddressZero ])
       console.log('flashhh', ADDRESSES["optionsPositionManager"], [insuranceAsset.address], [amount], [2], account, params, 0 , 'amonut:', amount.toString())
       
       // flashloan( receiver, tokens, amounts, modes[2 for open var.debt], onBehalfOf, calldata params, refcode)
@@ -162,13 +164,13 @@ function ProtectedYield() {
   return (
     <div>
       <Typography.Title>
-        Protected Yield Farming {token0.name}-{token1.name}
-        <VaultsDropdown vaults={vaults} selectVault={selectVault} currentVault={currentVault} />
+        Protected Yield Farming 
+        <VaultsDropdown vaults={vaults} selectVault={selectVault} currentVault={vaults[currentVault]} size='30px'/>
       </Typography.Title>
       
       <Typography.Title level={2}>1. Pick a Range</Typography.Title>
       <Row gutter={16} style={{marginTop: 16, marginLeft: 24}}>
-        <Col span={16}>
+        <Col md={16}>
           <Row gutter={[16, 16]}>
             { ranges.map( (item, index) => <Col key={item.address + index} span={12}  className="gutter-row" type="flex">
                 <Range address={item.address}
@@ -183,16 +185,31 @@ function ProtectedYield() {
             )}
           </Row>
         </Col>
-        <Col span={8} >
-          <Card title="What is Protected Farming?">
+        <Col md={8} >
+          <Card >
+            <h5 style={{marginTop: 0}}>What is Protected Farming?</h5>
             The AMM yield farmer collects good yield but is exposed to the asset price going down.<br /><br />
             Use pay-as-you-go ROE insurance to cap the downside risk.
+            <Button style={{float: 'right', marginTop: 12}} size="small" onClick={()=>{toggleHelpVisible(true)}}>More Details &rarr;</Button>
           </Card>
+          <Modal 
+            title="Protected Yield Farming" open={isHelpVisible} 
+            onChange={() => {toggleHelpVisible(!isHelpVisible)}}
+            onOk={() => {toggleHelpVisible(!isHelpVisible)}}
+            onCancel={() => {toggleHelpVisible(!isHelpVisible)}}
+            footer={null}
+            >
+            The AMM yield farmer collects good yield but is exposed to the asset price going down.<br/><br/>
+            Use pay-as-you-go ROE insurance to cap the downside risk. 
+            <img src="https://via.placeholder.com/200x100" style={{ float: 'left', marginTop: 12, marginRight: 12 }}/>
+            <br /><br />Pick some ROE perpetual options to partially hedge your position in case of market dump.
+            <br /><br />
+          </Modal>
         </Col>
       </Row>
       
       <Row gutter={16} style={{ marginTop: 24 }}>
-        <Col span={8} type="flex">
+        <Col xl={8} type="flex">
           <Typography.Title level={2}>2. Farm</Typography.Title>
           <Card title="No Leverage" bordered={false} style={{ marginLeft: 32, width: 330, height: 300 }} bodyStyle={{height: '100%'}}>
             <div style={{}}>
@@ -224,7 +241,7 @@ function ProtectedYield() {
           </Card>
         </Col>
         
-        <Col span={8} type="flex">
+        <Col xl={8} type="flex">
           <Typography.Title level={2}>
             3. Leverage? &nbsp;
             <Tooltip title="Careful with that slider!"><ExclamationCircleOutlined style={{ fontSize: 'smaller'}}/></Tooltip>
@@ -248,13 +265,13 @@ function ProtectedYield() {
               <span>{ (tokenAmounts.amount0 * availableCollateral * percentDebt /100 * leverage).toFixed(3) } {token0.name} + {(tokenAmounts.amount1 * availableCollateral * percentDebt / 100 * leverage).toFixed(3)} {token1.name}</span>
             </div>
             <div style={{float: 'right'}}>
-              <Button type="primary" onClick={farm}>{ isSpinning ? <Spin /> : <>Leverage Farm</> }</Button>
+              <Button type="primary" onClick={farm} disabled={availableCollateral==0}>{ isSpinning ? <Spin /> : <>Leverage Farm</> }</Button>
             </div>
           </Card>
         </Col>
-        <Col span={8} type="flex">
+        <Col xl={8} type="flex">
           <Typography.Title level={2}>
-            4. Get Insurance
+            4. Get Insurance{insuranceAsset.name ? <span style={{float: 'right', marginRight: 12}}>{insuranceAsset.name.split('-')[1]}-Puts</span> : null }
           </Typography.Title>
           
           <Card title={"Farming Position: $"+(selectedAsset.deposited * selectedAsset.oraclePrice)} bordered={false} style={{ marginLeft: 32, width: 330, height: 300 }} bodyStyle={{height: '100%'}}>
@@ -266,7 +283,7 @@ function ProtectedYield() {
             <div style={{ display: "flex", alignItems: 'center', justifyContent: 'space-between', marginBottom: 12}}>
               <h5 style={{marginTop: 0, marginBottom: 0, color: 'grey'}}>Funding Rate</h5>
               <span style={{color: 'lightgreen', fontWeight: 'bold'}}>
-                {( leverage*(parseFloat(insuranceAsset.debtApr)) ).toFixed(2)}%
+                {( coverage/100*(parseFloat(insuranceAsset.debtApr)) ).toFixed(2)}%
               </span>
             </div>
             <h5 style={{marginTop: 0, marginBottom: 0, color: 'grey'}}>Coverage Value</h5>
@@ -276,7 +293,7 @@ function ProtectedYield() {
             </div>
             <div style={{float: 'right'}}>
               <Button type="primary" onClick={buyInsurance}
-                disabled={!selectedAsset.insuranceAsset || insuranceAsset.tlv < selectedAsset.deposited * selectedAsset.oraclePrice / insuranceAsset.oraclePrice * coverage / 100}
+                disabled={availableCollateral == 0 || !selectedAsset.insuranceAsset || insuranceAsset.tlv < selectedAsset.deposited * selectedAsset.oraclePrice / insuranceAsset.oraclePrice * coverage / 100}
                 >
                 { isInsuranceSpinning ? <Spin /> : 
                   !selectedAsset.insuranceAsset ? <>Not Available</> :

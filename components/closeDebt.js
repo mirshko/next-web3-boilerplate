@@ -26,8 +26,8 @@ const CloseDebt = ({ asset, type, vault }) => {
       openNotification("success", "Tx Sent", "Tx mined")
     }
     catch(e){
-      console.log(e.message);
-      openNotification("error", e.code, e.message)
+      console.log(e);
+      openNotification("error", e.code, e.error.message)
     }
     setSpinning(false);
   }

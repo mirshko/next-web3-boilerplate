@@ -112,7 +112,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
         Deposit / Withdraw
       </Button>
       <Modal open={visible} onOk={closeModal} onCancel={closeModal}
-        width={450}
+        width={620}
         footer={null}
       >
         <Tabs 
@@ -133,6 +133,12 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
          
       <div className="formDiv">
         {contextHolder}
+        
+        <img src="/dualticker.png" alt="explanation"/>
+        
+        <div style={{ borderColor: 'grey', borderWidth: 1, }}>
+        </div>
+        
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10}}>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10}}>

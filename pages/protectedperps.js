@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Col, Row, Button, Card, Input, Typography, Spin, Tooltip } from 'antd';
+import { Col, Row, Button, Card, Input, Typography, Spin, Divider } from 'antd';
 
 import VaultPerpsForm from "../components/perps/vaultPerpsForm"
 import Positions from "../components/perps/positions"
@@ -23,9 +23,15 @@ const ProtectedPerps = () => {
         <Chart ohlcUrl={vaults[currentVault].ohlcUrl} setPrice={setPrice} />
         <Positions vaults={vaults}/>
       </div>
-      <Card style={{ marginLeft: 24, height: '100%', minWidth: 300 }}>
-        <VaultPerpsForm vault={vaults[currentVault]} price={price} />
-      </Card>
+      <div>
+        <Card style={{ marginLeft: 24, height: '100%', minWidth: 300 }}>
+          <VaultPerpsForm vault={vaults[currentVault]} price={price} />
+          <Divider style={{ marginTop: 24 }}>How To</Divider>
+          Pick a Strike: above, your PnL behaves like regular perps; below, your PnL stays at 0, cannot be negative, and you only pay funding.
+          <br />
+          <Button style={{float: 'right'}}>More Details &rarr;</Button>
+        </Card>
+      </div>
     </div>
 );
   

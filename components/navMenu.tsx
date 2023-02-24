@@ -28,15 +28,16 @@ const NavMenu = ({bgColor}) =>  {
   const items = [
     { label: 'Vaults', key: '/', icon: <BankOutlined /> },
     //{ label: 'Ranger', key: '/ranger', icon: <BugOutlined /> },
-    { label: 'Dashboard', key: '/dashboard', icon: <DashboardOutlined /> },
-    { label: 'Protected Farming™', key: '/protectedyield', icon: <DollarOutlined /> },
+    //{ label: 'Dashboard', key: '/dashboard', icon: <DashboardOutlined /> },
+    { label: 'Farm', key: '/farm', icon: <DashboardOutlined /> },
+    //{ label: 'Protected Farming™', key: '/protectedyield', icon: <DollarOutlined /> },
     { label: 'Protected Perps™', key: '/protectedperps', icon: <SwapOutlined /> },
   ]
   
   return (
     <Menu
       onClick={onClick}
-      style={{ backgroundColor: bgColor, borderWidth: 1, minWidth: 570 }}
+      style={{ backgroundColor: bgColor, borderWidth: 1, minWidth: 360 }}
       defaultSelectedKeys={['1']}
       selectedKeys={[current]}
       defaultOpenKeys={['sub1']}

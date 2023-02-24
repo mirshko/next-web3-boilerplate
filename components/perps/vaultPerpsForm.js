@@ -12,6 +12,8 @@ import { useWeb3React } from "@web3-react/core";
 const VaultPerpsForm = ({vault, price, opmAddress}) => {
   const [assetInfo, setAssetData] = useState()
   const [strike, setStrike] = useState({})
+  const [lowerStrike, setLowerStrike] = useState({})
+  const [upperStrike, setUpperStrike] = useState({})
   const [direction, setDirection ] = useState('Long')
   const { account, chainId } = useWeb3React();
   const [api, contextHolder] = notification.useNotification();
@@ -50,7 +52,11 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
   
   useEffect(()=>{
     for (let k of vault.ticks){
+      if ( k.price < price){
+        setLowerStrike({ price: k.price, address: k.address })
+      }
       if ( k.price > price){
+        setUpperStrike({ price: k.price, address: k.address });
         setStrike({ price: k.price, address: k.address });
         break;
       }
@@ -61,21 +67,22 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
   return (
     <div>
       <Button type={ direction == 'Long' ? "primary" : "default"} style={{width: '50%', textAlign: 'center'}} 
-        onClick={()=>{setDirection('Long'); setStrike(0)}}
+        onClick={()=>{setDirection('Long'); setStrike(upperStrike)}}
       ><strong>Long</strong></Button>
       <Button type={ direction == 'Short' ? "primary" : "default"} style={{width: '50%', textAlign: 'center'}}
-        onClick={()=>{setDirection('Short'); setStrike(0)}}>
+        onClick={()=>{setDirection('Short'); setStrike(lowerStrike)}}>
         <strong>Short</strong></Button>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 24 }}>
           <div>
             Strike-In<span style={{ float: 'right'}}>Hourly Funding</span>
           </div>
           <div>
-            {vault.ticks.map( (tick) => {
-                if ( ( direction == 'Long' && price < tick.price ) || ( direction == "Short" && price > tick.price ) )
-                  return (<VaultPerpsStrikes key={tick.address} address={tick.address} vault={vault} onClick={setStrike} isSelected={tick.price == strike.price} />)
-              })
-            }
+            { direction == 'Long' ?
+              <VaultPerpsStrikes key={strike.address} address={strike.address} vault={vault} onClick={setStrike} isSelected={true} />
+            : null }
+            { direction == "Short" ?
+              <VaultPerpsStrikes key={strike.address} address={strike.address} vault={vault} onClick={setStrike} isSelected={true} />
+            : null }
           </div>
         <Input placeholder="Amount" suffix={tokenTraded} 
           onChange={(e)=> setInputValue(e.target.value)} 

@@ -254,6 +254,7 @@ export async function getStaticPaths() {
       { params: { lpAddress: '0x4D39CBBf7368a68F62AD1a1a0aB873044A7c5ee1' } }, // Polygon ETH-USDC
       { params: { lpAddress: '0xBfdDD4a965BdB753dcEAA386ED9B19B655407967' } }, // Polygon MATIC-USDC
       { params: { lpAddress: '0x60b3f0C7709075776C38eC5812C8A1EF9fD522d7' } }, // Arbitrum ETH-USDC
+      { params: { lpAddress: '0x79835a8538f111dD5C226b242afa346FF633E5D4' } }, // Arbitrum GMX-USDC
     ],
     fallback: false, // can also be true or 'blocking'
   }

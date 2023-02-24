@@ -76,7 +76,7 @@ export default function useAssetData(address, vaultAddress) {
   const getDebtAmount = async () => {
     if (!asset.debtAddress || !debtContract) return;
     try {
-      var data = await debtContract.totalSupply()
+      var data = await debtContract.balanceOf(account)
       setDebt(ethers.utils.formatUnits(data, asset.decimals))
     } catch(e) { console.log('Get debt error', e)}
   }  
@@ -85,7 +85,7 @@ export default function useAssetData(address, vaultAddress) {
   // Get variable debt/supply rates
   const lpContract = useLendingPoolContract(lp.address)
   const getVariableRate = async () => {
-    if (!address || !lp.address || !lpContract) return;
+    if (!asset || !asset.address || !lp.address || !lpContract) return;
     try {
       var data = await lpContract.getReserveData(asset.address)
       setVariableRate( (data.currentVariableBorrowRate / 1e25).toFixed(2) )      

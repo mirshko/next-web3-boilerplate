@@ -14,7 +14,7 @@ const candlesColors = {
 }
 
 
-function Chart({ohlcUrl, setPrice, width, height, defaultInterval}) {
+function Chart({ohlcUrl, setPrice, width, height, defaultInterval, positions}) {
   const [ chart, setChart ] = useState()
   const [ cs, setCs ] = useState()
   const [ interval, setInterval ] = useState(defaultInterval ?? '1h')
@@ -25,6 +25,14 @@ function Chart({ohlcUrl, setPrice, width, height, defaultInterval}) {
 
 
   useEffect( () => {
+      const myPriceLine = {
+    price: 1500,
+    color: '#3179F5',
+    lineWidth: 1,
+    lineStyle: 2, // LineStyle.Dashed
+    axisLabelVisible: true,
+    title: 'Strike-1500',
+};
     // get candles from geckoterminal
     async function getdata() {
       try {
@@ -38,10 +46,12 @@ function Chart({ohlcUrl, setPrice, width, height, defaultInterval}) {
         var mycs = cs ?? chart.addCandlestickSeries(candlesColors);
         mycs.setData(candles);
         setCs(mycs)
+        mycs.createPriceLine(myPriceLine);
+        console.log('asda')
       } catch(e) {console.log(e)}
     }
     if (chart && ohlcUrl) getdata()
-  }, [apiUrl, chart])
+  }, [chart])
 
 
   useEffect(() => {
@@ -61,16 +71,21 @@ function Chart({ohlcUrl, setPrice, width, height, defaultInterval}) {
         },
       },
       crosshair: {
+        mode: 0
       },
       rightPriceScale: {
         borderColor: 'rgba(197, 203, 206, 0.8)',
       },
       timeScale: {
         borderColor: 'rgba(197, 203, 206, 0.8)',
+        timeVisible: true,
       },
     });
     setChart(chart1)
   }, []);
+
+console.log(chart)
+
 
   return (
     <Card>

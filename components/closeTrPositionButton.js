@@ -29,8 +29,8 @@ const CloseTrPositionButton = ({address, vault, opmAddress}) => {
       openNotification("success", "Tx Sent", "Tx mined")
     }
     catch(e){
-      console.log('Error closing position', e.message)
-      openNotification("error", e.code, e.message)
+      console.log('Error closing position', e)
+      openNotification("error", e.code, e.error.message)
     }
     setSpinning(false)
   }

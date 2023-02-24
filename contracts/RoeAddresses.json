@@ -176,7 +176,7 @@
     "network": "Arbitrum",
     "roeRouter": "0x5430A027CC128c7fcC2208Fd78E56Aa0EBF083F2",
     "rangerPositionManager": "0x0Fc3995715E30d610FD42b6E54cA80C9d490bf27",
-    "optionsPositionManager": "0xd42Ad27650d571CA8488dB6E6567120F6835E0FC",
+    "optionsPositionManager": "0xad03e39F01E12b85D77d20AdD04b6a4C4347dEC2",
     "longgPositionManager": "0x1056b5664341487679d5B68854249318693dc53D",
     "zapbox": "0xB90240106d7Fcff6566ab83299D90d81753eA19c",
     "zapboxTR": "0xa17EF93429ab742a04A3B430Bb0aBf3c9e829dCb",

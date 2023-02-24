@@ -38,9 +38,9 @@ const VaultPositions = ({vault}) => {
   var assetsList = [
     vault.token0.address,
     vault.token1.address,
-    vault.lpToken.address,
+    //vault.lpToken.address,
   ]
-  for (let r of vault.ranges) assetsList.push(r['address'])
+  //for (let r of vault.ranges) assetsList.push(r['address'])
   for (let r of vault.ticks) assetsList.push(r['address'])
   
   return (<div style={{width: '100%'}}>
@@ -49,26 +49,12 @@ const VaultPositions = ({vault}) => {
       Assets: ${availableCollateral} - Debt: ${totalDebt} - Health Factor: {healthFactor > 100 ? <>&infin;</> : parseFloat(healthFactor).toFixed(3)}
       <Checkbox style={{ float: 'right', marginBottom: 4 }} defaultChecked={hideEmpty}  onChange={onChange}>Hide empty positions</Checkbox>
     </Typography.Text>
-    <Card style={{borderWidth: 0}} bodyStyle={{padding: 0}}>
-      <table>
-        <thead>
-          <tr><th> </th><th style={{textAlign: 'left'}} colSpan={3}>Crab Strategies</th><th style={{textAlign: 'left'}} colSpan={3}>MOVE Strategies</th></tr>
-          <tr>
-            <th style={{textAlign: 'left'}}>Asset</th>
-            <th style={{textAlign: 'left'}}>Balance</th>
-            <th style={{textAlign: 'left'}}>APR</th>
-            <th style={{textAlign: 'left'}}>Actions</th>
-            <th style={{textAlign: 'left'}}>Debt</th><th>Debt APR</th>
-            <th style={{textAlign: 'left'}}>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-        {
-          assetsList.map((assetAddress)=> <VaultPositionsRow assetAddress={assetAddress} vault={vault} hideEmpty={hideEmpty} key={assetAddress} />)
-        }
-        </tbody>
-      </table>
-    </Card>  
+    
+    <Row gutter={24} style={{ width: '100%', marginTop: 12}}>
+      {
+        assetsList.map((assetAddress)=> <VaultPositionsRow assetAddress={assetAddress} vault={vault} hideEmpty={hideEmpty} key={assetAddress} />)
+      }
+    </Row>
   </div>)
 }
 

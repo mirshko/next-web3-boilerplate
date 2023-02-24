@@ -6,11 +6,11 @@ const VaultPerpsStrikes = ({ address, vault, onClick, isSelected }) => {
   var style = {
       cursor: 'pointer',
     }
-  if (isSelected) style = {
+  /*if (isSelected) style = {
     backgroundColor: 'rgba(255,255,255,0.2',
     padding: 4,
     ...style
-  }
+  }*/
 
   return (
     <div onClick={() => { onClick({price: asset.price, address: asset.address}); }}
