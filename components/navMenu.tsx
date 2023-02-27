@@ -26,12 +26,13 @@ const NavMenu = ({bgColor}) =>  {
   };
 
   const items = [
-    { label: 'Vaults', key: '/', icon: <BankOutlined /> },
+    //{ label: 'Vaults', key: '/', icon: <BankOutlined /> },
     //{ label: 'Ranger', key: '/ranger', icon: <BugOutlined /> },
     //{ label: 'Dashboard', key: '/dashboard', icon: <DashboardOutlined /> },
+    { label: 'Protected Perps™', key: '/', icon: <SwapOutlined /> },
     { label: 'Farm', key: '/farm', icon: <DashboardOutlined /> },
     //{ label: 'Protected Farming™', key: '/protectedyield', icon: <DollarOutlined /> },
-    { label: 'Protected Perps™', key: '/protectedperps', icon: <SwapOutlined /> },
+    { label: 'Staking', key: '/', icon: <BankOutlined />, disabled: true },
   ]
   
   return (
