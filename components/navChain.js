@@ -23,12 +23,12 @@ const NavChain = () => {
       label: "Arbitrum",
       icon: <img src="/icons/arbitrum.svg" height={16} width={16} />
     },
-    {
+    /*{
       key: '137',
       label: "Polygon",
       icon: <img src="/icons/polygon.svg" height={16} width={16} />
     },
-    /*{
+    {
       key: '1',
       label: "Ethereum",
       icon: <img src="/icons/ethereum.svg" height={16} width={16} />

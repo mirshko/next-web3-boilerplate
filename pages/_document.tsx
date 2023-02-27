@@ -16,7 +16,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>        
-          <title>Roe.Finance</title>
+          <title>GoodEntry</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <body>

@@ -1,7 +1,7 @@
 // components/layout.js
 import { useWeb3React } from "@web3-react/core";
 import { Menu } from "antd"
-
+import { TwitterOutlined } from '@ant-design/icons';
 import Link from "next/link";
 import Account from "../components/Account";
 
@@ -21,6 +21,7 @@ const NavRight = () =>  {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center'}}>
+      <a href='https://twitter.com/goodentrylabs' target="_blank" style={{marginRight: 24}}><TwitterOutlined /></a>
       {isConnected && (
         <>
         {/*<ETHBalance />*/}

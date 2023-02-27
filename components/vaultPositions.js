@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Card, Row, Col, Typography, Checkbox, Button } from 'antd';
 import useAddresses from '../hooks/useAddresses';
 import getUserLendingPoolData from '../hooks/getUserLendingPoolData';
-import VaultPositionsRow from "./vaultPositionsRow"
+import VaultPositionsBox from "./vaultPositionsBox"
 import {ethers} from 'ethers'
 
 
@@ -52,7 +52,7 @@ const VaultPositions = ({vault}) => {
     
     <Row gutter={24} style={{ width: '100%', marginTop: 12}}>
       {
-        assetsList.map((assetAddress)=> <VaultPositionsRow assetAddress={assetAddress} vault={vault} hideEmpty={hideEmpty} key={assetAddress} />)
+        assetsList.map((assetAddress)=> <VaultPositionsBox assetAddress={assetAddress} vault={vault} hideEmpty={hideEmpty} key={assetAddress} />)
       }
     </Row>
   </div>)

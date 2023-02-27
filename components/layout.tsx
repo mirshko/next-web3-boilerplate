@@ -11,16 +11,12 @@ const MyLayout = ({ children }) =>  {
   
   return (
     <Layout style={{ display: 'flex', alignItems: 'center', minHeight: '100vh'}}>
-    {/*<Header>
-        <title>Roe.Finance</title>
-        <link rel="icon" href="/favicon.ico" />
-    </Head>*/}
         <Layout.Header 
           style={{ 
             backgroundColor: token.colorBgBase, borderBottomWidth: 1, borderColor: 'red',
             display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: 1500, alignItems: 'center'
           }}>
-          <img src="/favicon.ico" width={32} height={32} alt='Roe Favicon' />
+          <img src="/favicon.ico" width={32} height={32} alt='GoodEntry Icon' />
           <NavMenu bgColor={ token.colorBgBase } />
           <NavRight />
         </Layout.Header>
