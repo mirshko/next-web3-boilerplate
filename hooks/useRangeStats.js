@@ -12,7 +12,6 @@ const useRangeStats = (tokenId) => {
   
   useEffect(() => {
     if (!tokenId) return;
-    console.log('sdfsd', url)
     fetch(url)
       .then((res) => res.json())
       .then((data) => {

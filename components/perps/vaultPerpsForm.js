@@ -29,6 +29,7 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
 
   const tokenAmounts = useUnderlyingAmount(strike.address, vault)
   let tokenTraded = tokenAmounts.amount0 == 0 ? vault.token1.name : vault.token0.name  ;
+  let maxOI = tokenAmounts.amount0 == 0 ? tokenAmounts.amount1 : tokenAmounts.amount0;
 
   const openPosition = async () => {
     if (inputValue == 0) return;
@@ -39,7 +40,7 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
       const abi = ethers.utils.defaultAbiCoder;
       let params = abi.encode(["uint8", "uint", "address", "address[]"], [0, vault.poolId, account, [ethers.constants.AddressZero] ]);
       // flashloan( receiver, tokens, amounts, modes[2 for open debt], onBehalfOf, calldata params, refcode)
-      //console.log(opmAddress, [strike.address], [ethers.utils.parseUnits(tickerAmount.toString(), 18)], [2], account, params, 0)
+      console.log(opmAddress, [strike.address], [ethers.utils.parseUnits(tickerAmount.toString(), 18)], [2], account, params, 0)
       let res = await lpContract.flashLoan(opmAddress, [strike.address], [ethers.utils.parseUnits(tickerAmount.toString(), 18)], [2], account, params, 0)
       openNotification("success", "Tx Sent", "Tx mined")
     }
@@ -72,7 +73,7 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
       <Button type={ direction == 'Short' ? "primary" : "default"} style={{width: '50%', textAlign: 'center'}}
         onClick={()=>{setDirection('Short'); setStrike(lowerStrike)}}>
         <strong>Short</strong></Button>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 24 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 24 }}>
           <div>
             Strike-In<span style={{ float: 'right'}}>Hourly Funding</span>
           </div>
@@ -84,6 +85,7 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
               <VaultPerpsStrikes key={strike.address} address={strike.address} vault={vault} onClick={setStrike} isSelected={true} />
             : null }
           </div>
+        <div style={{marginTop: 8}}>Max OI Available: <span style={{ float: 'right' }}>{parseFloat(maxOI).toFixed(5)} {tokenTraded}</span></div>
         <Input placeholder="Amount" suffix={tokenTraded} 
           onChange={(e)=> setInputValue(e.target.value)} 
           key='inputamount'
@@ -96,7 +98,7 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
         }
         <Divider />
         <span>Margin available: <span style={{ float: 'right'}}>${parseFloat(availableCollateral).toFixed(2)}</span></span>
-        <Button disabled>Add Margin</Button>
+        <Button href='/farm'>Add Margin</Button>
       </div>
     </div>
   )

@@ -3,16 +3,18 @@ import { Dropdown, Button, Card } from 'antd'
 import axios from 'axios'
 import VaultsDropdown from '../vaultsDropdown'
 
-const Infobar = ({vaults, current, selectVault }) => {
+const Infobar = ({vaults, current, selectVault, price }) => {
   let [dailyCandle, setDailyCandle] = useState({})
   let [isDropdownVisible, setDropdownvisible ] = useState(false)
   let currentVault = vaults[current];
+  let ohlcUrl = currentVault.ohlcUrl
 
   useEffect( () => {
     // get candles from geckoterminal
-    async function getdata() {
+    async function getData() {
+      console.log('why?', ohlcUrl)
       try {
-        let apiUrl = currentVault.ohlcUrl + '1d'
+        let apiUrl = ohlcUrl + '1d'
         const data = await axios.get(apiUrl, {withCredentials: false,})
         let candles = []
         let dailyCandle = data.data[data.data.length-1]
@@ -20,8 +22,11 @@ const Infobar = ({vaults, current, selectVault }) => {
         setDailyCandle(dailyCandle)
       } catch(e) {console.log(e)}
     }
-    getdata()
-  }, [currentVault])
+    const intervalId = setInterval(() => {
+      if (ohlcUrl) getData();
+    }, 5000);
+    return () => { clearInterval(intervalId); };
+  }, [ohlcUrl])
 
 let change = dailyCandle[1] - dailyCandle[4]
 let changePercent = 100 * (dailyCandle[1] - dailyCandle[4]) / ( dailyCandle[1] || 1 )
@@ -32,7 +37,7 @@ let changePercent = 100 * (dailyCandle[1] - dailyCandle[4]) / ( dailyCandle[1] |
   return (<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 40 }}>
     <VaultsDropdown selectVault={selectVault} vaults={vaults} currentVault={currentVault} />
     
-    <span style={{ fontSize: 'larger' }}>{dailyCandle[4]}</span>
+    <span style={{ fontSize: 'larger' }}>{price}</span>
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <span style={{ fontSize: 'x-small', color: 'grey' }}>24h Change</span>
       <span style={{ fontSize: 'smaller', color: change > 0 ? green:red }}>{change.toFixed(2)} {change>0?'+':'-'}{changePercent.toFixed(2)}%</span>

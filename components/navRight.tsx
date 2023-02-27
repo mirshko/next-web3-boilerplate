@@ -21,7 +21,7 @@ const NavRight = () =>  {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center'}}>
-      <a href='https://twitter.com/goodentrylabs' target="_blank" style={{marginRight: 24}}><TwitterOutlined /></a>
+      <a href='https://twitter.com/goodentrylabs' target="_blank" rel="noreferrer" style={{marginRight: 24}}><TwitterOutlined /></a>
       {isConnected && (
         <>
         {/*<ETHBalance />*/}

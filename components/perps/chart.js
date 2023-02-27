@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { createChart } from "lightweight-charts";
-import axios from 'axios';
 import { theme, Card, Radio } from 'antd'
 const { useToken } = theme;
 
@@ -14,44 +13,54 @@ const candlesColors = {
 }
 
 
-function Chart({ohlcUrl, setPrice, width, height, defaultInterval, positions}) {
+function Chart({setPrice, width, height, interval, setInterval, positions, candles}) {
   const [ chart, setChart ] = useState()
   const [ cs, setCs ] = useState()
-  const [ interval, setInterval ] = useState(defaultInterval ?? '1h')
-  const [ candles, setCandles ] = useState()
+  const [drawn, setDrawn] = useState([])
+  const [lines, setLines] = useState([])
   const { token } = useToken();
   const ref = React.useRef();
-  const apiUrl = ohlcUrl + interval
 
 
   useEffect( () => {
-      const myPriceLine = {
-    price: 1500,
-    color: '#3179F5',
-    lineWidth: 1,
-    lineStyle: 2, // LineStyle.Dashed
-    axisLabelVisible: true,
-    title: 'Strike-1500',
-};
-    // get candles from geckoterminal
-    async function getdata() {
-      try {
-        const data = await axios.get(apiUrl, {withCredentials: false,})
-        let candles = []
-        for (let c of data.data ) candles.push({time: c[0]/1000, open: c[1], high: c[2], low: c[3], close: c[4]})
 
-        // push price up to main page
-        setPrice( parseFloat(candles[candles.length-1].close) )
-      
+    // get candles from geckoterminal
+    async function displayData() {
+      try {
         var mycs = cs ?? chart.addCandlestickSeries(candlesColors);
         mycs.setData(candles);
         setCs(mycs)
-        mycs.createPriceLine(myPriceLine);
-        console.log('asda')
       } catch(e) {console.log(e)}
     }
-    if (chart && ohlcUrl) getdata()
-  }, [chart])
+    if (chart && candles) displayData()
+  }, [chart, candles])
+
+
+  useEffect(()=>{
+    if (chart && cs){
+      console.log('positert', positions, cs)
+      
+      let nlines = []
+      // remove previous lines
+      for (let ln of lines){
+        cs.removePriceLine(ln)
+      }
+      for (let pos of positions){
+        const myPriceLine = {
+          price: pos.price,
+          color: '#3179F5',
+          lineWidth: 1,
+          lineStyle: 2, // LineStyle.Dashed
+          axisLabelVisible: true,
+          //title: 'S',
+        };   
+        let pl = cs.createPriceLine(myPriceLine);
+        nlines.push(pl)
+      }
+      setLines(nlines)
+    }
+  }, [positions])
+
 
 
   useEffect(() => {
@@ -84,7 +93,7 @@ function Chart({ohlcUrl, setPrice, width, height, defaultInterval, positions}) {
     setChart(chart1)
   }, []);
 
-console.log(chart)
+  //console.log(chart)
 
 
   return (
