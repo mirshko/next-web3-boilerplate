@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Modal, Button, Tabs, Input, Spin, notification, Divider } from "antd";
-import { UploadOutlined, DownloadOutlined, CheckCircleOutlined, HourglassOutlined, LoadingOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { Modal, Button, Tabs, Input, Spin, notification, Divider, Row, Col } from "antd";
+import { UploadOutlined, DownloadOutlined, CheckCircleOutlined, HourglassOutlined, LoadingOutlined, ExclamationCircleOutlined, ForkOutlined, FallOutlined, RiseOutlined } from "@ant-design/icons";
 import { ethers } from "ethers";
 import useLendingPoolContract from "../hooks/useLendingPoolContract";
 import useZapboxTR from "../hooks/useZapboxTR";
@@ -33,9 +33,15 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
   const zapboxTRContract = useZapboxTR()
   const tokenAmounts = useUnderlyingAmount(asset.address, vault)
   const underlyingAsset = useAssetData(tokenAmounts.amount0 > 0 ? vault.token0.address : vault.token1.address, vault.address, oracleAddress)
+  const otherAsset = useAssetData(tokenAmounts.amount0 > 0 ? vault.token1.address : vault.token0.address, vault.address, oracleAddress)
   const assetContract = useTokenContract(asset.address)
   const roeAssetContract = useTokenContract(asset.roeAddress)
   const tokenContract = useTokenContract(underlyingAsset.address)
+
+  const upperAsset = vault.name.split('-')[0] == underlyingAsset.name ? otherAsset : underlyingAsset
+  const lowerAsset = vault.name.split('-')[0] == underlyingAsset.name ? underlyingAsset : otherAsset
+  const apr24h = ( parseFloat(asset.feeApr) + parseFloat(asset.supplyApr) ) / 365
+  console.log( parseFloat(asset.feeApr) ,parseFloat(asset.supplyApr) , parseFloat(asset.feeApr) + parseFloat(asset.supplyApr))
 
 
   const goTxGo = async (action) => {
@@ -134,9 +140,44 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
       <div className="formDiv">
         {contextHolder}
         
-        <img src="/dualticker.png" alt="explanation"/>
-        
-        <div style={{ borderColor: 'grey', borderWidth: 1, }}>
+        <div style={{ border: '1px solid rgba(200,200,200,0.1)', margin: '12px 0px', borderRadius: 2}}>
+          <Row>
+            <Col span={6} >
+              <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'start', justifyContent: 'center', paddingLeft: 32}}>
+                <span style={{ fontSize: 16  }}>Entry: {asset.price}</span>
+                <span style={{ fontSize: 'smaller'}}>Hold 24 hours</span>
+              </div>
+            </Col>
+            <Col span={18}>
+              <div style={{ height: '100%'}}>
+                <div style={{ padding: 16, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                  <RiseOutlined style={{fontSize: 24, marginRight: 16, marginBottom: -32}} />
+                  <img src={ upperAsset.icon } height={32} width={32} />
+                  <div style={{ marginLeft: 24, display: 'flex', flexDirection: 'column', width: 130}} >
+                    <span style={{ fontSize: 'smaller', fontWeight: 'bold'}}>Receive</span>
+                    {(asset.price * (100+apr24h) / 100).toFixed(4)} {upperAsset.name}
+                  </div>
+                  <div style={{ marginLeft: 24, display: 'flex', flexDirection: 'column'}} >
+                    <span style={{ fontSize: 'smaller', fontWeight: 'bold'}}>Profit</span>
+                    {(asset.price * (apr24h) / 100).toFixed(4)} {upperAsset.name}
+                  </div>
+                </div>
+                <Divider style={{margin: 0, marginLeft: 48, minWidth: '80%', width: '85%'}} />
+                <div style={{ padding: 16, width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                  <FallOutlined style={{fontSize: 24, marginRight: 16, marginTop: -32}} />
+                  <img src={lowerAsset.icon} height={32} width={32} />
+                  <div style={{ marginLeft: 24, display: 'flex', flexDirection: 'column', width: 130}} >
+                    <span style={{ fontSize: 'smaller', fontWeight: 'bold'}}>Receive</span>
+                    {(1 * (100+apr24h) / 100 ).toFixed(4)} {lowerAsset.name }
+                  </div>
+                  <div style={{ marginLeft: 24, display: 'flex', flexDirection: 'column'}} >
+                    <span style={{ fontSize: 'smaller', fontWeight: 'bold'}}>Profit</span>
+                    {(1 * (apr24h) / 100 ).toFixed(4)} {lowerAsset.name}
+                  </div>
+                </div>
+              </div>
+            </Col>
+          </Row>
         </div>
         
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10}}>

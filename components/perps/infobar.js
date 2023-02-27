@@ -12,7 +12,6 @@ const Infobar = ({vaults, current, selectVault, price }) => {
   useEffect( () => {
     // get candles from geckoterminal
     async function getData() {
-      console.log('why?', ohlcUrl)
       try {
         let apiUrl = ohlcUrl + '1d'
         const data = await axios.get(apiUrl, {withCredentials: false,})
