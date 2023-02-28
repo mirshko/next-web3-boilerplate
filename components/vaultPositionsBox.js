@@ -64,7 +64,7 @@ const VaultPositionsBox = ({assetAddress, vault, hideEmpty}) => {
     <Card onClick={()=>{}} bodyStyle={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
         <img src={asset.icon} height={24} alt={asset.name.toLowerCase()} />
-        <span style={{ fontSize: 'large', fontWeight: 'bold', marginLeft: 8 }}>{asset.name}</span>
+        <span style={{ fontSize: 'large', fontWeight: 'bold', marginLeft: 8 }}>{asset.name == 'WETH' ? 'ETH' : asset.name}</span>
         <br/>      <br/>
       </div>
       <Tooltip placement="right" title={<>

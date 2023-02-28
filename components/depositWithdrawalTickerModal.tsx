@@ -224,7 +224,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
         
         { runningTx > 0 ? <><Divider orientation="left">Execute</Divider>
           <div style={{ display: (useEth? 'none' : 'block' )}}>
-            Approve Zap contract
+            Approve
             <GetIcon index={1} />
           </div>
           <div>

@@ -32,7 +32,7 @@ const NavMenu = ({bgColor}) =>  {
     { label: 'Protected Perps™', key: '/', icon: <SwapOutlined /> },
     { label: 'Farm', key: '/farm', icon: <DashboardOutlined /> },
     //{ label: 'Protected Farming™', key: '/protectedyield', icon: <DollarOutlined /> },
-    { label: 'Staking', key: '/', icon: <BankOutlined />, disabled: true },
+    { label: 'Staking', key: '/staking', icon: <BankOutlined />, disabled: true },
   ]
   
   return (
