@@ -9,10 +9,6 @@ const Farm = ({}) => {
   let vaults = ADDRESSES['lendingPools'];
   
   return (<div style={{ minWidth: 1200 }}>
-    <Typography.Title>
-      Farm
-    </Typography.Title>
-    
     {
       vaults.map((vault) => {return <VaultPositions vault={vault} key={vault.name} />})
     }

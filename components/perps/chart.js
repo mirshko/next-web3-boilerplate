@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createChart } from "lightweight-charts";
-import { theme, Card, Radio } from 'antd'
+import { theme, Card, Radio, Spin } from 'antd'
 const { useToken } = theme;
 
 const candlesColors = {
@@ -18,28 +18,27 @@ function Chart({setPrice, width, height, interval, setInterval, positions, candl
   const [ cs, setCs ] = useState()
   const [drawn, setDrawn] = useState([])
   const [lines, setLines] = useState([])
+  const [isSpinning, setSpinning] = useState(true)
   const { token } = useToken();
   const ref = React.useRef();
 
 
   useEffect( () => {
-
     // get candles from geckoterminal
     async function displayData() {
       try {
         var mycs = cs ?? chart.addCandlestickSeries(candlesColors);
         mycs.setData(candles);
         setCs(mycs)
+        setSpinning(false)
       } catch(e) {console.log(e)}
     }
-    if (chart && candles) displayData()
+    if (chart && candles && candles.length > 0) displayData()
   }, [chart, candles])
 
 
   useEffect(()=>{
     if (chart && cs){
-      console.log('positert', positions, cs)
-      
       let nlines = []
       // remove previous lines
       for (let ln of lines){
@@ -105,6 +104,7 @@ function Chart({setPrice, width, height, interval, setInterval, positions, candl
       <Radio.Button value="1h">1h</Radio.Button>
       <Radio.Button value="4h">4h</Radio.Button>
       <Radio.Button value="1d">1d</Radio.Button>
+      { isSpinning? <Spin style={{marginLeft: 24, marginBottom: 6}}/> : null }
     </Radio.Group>
     <div ref={ref} style={{marginTop: '-20px'}} />
     </Card>

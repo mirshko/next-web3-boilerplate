@@ -1,7 +1,8 @@
 import { useWeb3React } from "@web3-react/core";
 import { useState, useEffect } from 'react';
-import { Card, Row, Col, Typography, Table, Checkbox, Button, Tooltip } from 'antd';
-const { Column, ColumnGroup } = Table;
+import { Card, Row, Col, Typography, Table, Checkbox, Button, Popover, Divider } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons'
+
 import useAddresses from '../hooks/useAddresses';
 import useAssetData from '../hooks/useAssetData';
 import DepositWithdrawalModal from "./depositWithdrawalModal"
@@ -9,6 +10,7 @@ import DepositWithdrawalTickerModal from "./depositWithdrawalTickerModal"
 import CloseDebt from './closeDebt';
 import CloseTrPositionButton from './closeTrPositionButton'
 import {ethers} from 'ethers'
+
 
 /**
   Displays user positions in a vault
@@ -21,81 +23,75 @@ const VaultPositionsBox = ({assetAddress, vault, hideEmpty}) => {
   const [ assets, setAssets ] = useState([])
   const ADDRESSES = useAddresses();
   const asset = useAssetData(assetAddress, vault.address)
+  const [isModalVisible, setModalVisible] = useState()
+  const [highlightBox, setHighlightBox ] = useState(false)
 
   if (hideEmpty && asset.deposited == 0 && asset.debt == 0  ) return (<></>);
-  const columns = [
-    { key: 'asset', title: 'Position', dataIndex: 'name' },
-    { key: 'deposited', title: 'Balance', dataIndex: 'deposited' },
-    { key: 'debt', title: 'Debt', dataIndex: 'debt' },
-    { key: 'pnl', title: 'PnL', dataIndex: 'pnl' },
-    { key: "action", dataIndex: "action", title: "Action" }
-  ]
+
   
-  if (asset.type == 'single') asset.depositedAction = <DepositWithdrawalModal asset={asset} size="small" lendingPool={vault} />
-  else if (asset.type == 'lpv2') {
-    asset.depositedAction = <>
-        <Button size="small" type="primary" href={'/ranger/'+vault.address}>Farm {vault.name}</Button>&nbsp;
-        <CloseDebt asset={asset} type='closeV2' vault={vault} />
-      </>
-    asset.debtAction = <>
-        <Button type="primary" size="small" href={'/cds?vault='+vault.address+'&asset='+asset.address}>Buy CDS</Button>&nbsp;
-        <CloseDebt asset={asset} type="closeV2longg"  vault={vault} />
-      </>
-  }
-  else if (asset.type == 'ranger'){
-    asset.depositedAction = <>
-        <Button size="small" type="primary" href={'/ranger/'+vault.address}>Farm {vault.name}</Button>&nbsp;
-        <CloseDebt asset={asset} type='closeRange' vault={vault} />
-      </>
-    asset.debtAction = <>
-        <CloseTrPositionButton address={assetAddress} vault={vault} opmAddress={ADDRESSES['optionsPositionManager']} />
-      </>
-  }
-  else if (asset.type == 'ticker'){
-    asset.depositedAction = <DepositWithdrawalTickerModal asset={asset} size="small" vault={vault} opmAddress={ADDRESSES['optionsPositionManager']} />
-    asset.debtAction = <>
-        <Button size="small" type="primary" href={'/protectedperps/'}>Protected Perps</Button>&nbsp;
-        <CloseTrPositionButton address={assetAddress} vault={vault} opmAddress={ADDRESSES['optionsPositionManager']} />
-      </>
+  const toReadable = (value) => {
+    if ( value == 0 ) return 0;
+    if ( value < 1000) return parseFloat(value).toFixed(0)
+    if ( value < 1e6) return (value/1000).toFixed(0) + 'k'
+    if ( value < 1e9) return (value/1000).toFixed(0) + 'M'
   }
 
   return (
-    <Col md={6} xs={24} style={{ marginBottom: 24}}>
-    <Card onClick={()=>{}} bodyStyle={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-        <img src={asset.icon} height={24} alt={asset.name.toLowerCase()} />
-        <span style={{ fontSize: 'large', fontWeight: 'bold', marginLeft: 8 }}>{asset.name == 'WETH' ? 'ETH' : asset.name}</span>
-        <br/>      <br/>
-      </div>
-      <Tooltip placement="right" title={<>
-          Borrow APR: {asset.supplyApr}%<br/>
-          { asset.feeApr > 0 ? <>V3 Fees: {asset.feeApr}%</> : null }
-        </>}>
-        <div style={{ width: '100%', backgroundColor: '#444', display: 'flex', justifyContent: 'center', padding: 8, marginTop: 8, marginBottom: 8}}>
-          <span style={{
-            textDecoration: 'underline #ccc dotted', fontSize: 'large'
-          }}>
-            APR {(parseFloat(asset.supplyApr) + parseFloat(asset.feeApr)).toFixed(2)} %
-          </span>
+    <Col md={6} xs={24} style={{ marginBottom: 24, cursor: 'pointer'}} onMouseOver={() => {setHighlightBox(true)}} onMouseOut={()=>{setHighlightBox(false)}} >
+      { asset.type == 'ticker' ? 
+        <DepositWithdrawalTickerModal asset={asset} vault={vault} opmAddress={ADDRESSES['optionsPositionManager']} setVisible={setModalVisible} isVisible={isModalVisible} />
+        : null
+      }
+      { asset.type == 'single' ? 
+        <DepositWithdrawalModal asset={asset} vault={vault} setVisible={setModalVisible} isVisible={isModalVisible} />
+        : null
+      }
+    <Card 
+      onClick={()=>{setModalVisible(true)}} 
+      bodyStyle={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 0}}
+      style={{ borderRadius: 18, maxWidth: 260, borderWidth: 10 }}
+    >
+      <div style={{ padding: 24, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', gap: 24 }}>
+      
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 25}}>
+          <img src={asset.icon} height={20} alt={asset.name.toLowerCase()} />
+          <span style={{ fontSize: 'larger', fontWeight: 'bold', marginLeft: 8 }}>{asset.name == 'WETH' ? 'ETH' : asset.name}</span>
         </div>
-      </Tooltip>
-  
-      <Row style={{ width: '100%', marginBottom: 24}}>
-        <Col span={12}>
-          <span style={{ fontSize: 'smaller', fontWeight: 'bold'}}>TLV</span>
-          <br/>
-          ${asset.tlv == 0 ? <>0</> : parseFloat(asset.tlv * asset.oraclePrice).toFixed(0)}
-        </Col>
-        <Col span={12}>
-          <span style={{ fontSize: 'smaller', fontWeight: 'bold'}}>My Assets</span>
-          <br/>
-          {asset.deposited == 0 ? <>0</> : parseFloat(asset.deposited).toFixed(6)}
-        </Col>
-      </Row>
+      
+        <Popover placement="right" title="APR" content={<div style={{ width: 200}}>
+            Borrowing Fees: <span style={{ float: 'right'}}>{asset.supplyApr} %</span><br/>
+            Token Incentives: <span style={{ float: 'right'}}>0.00 %</span><br/>
+            { asset.feeApr > 0 ? <>V3 Fees: <span style={{ float: 'right'}}>{asset.feeApr} %</span></> : null }
+          </div>}>
+          <div style={{ width: '100%', backgroundColor: '#444', display: 'flex', justifyContent: 'center', padding: 8, marginTop: 8, marginBottom: 8}}>
+            <span style={{ fontSize: 'large', marginRight: 8 }}>
+              APR {(parseFloat(asset.supplyApr) + parseFloat(asset.feeApr)).toFixed(2)} %
+            </span>
+            <QuestionCircleOutlined />
+          </div>
+        </Popover>
+        
+        <img src={asset.icon} height={56} alt={asset.name.toLowerCase()}  />
+        
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'space-evenly'}}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 64 }}>
+            <span style={{ fontSize: 'smaller', fontWeight: 'bold', color: 'grey'}}>TLV</span>
+            ${asset.tlv == 0 ? <>0</> : toReadable(asset.tlv) }
+          </div>
+          <Divider type="vertical" style={{ height: 28, marginTop: 6 }} />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 64 }}>
+            <span style={{ fontSize: 'smaller', fontWeight: 'bold', color: 'grey'}}>My Assets</span>
+            ${asset.deposited == 0 ? <>0</> : toReadable(asset.depositedValue)}
+          </div>
+        </div>
+        
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 25, transform: 'rotate(180deg)'}}>
+          <img src={asset.icon} height={20} alt={asset.name.toLowerCase()} />
+          <span style={{ fontSize: 'larger', fontWeight: 'bold', marginLeft: 8 }}>{asset.name == 'WETH' ? 'ETH' : asset.name}</span>
+        </div>
 
-
-      <>{asset.depositedAction}</>
-      </Card>
+      </div>
+    </Card>
   </Col>)
   
 }

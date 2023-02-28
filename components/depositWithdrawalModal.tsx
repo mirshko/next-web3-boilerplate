@@ -10,8 +10,7 @@ import useWethGateway from '../hooks/useWethGateway'
 import { useWeb3React } from "@web3-react/core";
 import TxIcon from './txIcon'
 
-const DepositWithdrawalModal = ({asset, lendingPool, size}) =>  {
-  const [visible, setVisible] = useState(false);
+const DepositWithdrawalModal = ({asset, vault, size, isVisible, setVisible}) =>  {
   const [inputValue, setInputValue] = useState("0");
   const [lpAllowance, setLpAllowance] = useState(ethers.constants.Zero);
   const [isSpinning, setSpinning] = useState(false);
@@ -28,13 +27,13 @@ const DepositWithdrawalModal = ({asset, lendingPool, size}) =>  {
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, title, message) => { api[type]({message: title, description: message }); }
   
-  const lendingPoolContract = useLendingPoolContract(lendingPool.address )
+  const lendingPoolContract = useLendingPoolContract(vault.address )
   const tokenContract = useTokenContract(asset.address)
   const roeTokenContract = useTokenContract(asset.roeAddress)
   const wethGateway = useWethGateway()
   
-  const openModal = () => {setRunningTx(0); setVisible(true)}
-	const closeModal = () => {setVisible(false)}
+  const openModal = () => { setVisible(true) }
+	const closeModal = () => { setRunningTx(0); setVisible(false)}
   
   var nativeToken = false;
   if ( asset.name == 'ETH' && (chainId == 1 || chainId == 42161 )) nativeToken = true;
@@ -49,14 +48,14 @@ const DepositWithdrawalModal = ({asset, lendingPool, size}) =>  {
     try {
       if (action =="Supply"){
         if (useEth){
-          let result = await wethGateway.depositETH(lendingPool.address, account, 0, {value: ethers.utils.parseUnits(inputValue, 18)})
+          let result = await wethGateway.depositETH(vault.address, account, 0, {value: ethers.utils.parseUnits(inputValue, 18)})
         } 
         else {
           setApproveWhat('the lending pool')
-          let result = await tokenContract.allowance(account, lendingPool.address)
+          let result = await tokenContract.allowance(account, vault.address)
           if ( result.lt(ethers.utils.parseUnits(inputValue, asset.decimals)) ){
             setRunningTx(1)
-            result = await tokenContract.approve(lendingPool.address, ethers.constants.MaxUint256)
+            result = await tokenContract.approve(vault.address, ethers.constants.MaxUint256)
           }
           setRunningTx(2)
           result = await lendingPoolContract.deposit(asset.address, ethers.utils.parseUnits(inputValue, asset.decimals), account, 0)
@@ -72,10 +71,10 @@ const DepositWithdrawalModal = ({asset, lendingPool, size}) =>  {
           let result = await roeTokenContract.allowance(account, wethGateway.address)
           if ( result.lt(ethers.utils.parseUnits(inputValue, asset.decimals)) ){
             setRunningTx(1)
-            result = await roeTokenContract.approve(wethGateway.address, ethers.constants.MaxUint256)
+            result = await roeTokenContract.approve(wethGateway.address, ethers.constants.MaxUint256, {confirms: 1})
           }
           setRunningTx(2)
-          wethGateway.withdrawETH(lendingPool.address, ethers.utils.parseUnits(inputValue, asset.decimals), account)
+          wethGateway.withdrawETH(vault.address, ethers.utils.parseUnits(inputValue, asset.decimals), account)
         }
         else {
           let result = await lendingPoolContract.withdraw(asset.address, ethers.utils.parseUnits(inputValue, asset.decimals), account)
@@ -86,6 +85,7 @@ const DepositWithdrawalModal = ({asset, lendingPool, size}) =>  {
       }
     }
     catch(e){
+      setErrorTx(true); 
       console.log(e.message);
       openNotification("error", e.code, e.message)
     }
@@ -99,10 +99,7 @@ const DepositWithdrawalModal = ({asset, lendingPool, size}) =>  {
   
   return (
     <>
-      <Button type="primary" onClick={openModal} size={size ?? 'default'}>
-        Deposit / Withdraw
-      </Button>
-      <Modal open={visible} onOk={closeModal} onCancel={closeModal}
+      <Modal open={isVisible} onOk={closeModal} onCancel={closeModal}
         width={400}
         footer={null}
       >

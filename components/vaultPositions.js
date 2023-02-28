@@ -5,6 +5,7 @@ import useAddresses from '../hooks/useAddresses';
 import getUserLendingPoolData from '../hooks/getUserLendingPoolData';
 import VaultPositionsBox from "./vaultPositionsBox"
 import {ethers} from 'ethers'
+import axios from "axios"
 
 
 /**
@@ -17,6 +18,8 @@ import {ethers} from 'ethers'
 const VaultPositions = ({vault}) => {
   const [ assets, setAssets ] = useState([])
   const [ hideEmpty, setHideEmpty ] = useState(false);
+  const [ oorVisible, setOorVisible ] = useState(false)
+  const [ price, setPrice] = useState(0)
   const { chainId } = useWeb3React();
   const ADDRESSES = useAddresses();
   const onChange = (e) => { setHideEmpty(!hideEmpty); };
@@ -35,19 +38,39 @@ const VaultPositions = ({vault}) => {
     { key: "action", dataIndex: "action", title: "Action" }
   ]
   
+  useEffect( () => {
+    const getPrice = async () => {
+      try {
+        var tokenName = vault.name.split('-')[0]
+        if (tokenName == 'WETH') tokenName = 'ETH'
+        const url = "https://api.binance.com/api/v3/ticker/price?symbol="+tokenName+"USDT"
+        const data = await axios.get(url)
+        setPrice(parseFloat(data.data.price))
+      }
+      catch(e){console.log('getPrice error', e)}
+    }
+    getPrice()
+  }, [])
+  
   var assetsList = [
     vault.token0.address,
     vault.token1.address,
     //vault.lpToken.address,
   ]
   //for (let r of vault.ranges) assetsList.push(r['address'])
-  for (let r of vault.ticks) assetsList.push(r['address'])
+  for (let r of vault.ticks) {
+    console.log(oorVisible, r, parseFloat(r.price), price, Math.abs(price - parseFloat(r.price)), oorVisible || price == 0 || Math.abs(price - r.price) < 100)
+    if ( oorVisible || price == 0 || Math.abs(price - parseFloat(r.price)) < 100 ) assetsList.push(r['address'])
+  }
   
+  var orderedList = []
+
   return (<div style={{width: '100%'}}>
     <Typography.Title level={2}>Vault {vault.name}</Typography.Title>
     <Typography.Text>
       Assets: ${parseFloat(availableCollateral).toFixed(2)} - Debt: ${parseFloat(totalDebt).toFixed(2)} - Health Factor: {healthFactor > 100 ? <>&infin;</> : parseFloat(healthFactor).toFixed(3)}
-      <Checkbox style={{ float: 'right', marginBottom: 4 }} defaultChecked={hideEmpty}  onChange={onChange}>Hide empty positions</Checkbox>
+      <Checkbox style={{ float: 'right', marginBottom: 4, marginRight: 24 }} defaultChecked={oorVisible}  onChange={()=>{setOorVisible(!oorVisible)}}>Show Out of Range Vaults</Checkbox>
+      <Checkbox style={{ float: 'right', marginBottom: 4, marginRight: 24 }} defaultChecked={hideEmpty}  onChange={onChange}>Hide empty positions</Checkbox>
     </Typography.Text>
     
     <Row gutter={24} style={{ width: '100%', marginTop: 12}}>

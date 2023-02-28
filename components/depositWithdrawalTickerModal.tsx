@@ -14,8 +14,7 @@ import useTheme from "../hooks/useTheme"
 import useETHBalance from '../hooks/useETHBalance'
 
 
-const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
-  const [visible, setVisible] = useState(false);
+const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisible, setVisible}) =>  {
   const [inputValue, setInputValue] = useState("0");
   const [isSpinning, setSpinning] = useState(false);
   const [action, setAction] = useState('Supply')
@@ -29,8 +28,8 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
   const ethBalance = useETHBalance(account).data / 1e18
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, title, message) => { api[type]({message: title, description: message }); }
-  const openModal = () => {setRunningTx(0); setVisible(true)}
-	const closeModal = () => {setVisible(false)}
+  const openModal = () => {setVisible(true)}
+	const closeModal = () => {setRunningTx(0); setVisible(false)}
   
   const lendingPoolContract = useLendingPoolContract(vault.address)
   const zapboxTRContract = useZapboxTR()
@@ -133,10 +132,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
   
   return (
     <>
-      <Button type="primary" onClick={openModal} size={size ?? 'default'}>
-        Deposit / Withdraw
-      </Button>
-      <Modal open={visible} onOk={closeModal} onCancel={closeModal}
+      <Modal open={isVisible} onOk={closeModal} onCancel={closeModal}
         width={550}
         footer={null}
       >
