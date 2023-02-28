@@ -179,7 +179,7 @@
     "optionsPositionManager": "0xad03e39F01E12b85D77d20AdD04b6a4C4347dEC2",
     "longgPositionManager": "0x1056b5664341487679d5B68854249318693dc53D",
     "zapbox": "0xB90240106d7Fcff6566ab83299D90d81753eA19c",
-    "zapboxTR": "0xa17EF93429ab742a04A3B430Bb0aBf3c9e829dCb",
+    "zapboxTR": "0x7a7ad7d7a8Cf69bADA2E7c106d67Ee107d350fc8",
     "priceOracle": "0x8A4236F5eF6158546C34Bd7BC2908B8106Ab1Ea1",
     "lendingPools": [
       {

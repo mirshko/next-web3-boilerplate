@@ -195,6 +195,11 @@
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "wethAsEth",
+        "type": "bool"
       }
     ],
     "name": "zapOut",
@@ -229,6 +234,11 @@
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "wethAsEth",
+        "type": "bool"
       },
       {
         "components": [

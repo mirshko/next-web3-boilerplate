@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Modal, Button, Tabs, Input, Spin, notification, Divider, Row, Col } from "antd";
+import { Modal, Button, Tabs, Input, Spin, notification, Divider, Row, Col, Checkbox } from "antd";
 import { UploadOutlined, DownloadOutlined, CheckCircleOutlined, HourglassOutlined, LoadingOutlined, ExclamationCircleOutlined, ForkOutlined, FallOutlined, RiseOutlined } from "@ant-design/icons";
 import { ethers } from "ethers";
 import useLendingPoolContract from "../hooks/useLendingPoolContract";
@@ -11,6 +11,7 @@ import useOptionsPositionManager from "../hooks/useOptionsPositionManager";
 import useAssetData from "../hooks/useAssetData";
 import { useWeb3React } from "@web3-react/core";
 import useTheme from "../hooks/useTheme"
+import useETHBalance from '../hooks/useETHBalance'
 
 
 const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
@@ -20,10 +21,12 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
   const [action, setAction] = useState('Supply')
   const [runningTx, setRunningTx] = useState(0)
   const [errorTx, setErrorTx] = useState(false)
+  const [useEth, setUseEth] = useState(false)
   
   const theme = useTheme()
   const router = useRouter()
   const { account, chainId } = useWeb3React();
+  const ethBalance = useETHBalance(account).data / 1e18
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (type, title, message) => { api[type]({message: title, description: message }); }
   const openModal = () => {setRunningTx(0); setVisible(true)}
@@ -41,8 +44,6 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
   const upperAsset = vault.name.split('-')[0] == underlyingAsset.name ? otherAsset : underlyingAsset
   const lowerAsset = vault.name.split('-')[0] == underlyingAsset.name ? underlyingAsset : otherAsset
   const apr24h = ( parseFloat(asset.feeApr) + parseFloat(asset.supplyApr) ) / 365
-  console.log( parseFloat(asset.feeApr) ,parseFloat(asset.supplyApr) , parseFloat(asset.feeApr) + parseFloat(asset.supplyApr))
-
 
   const goTxGo = async (action) => {
     setRunningTx(1)
@@ -51,29 +52,46 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
 
     try {
       if (action =="Supply"){
-        let result = await tokenContract.allowance(account, zapboxTRContract.address)
-        if ( result.lt(ethers.utils.parseUnits(inputValue, underlyingAsset.decimals)) ){
-          setRunningTx(1)
-          result = await tokenContract.approve(zapboxTRContract.address, ethers.constants.MaxUint256)
+        if (useEth){
+          setRunningTx(2)
+          console.log(vault.poolId,
+            asset.address,
+            otherAsset.address,
+            0,
+            { value:  ethers.utils.parseUnits(inputValue, 18) })
+          let result = await zapboxTRContract.zapInETH(
+            vault.poolId,
+            asset.address,
+            otherAsset.address,
+            0,
+            { value:  ethers.utils.parseUnits(inputValue, 18) }
+          )
         }
-        setRunningTx(2)
-        console.log( vault.poolId, 
-          asset.address, 
-          tokenAmounts.amount0 > 0 ? ethers.utils.parseUnits(inputValue, vault.token0.decimals) : 0,
-          tokenAmounts.amount1 > 0 ? ethers.utils.parseUnits(inputValue, vault.token1.decimals) : 0, )
-        result = await zapboxTRContract.zapIn(
-          vault.poolId, 
-          asset.address, 
-          tokenAmounts.amount0 > 0 ? ethers.utils.parseUnits(inputValue, vault.token0.decimals) : 0,
-          tokenAmounts.amount1 > 0 ? ethers.utils.parseUnits(inputValue, vault.token1.decimals) : 0,
-        )
+        else {
+          let result = await tokenContract.allowance(account, zapboxTRContract.address)
+          if ( result.lt(ethers.utils.parseUnits(inputValue, underlyingAsset.decimals)) ){
+            setRunningTx(1)
+            result = await tokenContract.approve(zapboxTRContract.address, ethers.constants.MaxUint256)
+          }
+          setRunningTx(2)
+          console.log( vault.poolId, 
+            asset.address, 
+            tokenAmounts.amount0 > 0 ? ethers.utils.parseUnits(inputValue, vault.token0.decimals) : 0,
+            tokenAmounts.amount1 > 0 ? ethers.utils.parseUnits(inputValue, vault.token1.decimals) : 0, )
+          result = await zapboxTRContract.zapIn(
+            vault.poolId, 
+            asset.address, 
+            tokenAmounts.amount0 > 0 ? ethers.utils.parseUnits(inputValue, vault.token0.decimals) : 0,
+            tokenAmounts.amount1 > 0 ? ethers.utils.parseUnits(inputValue, vault.token1.decimals) : 0,
+          )
+        }
         openNotification("success", "Tx Mined", "Assets Successfully Deposited")
         setRunningTx(3)
         //closeModal()
       }
       else if (action == "Withdraw") {    
         let result = await roeAssetContract.allowance(account, zapboxTRContract.address)
-        console.log(result, ethers.utils.parseUnits(inputValue, await roeAssetContract.decimals()), result.lt(ethers.utils.parseUnits(inputValue, await roeAssetContract.decimals())) )
+
         if ( result.lt(ethers.utils.parseUnits(inputValue, await roeAssetContract.decimals())) ){
           setRunningTx(1)
           result = await roeAssetContract.approve(zapboxTRContract.address, ethers.constants.MaxUint256)
@@ -82,7 +100,8 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
         result = await zapboxTRContract.zapOut(
           vault.poolId, 
           asset.address, 
-          ethers.utils.parseUnits(inputValue, asset.decimals)
+          ethers.utils.parseUnits(inputValue, asset.decimals),
+          useEth,
         )
         openNotification("success", "Tx Mined", "Assets Successfully Withdrawn")
         setRunningTx(3)
@@ -100,7 +119,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
   
   
   var actionComponent ;
-  if (action == 'Supply' ) actionComponent = "Supply "+underlyingAsset.name+" to "+asset.name;
+  if (action == 'Supply' ) actionComponent = "Supply "+(useEth && underlyingAsset.name == 'WETH' ? 'ETH': underlyingAsset.name)+" to "+asset.name;
   else if (action =="Withdraw") actionComponent = "Withdraw "+underlyingAsset.name+" from "+asset.name;
   var assetBal = action == "Withdraw" ? asset.deposited : underlyingAsset.wallet;
   
@@ -118,7 +137,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
         Deposit / Withdraw
       </Button>
       <Modal open={visible} onOk={closeModal} onCancel={closeModal}
-        width={620}
+        width={550}
         footer={null}
       >
         <Tabs 
@@ -145,7 +164,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
             <Col span={6} >
               <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'start', justifyContent: 'center', paddingLeft: 32}}>
                 <span style={{ fontSize: 16  }}>Entry: {asset.price}</span>
-                <span style={{ fontSize: 'smaller'}}>Hold 24 hours</span>
+                <span style={{ fontSize: 'smaller', fontWeight: 'bold'}}>Hold 24 hours</span>
               </div>
             </Col>
             <Col span={18}>
@@ -184,25 +203,27 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress}) =>  {
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10}}>
           <span>Amount</span>
-          <span style={{ cursor: "pointer"}} onClick={()=>{setInputValue(assetBal)}} >Wallet: {assetBal} {action == "Supply" ? underlyingAsset.name : asset.name}</span>
+          <span style={{ cursor: "pointer"}} onClick={()=>{setInputValue(assetBal)}} >Wallet: {parseFloat(useEth? ethBalance : assetBal).toFixed(5)} {action == "Supply" ? (useEth && underlyingAsset.name == 'WETH' ? 'ETH': underlyingAsset.name) : asset.name}</span>
         </div>
         <Input type="number" style={{ width: '100%', marginBottom: 20}} min={0} max={assetBal} onChange={(e)=> setInputValue(e.target.value)} 
           key='inputamount'
           value={inputValue}
-          suffix={<><img src={action == "Supply" ? underlyingAsset.icon : asset.icon} width={18} alt="tokenIcon" />&nbsp;{action == "Supply" ? underlyingAsset.name : asset.name}</>}
+          suffix={<><img src={action == "Supply" ? underlyingAsset.icon : asset.icon} width={18} alt="tokenIcon" />&nbsp;{action == "Supply" ? (useEth && underlyingAsset.name == 'WETH' ? 'ETH': underlyingAsset.name) : asset.name}</>}
         />
         
         { action == 'Withdraw' ?
-          <>Underlying: {inputValue * (tokenAmounts.amount0 > 0 ? tokenAmounts.amount0 : tokenAmounts.amount1)} {underlyingAsset.name}</>
+          <div style={{marginBottom: 12}}>Underlying: {inputValue * (tokenAmounts.amount0 > 0 ? tokenAmounts.amount0 : tokenAmounts.amount1)} {underlyingAsset.name}</div>
           : null
         }
         
-        <Button type={isSpinning ? "default":"primary"} style={{width: '100%', marginTop: 12}} onClick={() => goTxGo(action)}>
+        { underlyingAsset.name == 'WETH' ? <Checkbox onChange={()=>{ setUseEth(!useEth)}} checked={!useEth} >Use Wrapped ETH</Checkbox> : null }
+        
+        <Button type={isSpinning ? "default":"primary"} style={{width: '100%', marginTop: 12}} onClick={() => goTxGo(action)} disabled={isSpinning}>
           { isSpinning ? <Spin /> : <>{actionComponent}</> }
         </Button>
         
         { runningTx > 0 ? <><Divider orientation="left">Execute</Divider>
-          <div>
+          <div style={{ display: (useEth? 'none' : 'block' )}}>
             Approve Zap contract
             <GetIcon index={1} />
           </div>

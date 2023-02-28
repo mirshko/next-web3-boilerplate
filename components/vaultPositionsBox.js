@@ -68,7 +68,7 @@ const VaultPositionsBox = ({assetAddress, vault, hideEmpty}) => {
         <br/>      <br/>
       </div>
       <Tooltip placement="right" title={<>
-          ROE APR: {asset.supplyApr}%<br/>
+          Borrow APR: {asset.supplyApr}%<br/>
           { asset.feeApr > 0 ? <>V3 Fees: {asset.feeApr}%</> : null }
         </>}>
         <div style={{ width: '100%', backgroundColor: '#444', display: 'flex', justifyContent: 'center', padding: 8, marginTop: 8, marginBottom: 8}}>
