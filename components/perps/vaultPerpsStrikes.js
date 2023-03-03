@@ -1,16 +1,19 @@
 import useAssetData from '../../hooks/useAssetData';
+import useTheme from '../../hooks/useTheme'
 
 const VaultPerpsStrikes = ({ address, vault, onClick, isSelected }) => {
   const asset = useAssetData(address, vault.address)
+  const theme = useTheme()
   
   var style = {
       cursor: 'pointer',
     }
-  /*if (isSelected) style = {
-    backgroundColor: 'rgba(255,255,255,0.2',
+  if (isSelected) style = {
+    //backgroundColor: 'rgba(255,255,255,0.2',
     padding: 4,
+    border: '1px solid '+theme.colorPrimary,
     ...style
-  }*/
+  }
 
   return (
     <div onClick={() => { onClick({price: asset.price, address: asset.address}); }}

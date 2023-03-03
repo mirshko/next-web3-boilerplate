@@ -6,6 +6,7 @@ import useUnderlyingAmount from "../../hooks/useUnderlyingAmount";
 import useOptionsPositionManager from "../../hooks/useOptionsPositionManager";
 import useLendingPoolContract from "../../hooks/useLendingPoolContract";
 import VaultPerpsStrikes from './vaultPerpsStrikes'
+import PayoutChart from './payoutChart'
 import {ethers} from 'ethers'
 import { useWeb3React } from "@web3-react/core";
 
@@ -52,38 +53,38 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
   }
   
   useEffect(()=>{
+    if (price == 0) return;
     for (let k of vault.ticks){
       if ( k.price < price){
         setLowerStrike({ price: k.price, address: k.address })
       }
       if ( k.price > price){
         setUpperStrike({ price: k.price, address: k.address });
-        setStrike({ price: k.price, address: k.address });
+        if (!strike.price) setStrike({ price: k.price, address: k.address })
         break;
       }
     }
-  }, [vault])
+  }, [JSON.stringify(vault), price])
     
 
   return (
     <div>
       <Button type={ direction == 'Long' ? "primary" : "default"} style={{width: '50%', textAlign: 'center'}} 
-        onClick={()=>{setDirection('Long'); setStrike(upperStrike)}}
+        onClick={()=>{setDirection('Long')}}
       ><strong>Long</strong></Button>
       <Button type={ direction == 'Short' ? "primary" : "default"} style={{width: '50%', textAlign: 'center'}}
-        onClick={()=>{setDirection('Short'); setStrike(lowerStrike)}}>
+        onClick={()=>{setDirection('Short')}}>
         <strong>Short</strong></Button>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 24 }}>
           <div>
             Strike-In<span style={{ float: 'right'}}>Hourly Funding</span>
           </div>
           <div>
-            { direction == 'Long' ?
-              <VaultPerpsStrikes key={strike.address} address={strike.address} vault={vault} onClick={setStrike} isSelected={true} />
-            : null }
-            { direction == "Short" ?
-              <VaultPerpsStrikes key={strike.address} address={strike.address} vault={vault} onClick={setStrike} isSelected={true} />
-            : null }
+          { price > 0 ? <>
+              <VaultPerpsStrikes key={upperStrike.address} address={upperStrike.address} vault={vault} onClick={setStrike} isSelected={strike.price==upperStrike.price} />
+              <VaultPerpsStrikes key={lowerStrike.address} address={lowerStrike.address} vault={vault} onClick={setStrike} isSelected={strike.price==lowerStrike.price} />
+          </> : <Spin style={{ width: '100%', margin: '0 auto'}}/> }
+         
           </div>
         <div style={{marginTop: 8}}>Max OI Available: <span style={{ float: 'right' }}>{parseFloat(maxOI).toFixed(5)} {tokenTraded}</span></div>
         <Input placeholder="Amount" suffix={tokenTraded} 
@@ -94,8 +95,11 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
         
         { isSpinning ?
           <Button type="default" style={{width: '100%'}} ><Spin /></Button>
-          : <Button type="primary" onClick={openPosition} disabled={!strike.price}>{!strike.price ? 'Pick a Strike-In' : 'Open '+direction}</Button>
+          : <Button type="primary" onClick={openPosition} disabled={!strike.price || isSpinning}>{!strike.price ? 'Pick a Strike-In' : 'Open '+direction}</Button>
         }
+        
+        <PayoutChart direction={direction} strike={strike.price} price={price} step={upperStrike.price-lowerStrike.price} />
+        
         <Divider />
         <span>Margin available: <span style={{ float: 'right'}}>${parseFloat(availableCollateral).toFixed(2)}</span></span>
         <Button href='/farm'>Add Margin</Button>

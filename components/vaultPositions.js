@@ -59,7 +59,6 @@ const VaultPositions = ({vault}) => {
   ]
   //for (let r of vault.ranges) assetsList.push(r['address'])
   for (let r of vault.ticks) {
-    console.log(oorVisible, r, parseFloat(r.price), price, Math.abs(price - parseFloat(r.price)), oorVisible || price == 0 || Math.abs(price - r.price) < 100)
     if ( oorVisible || price == 0 || Math.abs(price - parseFloat(r.price)) < 100 ) assetsList.push(r['address'])
   }
   

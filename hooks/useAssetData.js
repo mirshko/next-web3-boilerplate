@@ -50,7 +50,7 @@ export default function useAssetData(address, vaultAddress) {
   }
   if (asset.name && asset.type != 'ticker') asset.icon = "/icons/"+asset.name.toLowerCase()+".svg";
   const rangeData = useRangeStats(asset && asset.tokenId)
-  const feeApr = (rangeData.history_24h && rangeData.history_24h.length > 0) ? parseFloat(rangeData.history_24h[0].fee_apr).toFixed(2) : 0
+  const feeApr = (rangeData && rangeData.history_24h && rangeData.history_24h.length > 0) ? parseFloat(rangeData.history_24h[0].fee_apr).toFixed(2) : 0
   asset = { 
     supplyApr: supplyRate, 
     feeApr: feeApr,
@@ -79,6 +79,7 @@ export default function useAssetData(address, vaultAddress) {
   const assetContract = useTokenContract(address)
   const getAssetData = async () => {
     try {
+      if (!assetContract) return;
       var data = await assetContract.balanceOf(asset.roeAddress)
       setRoeAssetSupply(ethers.utils.formatUnits(data, asset.decimals))
     }
@@ -129,6 +130,5 @@ export default function useAssetData(address, vaultAddress) {
     asset.wallet = ethers.utils.formatUnits(data ?? 0, asset.decimals) ?? 0
   }
   asset.depositedValue = asset.deposited / asset.roeTotalSupply * asset.tlv
-  
   return asset;
 }

@@ -11,7 +11,7 @@ import useCandles from '../hooks/useCandles';
 // Display all user assets and positions in all ROE LPs
 const ProtectedPerps = () => {
   const [currentVault, selectVault ] = useState(0)
-  const [price, setPrice] = useState(1666.68);
+  const [price, setPrice] = useState(0);
   const [positions, setPositions ] = useState([])
   const [ interval, setInterval ] = useState('1h')
   const ADDRESSES = useAddresses();
