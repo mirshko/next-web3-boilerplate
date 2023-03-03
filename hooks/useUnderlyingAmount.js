@@ -27,7 +27,8 @@ export default function useUnderlyingAmount(rangeAddress, vault){
         data = { token0Amount: res[0] * supplyRatio, token1Amount: res[1] * supplyRatio }
       }
       else if (type == "v3" ){
-        var data = await ranger.getTokenAmounts(ethers.constants.WeiPerEther)
+        // changed from getTokenAmounts to getTokenAmountsExcludingFees to ignore potential non compounded fees
+        var data = await ranger.getTokenAmountsExcludingFees(ethers.constants.WeiPerEther)
       }
       tAmounts = {
         amount0: data ? ethers.utils.formatUnits(Math.round(data.token0Amount * 1e8 / oracleValue), vault.token0.decimals) : 0,
