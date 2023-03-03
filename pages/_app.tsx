@@ -9,12 +9,12 @@ import { ConfigProvider, theme } from 'antd';
 import "../styles/globals.css";
 
 function NextWeb3App({ Component, pageProps }: AppProps) {
-  
   const roetheme = {
       algorithm: theme.darkAlgorithm,
       token: {
         colorBgBase: '#222225',
         colorPrimary: '#FE4958', //;'#1666D3', 
+        colorBgContainer: `rgb(54, 54, 58, 0.3)`,
         borderRadius: 2,
         fontSizeHeading1: 30,
         fontSizeHeading2: 20,

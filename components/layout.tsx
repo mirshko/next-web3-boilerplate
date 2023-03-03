@@ -10,7 +10,9 @@ const MyLayout = ({ children }) =>  {
   const { token } = useToken();
   
   return (
-    <Layout style={{ display: 'flex', alignItems: 'center', minHeight: '100vh'}}>
+    <Layout style={{ display: 'flex', alignItems: 'center', minHeight: '100vh', 
+      backgroundImage: `url("/images/gradientpink.png")`
+      }}>
         <Layout.Header 
           style={{ 
             backgroundColor: token.colorBgBase, borderBottomWidth: 1, borderColor: 'red',
