@@ -22,9 +22,6 @@ Chart.register(
   Legend,
 );
 
-export 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
 const PayoutChart = ({direction, price, strike, step}) => {
   var steps = []
   
@@ -81,7 +78,6 @@ const PayoutChart = ({direction, price, strike, step}) => {
       },
     ],
   };
-  console.log(data)
   
   return <Line options={options} data={data} />;
 }
