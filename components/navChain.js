@@ -21,7 +21,7 @@ const NavChain = () => {
     {
       key: '42161',
       label: "Arbitrum",
-      icon: <img src="/icons/arbitrum.svg" height={16} width={16} />
+      icon: <img src="/icons/arbitrum.svg" height={16} width={16} alt="Arbitrum Logo" />
     },
     /*{
       key: '137',

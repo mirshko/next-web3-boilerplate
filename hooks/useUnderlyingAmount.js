@@ -5,9 +5,10 @@ import TR_ABI from "../contracts/TokenizableRange.json"
 import UniswapV2Pair_ABI from "../contracts/UniswapV2Pair.json"
 import { ethers } from "ethers";
 
-export default function useUnderlyingAmount(rangeAddress, vault, isTotalUnderlying){
-  // if (isTotalUnderlying): return all underlying, else return for 1e18
+export default function useUnderlyingAmount(rangeAddress, vault, isIncludingFees){
   const [tokenAmounts, setTokenAmounts] = useState({amount0: 0, amount1: 0})
+  const [tokenAmountsExcludingFees, setTokenAmountsExcludingFees] = useState({amount0: 0, amount1: 0})
+  const [totalSupply, setTotalSupply] = useState(0)
   
   var type = 'v3';
   if ( vault['lpToken'] && vault['lpToken'].address == rangeAddress ) type = "v2"
@@ -20,23 +21,29 @@ export default function useUnderlyingAmount(rangeAddress, vault, isTotalUnderlyi
     const getTokenAmounts = async () => {
       if(!ranger) return;
       
-      var tAmounts, data;
+      let tSupply = await ranger.totalSupply()
+      setTotalSupply(tSupply)
+      
+      var data, dataExcludingFees;
       var oracleValue = await oracle.getAssetPrice(rangeAddress)
       if (type=="v2"){
-        let supplyRatio = isTotalUnderlying ? 1 : 1e18 / (await ranger.totalSupply()) 
         let res = await ranger.getReserves();
-        data = { token0Amount: res[0] * supplyRatio, token1Amount: res[1] * supplyRatio }
+        data = {token0Amount: res[0], token1Amount: res[1]}
       }
-      else if (type == "v3" ){
+      else if (type == "v3"){
         // changed from getTokenAmounts to getTokenAmountsExcludingFees to ignore potential non compounded fees
-        data = await ranger.getTokenAmountsExcludingFees(isTotalUnderlying ? (await ranger.totalSupply()) : ethers.constants.WeiPerEther)
+        data = await ranger.getTokenAmounts(tSupply)
+        dataExcludingFees = await ranger.getTokenAmountsExcludingFees(tSupply)
       }
-
-      tAmounts = {
+      
+      setTokenAmounts({
         amount0: data ? ethers.utils.formatUnits(data.token0Amount, vault.token0.decimals) : 0,
         amount1: data ? ethers.utils.formatUnits(data.token1Amount, vault.token1.decimals) : 0,
-      }
-      setTokenAmounts(tAmounts)
+      })
+      setTokenAmountsExcludingFees({
+        amount0: dataExcludingFees ? ethers.utils.formatUnits(dataExcludingFees.token0Amount, vault.token0.decimals) : 0,
+        amount1: dataExcludingFees ? ethers.utils.formatUnits(dataExcludingFees.token1Amount, vault.token1.decimals) : 0,
+      })
     }
     try {
       getTokenAmounts()
@@ -44,5 +51,5 @@ export default function useUnderlyingAmount(rangeAddress, vault, isTotalUnderlyi
   }, [ranger])
 
 
-  return tokenAmounts;
+return {tokenAmounts, tokenAmountsExcludingFees, totalSupply};
 }

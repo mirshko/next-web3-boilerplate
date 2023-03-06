@@ -43,14 +43,14 @@ const VaultPositions = ({vault}) => {
       try {
         var tokenName = vault.name.split('-')[0]
         if (tokenName == 'WETH') tokenName = 'ETH'
-        const url = "https://api.binance.com/api/v3/ticker/price?symbol="+tokenName+"USDT"
+        const url = "https://api.binance.us/api/v3/ticker/price?symbol="+tokenName+"USDT"
         const data = await axios.get(url)
         setPrice(parseFloat(data.data.price))
       }
       catch(e){console.log('getPrice error', e)}
     }
     getPrice()
-  }, [])
+  })
   
   var assetsList = [
     vault.token0.address,

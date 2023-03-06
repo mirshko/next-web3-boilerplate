@@ -176,7 +176,7 @@
     "network": "Arbitrum",
     "roeRouter": "0x5430A027CC128c7fcC2208Fd78E56Aa0EBF083F2",
     "rangerPositionManager": "0x0Fc3995715E30d610FD42b6E54cA80C9d490bf27",
-    "optionsPositionManager": "0xad03e39F01E12b85D77d20AdD04b6a4C4347dEC2",
+    "optionsPositionManager": "0x57888E3a8b25314f2499d0DB26B0b17962B85B2a",
     "longgPositionManager": "0x1056b5664341487679d5B68854249318693dc53D",
     "zapbox": "0xB90240106d7Fcff6566ab83299D90d81753eA19c",
     "zapboxTR": "0x7a7ad7d7a8Cf69bADA2E7c106d67Ee107d350fc8",
@@ -185,7 +185,7 @@
     "lendingPools": [
       {
         "name": "WETH-USDC",
-        "ohlcUrl": "https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=",
+        "ohlcUrl": "https://api.binance.us/api/v3/klines?symbol=ETHUSDT&interval=",
         "address": "0x60b3f0C7709075776C38eC5812C8A1EF9fD522d7",
         "poolId": 0,
         "tlv": "95k",

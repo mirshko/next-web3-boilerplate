@@ -28,21 +28,30 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
   var healthFactor = ethers.utils.formatUnits(userAccountData.healthFactor ?? 0, 18)
   var availableCollateral = ethers.utils.formatUnits(userAccountData.availableBorrowsETH ?? 0, 8)
 
-  const tokenAmounts = useUnderlyingAmount(strike.address, vault)
+  const strikeAsset = useAssetData(strike.address)
+  const { tokenAmounts, totalSupply } = useUnderlyingAmount(strike.address, vault)
   let tokenTraded = tokenAmounts.amount0 == 0 ? vault.token1.name : vault.token0.name  ;
+
   let maxOI = tokenAmounts.amount0 == 0 ? tokenAmounts.amount1 : tokenAmounts.amount0;
 
   const openPosition = async () => {
     if (inputValue == 0) return;
     setSpinning(true)
     try {
-      let tickerAmount = inputValue / (parseFloat(tokenAmounts.amount0) || parseFloat(tokenAmounts.amount1) )  // whichever is non null
+      let tickerAmount = (inputValue / (parseFloat(tokenAmounts.amount0) || parseFloat(tokenAmounts.amount1) ) * totalSupply).toFixed(0)  // whichever is non null
+      console.log('tivdf', tickerAmount, tickerAmount.toString(), inputValue / (parseFloat(tokenAmounts.amount0) || parseFloat(tokenAmounts.amount1) ), totalSupply.toString())
       
       const abi = ethers.utils.defaultAbiCoder;
-      let params = abi.encode(["uint8", "uint", "address", "address[]"], [0, vault.poolId, account, [ethers.constants.AddressZero] ]);
+      let swapSource = ethers.constants.AddressZero;
+      // if buying ITM, need to swap
+      if ( (direction == "Long" && strike.price < price)  || (direction == "Short" && strike.price > price) ){
+        swapSource = ( tokenAmounts.amount0 == 0 ? vault.token1.address : vault.token0.address )
+      }
+      
+      let params = abi.encode(["uint8", "uint", "address", "address[]"], [0, vault.poolId, account, [swapSource] ]);
       // flashloan( receiver, tokens, amounts, modes[2 for open debt], onBehalfOf, calldata params, refcode)
-      console.log(opmAddress, [strike.address], [ethers.utils.parseUnits(tickerAmount.toString(), 18)], [2], account, params, 0)
-      let res = await lpContract.flashLoan(opmAddress, [strike.address], [ethers.utils.parseUnits(tickerAmount.toString(), 18)], [2], account, params, 0)
+      console.log(opmAddress, [strike.address], [tickerAmount], [2], account, params, 0)
+      let res = await lpContract.flashLoan(opmAddress, [strike.address], [tickerAmount], [2], account, params, 0)
       openNotification("success", "Tx Sent", "Tx mined")
     }
     catch(e){
@@ -64,9 +73,8 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
         break;
       }
     }
-  }, [JSON.stringify(vault), price])
-    
-
+  }, [JSON.stringify(vault), price, strike.price])
+  
   return (
     <div>
       <Button type={ direction == 'Long' ? "primary" : "default"} style={{width: '50%', textAlign: 'center'}} 
@@ -81,8 +89,9 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
           </div>
           <div>
           { price > 0 ? <>
-              <VaultPerpsStrikes key={upperStrike.address} address={upperStrike.address} vault={vault} onClick={setStrike} isSelected={strike.price==upperStrike.price} />
-              <VaultPerpsStrikes key={lowerStrike.address} address={lowerStrike.address} vault={vault} onClick={setStrike} isSelected={strike.price==lowerStrike.price} />
+            { upperStrike.address ?
+            <VaultPerpsStrikes key={upperStrike.address} address={upperStrike.address} vault={vault} onClick={setStrike} isSelected={strike.price==upperStrike.price} /> : null }
+              { lowerStrike.address ? <VaultPerpsStrikes key={lowerStrike.address} address={lowerStrike.address} vault={vault} onClick={setStrike} isSelected={strike.price==lowerStrike.price} /> : null }
           </> : <Spin style={{ width: '100%', margin: '0 auto'}}/> }
          
           </div>

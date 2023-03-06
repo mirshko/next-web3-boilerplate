@@ -33,9 +33,9 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
   
   const lendingPoolContract = useLendingPoolContract(vault.address)
   const zapboxTRContract = useZapboxTR()
-  const tokenAmounts = useUnderlyingAmount(asset.address, vault)
-  const underlyingAsset = useAssetData(tokenAmounts.amount0 > 0 ? vault.token0.address : vault.token1.address, vault.address, oracleAddress)
-  const otherAsset = useAssetData(tokenAmounts.amount0 > 0 ? vault.token1.address : vault.token0.address, vault.address, oracleAddress)
+  const { tokenAmounts, tokenAmountsExcludingFees, totalSupply } = useUnderlyingAmount(asset.address, vault)
+  const underlyingAsset = useAssetData(tokenAmountsExcludingFees.amount0 > 0 ? vault.token0.address : vault.token1.address, vault.address, oracleAddress)
+  const otherAsset = useAssetData(tokenAmountsExcludingFees.amount0 > 0 ? vault.token1.address : vault.token0.address, vault.address, oracleAddress)
   const assetContract = useTokenContract(asset.address)
   const roeAssetContract = useTokenContract(asset.roeAddress)
   const tokenContract = useTokenContract(underlyingAsset.address)
@@ -75,13 +75,13 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
           setRunningTx(2)
           console.log( vault.poolId, 
             asset.address, 
-            tokenAmounts.amount0 > 0 ? ethers.utils.parseUnits(inputValue, vault.token0.decimals) : 0,
-            tokenAmounts.amount1 > 0 ? ethers.utils.parseUnits(inputValue, vault.token1.decimals) : 0, )
+            tokenAmountsExcludingFees.amount0 > 0 ? ethers.utils.parseUnits(inputValue, vault.token0.decimals) : 0,
+            tokenAmountsExcludingFees.amount1 > 0 ? ethers.utils.parseUnits(inputValue, vault.token1.decimals).toString() : 0, )
           result = await zapboxTRContract.zapIn(
             vault.poolId, 
             asset.address, 
-            tokenAmounts.amount0 > 0 ? ethers.utils.parseUnits(inputValue, vault.token0.decimals) : 0,
-            tokenAmounts.amount1 > 0 ? ethers.utils.parseUnits(inputValue, vault.token1.decimals) : 0,
+            tokenAmountsExcludingFees.amount0 > 0 ? ethers.utils.parseUnits(inputValue, vault.token0.decimals) : 0,
+            tokenAmountsExcludingFees.amount1 > 0 ? ethers.utils.parseUnits(inputValue, vault.token1.decimals) : 0,
           )
         }
         openNotification("success", "Tx Mined", "Assets Successfully Deposited")
@@ -119,7 +119,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
   
   var actionComponent ;
   if (action == 'Supply' ) actionComponent = "Supply "+(useEth && underlyingAsset.name == 'WETH' ? 'ETH': underlyingAsset.name)+" to "+asset.name;
-  else if (action =="Withdraw") actionComponent = "Withdraw "+underlyingAsset.name+" from "+asset.name;
+  else if (action =="Withdraw") actionComponent = "Withdraw "+(useEth ? 'ETH' : underlyingAsset.name)+" from "+asset.name;
   var assetBal = action == "Withdraw" ? asset.deposited : underlyingAsset.wallet;
   
   
@@ -167,7 +167,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
               <div style={{ height: '100%'}}>
                 <div style={{ padding: 16, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                   <RiseOutlined style={{fontSize: 24, marginRight: 16, marginBottom: -32}} />
-                  <img src={ upperAsset.icon } height={32} width={32} />
+                  <img src={ upperAsset.icon } height={32} width={32} alt='Quote Asset' />
                   <div style={{ marginLeft: 24, display: 'flex', flexDirection: 'column', width: 130}} >
                     <span style={{ fontSize: 'smaller', fontWeight: 'bold'}}>Receive</span>
                     {(asset.price * (100+apr24h) / 100).toFixed(4)} {upperAsset.name}
@@ -180,7 +180,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
                 <Divider style={{margin: 0, marginLeft: 48, minWidth: '80%', width: '85%'}} />
                 <div style={{ padding: 16, width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                   <FallOutlined style={{fontSize: 24, marginRight: 16, marginTop: -32}} />
-                  <img src={lowerAsset.icon} height={32} width={32} />
+                  <img src={lowerAsset.icon} height={32} width={32}  alt='Base Asset'/>
                   <div style={{ marginLeft: 24, display: 'flex', flexDirection: 'column', width: 130}} >
                     <span style={{ fontSize: 'smaller', fontWeight: 'bold'}}>Receive</span>
                     {(1 * (100+apr24h) / 100 ).toFixed(4)} {lowerAsset.name }
@@ -199,7 +199,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10}}>
           <span>Amount</span>
-          <span style={{ cursor: "pointer"}} onClick={()=>{setInputValue(assetBal)}} >Wallet: {parseFloat(useEth? ethBalance : assetBal).toFixed(5)} {action == "Supply" ? (useEth && underlyingAsset.name == 'WETH' ? 'ETH': underlyingAsset.name) : asset.name}</span>
+          <span style={{ cursor: "pointer"}} onClick={()=>{setInputValue(assetBal)}} >Wallet: {parseFloat(useEth&&action=="Supply"? ethBalance : assetBal).toFixed(5)} {action == "Supply" ? (useEth && underlyingAsset.name == 'WETH' ? 'ETH': underlyingAsset.name) : asset.name}</span>
         </div>
         <Input type="number" style={{ width: '100%', marginBottom: 20}} min={0} max={assetBal} onChange={(e)=> setInputValue(e.target.value)} 
           key='inputamount'
@@ -208,7 +208,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
         />
         
         { action == 'Withdraw' ?
-          <div style={{marginBottom: 12}}>Underlying: {inputValue * (tokenAmounts.amount0 > 0 ? tokenAmounts.amount0 : tokenAmounts.amount1)} {underlyingAsset.name}</div>
+          <div style={{marginBottom: 12}}>Underlying: {inputValue * (tokenAmounts.amount0 > 0 ? tokenAmounts.amount0 : tokenAmounts.amount1) * 1e18 / totalSupply } {underlyingAsset.name}</div>
           : null
         }
         
@@ -219,7 +219,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
         </Button>
         
         { runningTx > 0 ? <><Divider orientation="left">Execute</Divider>
-          <div style={{ display: (useEth? 'none' : 'block' )}}>
+          <div style={{ display: (useEth&&action=='Supply'? 'none' : 'block' )}}>
             Approve
             <GetIcon index={1} />
           </div>

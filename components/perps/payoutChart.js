@@ -1,4 +1,4 @@
-import React from 'react';
+import useTheme from '../../hooks/useTheme'
 import annotationPlugin from 'chartjs-plugin-annotation';
 import {
   Chart,
@@ -23,6 +23,7 @@ Chart.register(
 );
 
 const PayoutChart = ({direction, price, strike, step}) => {
+  const theme = useTheme();
   var steps = []
   
   for (let k=-3+(strike<price?1:0); k<3+(strike<price?1:0); k++){
@@ -73,8 +74,8 @@ const PayoutChart = ({direction, price, strike, step}) => {
           else if ( direction == 'Short' && s < strike ) pnl += strike - s
           return pnl
         }),
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgba(254, 73, 88, 0.7)',
+        backgroundColor: 'rgba(255, 99, 132, 0)',
       },
     ],
   };
