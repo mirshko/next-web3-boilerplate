@@ -29,8 +29,8 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
   var availableCollateral = ethers.utils.formatUnits(userAccountData.availableBorrowsETH ?? 0, 8)
 
   const strikeAsset = useAssetData(strike.address)
-  const { tokenAmounts, totalSupply } = useUnderlyingAmount(strike.address, vault)
-  let tokenTraded = tokenAmounts.amount0 == 0 ? vault.token1.name : vault.token0.name  ;
+  const { tokenAmounts, tokenAmountsExcludingFees, totalSupply } = useUnderlyingAmount(strike.address, vault)
+  let tokenTraded = tokenAmountsExcludingFees.amount0 == 0 ? vault.token1.name : vault.token0.name  ;
 
   let maxOI = tokenAmounts.amount0 == 0 ? tokenAmounts.amount1 : tokenAmounts.amount0;
 
