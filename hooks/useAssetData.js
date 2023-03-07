@@ -83,7 +83,9 @@ export default function useAssetData(address, vaultAddress) {
       var data = await assetContract.balanceOf(asset.roeAddress)
       setRoeAssetSupply(ethers.utils.formatUnits(data, asset.decimals))
     }
-    catch(e){console.log('get asset data error', e)}
+    catch(e){
+      //console.log('get asset data error', e)
+    }
   }
   getAssetData()
 
@@ -93,7 +95,9 @@ export default function useAssetData(address, vaultAddress) {
     try {
       var data = await roeToken.totalSupply()
       setRoeTotalSupply( ethers.utils.formatUnits(data, asset.decimals) )
-    } catch(e){console.error}
+    } catch(e){
+      //console.error
+    }
   }
   getRoeSupply()
   
@@ -103,7 +107,9 @@ export default function useAssetData(address, vaultAddress) {
     try {
       var data = await debtContract.balanceOf(account)
       setDebt(ethers.utils.formatUnits(data, asset.decimals))
-    } catch(e) { console.log('Get debt error', e,debtContract, account )}
+    } catch(e) { 
+      //console.log('Get debt error', e,debtContract, account )
+    }
   }  
   getDebtAmount()
   
@@ -115,7 +121,9 @@ export default function useAssetData(address, vaultAddress) {
       var data = await lpContract.getReserveData(asset.address)
       setVariableRate( (data.currentVariableBorrowRate / 1e25).toFixed(2) )      
       setSupplyRate( (data.currentLiquidityRate / 1e25).toFixed(2) )      
-    } catch(e){console.log('Get variable rate', e, asset.address)}
+    } catch(e){
+      //console.log('Get variable rate', e, asset.address)
+    }
   }
   getVariableRate()
 

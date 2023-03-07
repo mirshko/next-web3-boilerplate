@@ -17,7 +17,13 @@ const ProtectedPerps = () => {
   const ADDRESSES = useAddresses();
   let vaults = ADDRESSES['lendingPools'];
   
-  let candles = useCandles( vaults[currentVault].ohlcUrl + interval )
+  let intervalBybit = interval
+  if (interval == '15m') intervalBybit = '15'
+  else if (interval == '1h') intervalBybit = '60'
+  else if (interval == '4h') intervalBybit = '240'
+  else if (interval == '1d' ) intervalBybit = 'D'
+  
+  let candles = useCandles( vaults[currentVault].ohlcUrl + intervalBybit )
 
   useEffect( () => {
     if (candles.length>0) setPrice( (parseFloat(candles[candles.length-1].close)).toFixed(2) )

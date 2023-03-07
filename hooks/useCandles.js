@@ -8,10 +8,15 @@ const useCandles = (url) => {
   
   useEffect(() => {
     const getData = async () => {
-      const data = await axios.get(url, {withCredentials: false,})
-      let can = []
-      for (let c of data.data ) can.push({time: c[0]/1000, open: c[1], high: c[2], low: c[3], close: c[4]})
-      setCandles(can)
+      try {
+        const data = await axios.get(url, {withCredentials: false,})
+        const candleData = data.data.result.list.reverse() // Bybit format, reverse order
+        let can = []
+        for (let c of candleData) can.push({time: c[0]/1000, open: c[1], high: c[2], low: c[3], close: c[4]})
+        setCandles(can)
+      } catch(e) {
+        console.log('Loading candles ', e)
+      }
     }
     
     

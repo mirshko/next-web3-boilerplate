@@ -45,6 +45,7 @@ const DepositWithdrawalModal = ({asset, vault, size, isVisible, setVisible}) => 
     setRunningTx(1)
     setSpinning(true)
     setErrorTx(false)
+    const delay = ms => new Promise(res => setTimeout(res, ms));
     try {
       if (action =="Supply"){
         if (useEth){
@@ -56,6 +57,7 @@ const DepositWithdrawalModal = ({asset, vault, size, isVisible, setVisible}) => 
           if ( result.lt(ethers.utils.parseUnits(inputValue, asset.decimals)) ){
             setRunningTx(1)
             result = await tokenContract.approve(vault.address, ethers.constants.MaxUint256)
+            await delay(5000)
           }
           setRunningTx(2)
           result = await lendingPoolContract.deposit(asset.address, ethers.utils.parseUnits(inputValue, asset.decimals), account, 0)
@@ -72,6 +74,7 @@ const DepositWithdrawalModal = ({asset, vault, size, isVisible, setVisible}) => 
           if ( result.lt(ethers.utils.parseUnits(inputValue, asset.decimals)) ){
             setRunningTx(1)
             result = await roeTokenContract.approve(wethGateway.address, ethers.constants.MaxUint256, {confirms: 1})
+            await delay(5000)
           }
           setRunningTx(2)
           wethGateway.withdrawETH(vault.address, ethers.utils.parseUnits(inputValue, asset.decimals), account)

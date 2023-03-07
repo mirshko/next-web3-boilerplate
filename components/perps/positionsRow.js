@@ -39,29 +39,29 @@ const PositionsRow = ({address, vault, price, addPosition }) => {
     if ( posEvent.token0Amount * token0.oraclePrice / 10**token0.decimals < posEvent.token1Amount * token1.oraclePrice / 10**token1.decimals )
       direction = "Short"
   }
-  // here we should get information about when the user opened the position
-  // maybe store the event in the browser, or look for the past event opening that position to see 
+  
+  const tdStyle = { paddingTop: 4, paddingBottom: 4 }
   
   return (
   <tr key={asset.address}>
-    <td>
+    <td style={tdStyle}>
       <div style={{display: 'flex', alignItems: 'center'}}>
         <img src={token0.icon} alt={token0.name} height={20} style={{ marginRight: 8}}/>Strike {asset.price}
       </div>
     </td>
-    <td><span style={{ color: direction == "Long" ? '#55d17c' : '#e57673', fontWeight: 'bold', fontSize: 'smaller'}}>{direction.toUpperCase()}</span></td>
-    <td>
+    <td style={tdStyle}><span style={{ color: direction == "Long" ? '#55d17c' : '#e57673', fontWeight: 'bold', fontSize: 'smaller'}}>{direction.toUpperCase()}</span></td>
+    <td style={tdStyle}>
       {amount0EF > 0 && <>{(amount0EF).toFixed(5)} {vault.token0.name}</> }
       {amount1EF > 0 && <>{(amount1EF).toFixed(2)} {vault.token1.name}</> }
     </td>
-    <td align='right'>{ (asset.debtApr / 365 / 24).toFixed(4) }%</td>
-    <td align='right'>
+    <td align='right' style={tdStyle}>{ (asset.debtApr / 365 / 24).toFixed(4) }%</td>
+    <td align='right' style={tdStyle}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', float: 'right' }}>
         <span style={{color: pnl> 0 ? '#55d17c' : '#e57673'}}>{pnl > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}{pnlPercent.toFixed(2)}%</span>
-        ${pnl.toFixed(3)}
+        ${(isNaN(pnl)? 0 : pnl).toFixed(3)}
       </div>
     </td>
-    <td align='right'>
+    <td align='right' style={tdStyle}>
       <CloseTrPositionButton address={address} vault={vault} />
     </td>
   </tr>

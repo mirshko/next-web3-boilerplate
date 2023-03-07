@@ -44,11 +44,13 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
   const lowerAsset = vault.name.split('-')[0] == underlyingAsset.name ? underlyingAsset : otherAsset
   const apr24h = ( parseFloat(asset.feeApr) + parseFloat(asset.supplyApr) ) / 365
 
+  
   const goTxGo = async (action) => {
     setRunningTx(1)
     setSpinning(true)
     setErrorTx(false)
-
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+    
     try {
       if (action =="Supply"){
         if (useEth){
@@ -71,6 +73,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
           if ( result.lt(ethers.utils.parseUnits(inputValue, underlyingAsset.decimals)) ){
             setRunningTx(1)
             result = await tokenContract.approve(zapboxTRContract.address, ethers.constants.MaxUint256)
+            await delay(5000)
           }
           setRunningTx(2)
           console.log( vault.poolId, 
@@ -94,6 +97,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
         if ( result.lt(ethers.utils.parseUnits(inputValue, await roeAssetContract.decimals())) ){
           setRunningTx(1)
           result = await roeAssetContract.approve(zapboxTRContract.address, ethers.constants.MaxUint256)
+          await delay(5000)
         }
         setRunningTx(2)
         result = await zapboxTRContract.zapOut(

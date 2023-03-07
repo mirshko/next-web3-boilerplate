@@ -28,6 +28,7 @@ const VaultPositions = ({vault}) => {
   const userAccountData = getUserLendingPoolData(vault.address) 
   var healthFactor = ethers.utils.formatUnits(userAccountData.healthFactor ?? 0, 18)
   var availableCollateral = ethers.utils.formatUnits(userAccountData.availableBorrowsETH ?? 0, 8)
+  var totalCollateral = ethers.utils.formatUnits(userAccountData.totalCollateralETH ?? 0, 8)
   var totalDebt = ethers.utils.formatUnits(userAccountData.totalDebtETH ?? 0, 8)
 
   const columns = [
@@ -43,14 +44,20 @@ const VaultPositions = ({vault}) => {
       try {
         var tokenName = vault.name.split('-')[0]
         if (tokenName == 'WETH') tokenName = 'ETH'
-        const url = "https://api.binance.us/api/v3/ticker/price?symbol="+tokenName+"USDT"
+        // binance US doesnt have GMX
+        //const url = "https://api.binance.us/api/v3/ticker/price?symbol="+tokenName+"USDT"
+        //setPrice(parseFloat(data.data.price))
+        
+        // https://bybit-exchange.github.io/docs/v5/market/index-kline
+        const url = "https://api.bybit.com/v5/market/index-price-kline?category=linear&interval=D&limit=1&symbol="+tokenName+"USDT"
         const data = await axios.get(url)
-        setPrice(parseFloat(data.data.price))
+        const result = data.data.result
+        setPrice(result.list[0][4])
       }
       catch(e){console.log('getPrice error', e)}
     }
     getPrice()
-  })
+  }, [])
   
   var assetsList = [
     vault.token0.address,
@@ -59,7 +66,9 @@ const VaultPositions = ({vault}) => {
   ]
   //for (let r of vault.ranges) assetsList.push(r['address'])
   for (let r of vault.ticks) {
-    if ( oorVisible || price == 0 || Math.abs(price - parseFloat(r.price)) < 100 ) assetsList.push(r['address'])
+    // TODO: better definition
+    let step = (vault.name == 'WETH-USDC') ? 100 : 5 // 100 step for weth, 5 step for gmx
+    if ( oorVisible || price == 0 || Math.abs(price - parseFloat(r.price)) < step ) assetsList.push(r['address'])
   }
   
   var orderedList = []
@@ -67,7 +76,7 @@ const VaultPositions = ({vault}) => {
   return (<div style={{width: '100%'}}>
     <Typography.Title level={2}>Vault {vault.name}</Typography.Title>
     <Typography.Text>
-      Assets: ${parseFloat(availableCollateral).toFixed(2)} - Debt: ${parseFloat(totalDebt).toFixed(2)} - Health Factor: {healthFactor > 100 ? <>&infin;</> : parseFloat(healthFactor).toFixed(3)}
+      Assets: ${parseFloat(totalCollateral).toFixed(2)} - Debt: ${parseFloat(totalDebt).toFixed(2)} - Health Factor: {healthFactor > 100 ? <>&infin;</> : parseFloat(healthFactor).toFixed(3)}
       <Checkbox style={{ float: 'right', marginBottom: 4, marginRight: 24 }} defaultChecked={oorVisible}  onChange={()=>{setOorVisible(!oorVisible)}}>Show Out of Range Vaults</Checkbox>
       <Checkbox style={{ float: 'right', marginBottom: 4, marginRight: 24 }} defaultChecked={hideEmpty}  onChange={onChange}>Hide empty positions</Checkbox>
     </Typography.Text>

@@ -31,21 +31,19 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
   const strikeAsset = useAssetData(strike.address)
   const { tokenAmounts, tokenAmountsExcludingFees, totalSupply } = useUnderlyingAmount(strike.address, vault)
   let tokenTraded = tokenAmountsExcludingFees.amount0 == 0 ? vault.token1.name : vault.token0.name  ;
-
-  let maxOI = tokenAmounts.amount0 == 0 ? tokenAmounts.amount1 : tokenAmounts.amount0;
+  let maxOI = tokenAmountsExcludingFees.amount0 == 0 ? tokenAmounts.amount1 : tokenAmounts.amount0;
 
   const openPosition = async () => {
     if (inputValue == 0) return;
     setSpinning(true)
     try {
-      let tickerAmount = (inputValue / (parseFloat(tokenAmounts.amount0) || parseFloat(tokenAmounts.amount1) ) * totalSupply).toFixed(0)  // whichever is non null
-      console.log('tivdf', tickerAmount, tickerAmount.toString(), inputValue / (parseFloat(tokenAmounts.amount0) || parseFloat(tokenAmounts.amount1) ), totalSupply.toString())
+      let tickerAmount = (inputValue / (parseFloat(tokenAmountsExcludingFees.amount0) || parseFloat(tokenAmountsExcludingFees.amount1) ) * totalSupply).toFixed(0)  // whichever is non null
       
       const abi = ethers.utils.defaultAbiCoder;
       let swapSource = ethers.constants.AddressZero;
       // if buying ITM, need to swap
       if ( (direction == "Long" && strike.price < price)  || (direction == "Short" && strike.price > price) ){
-        swapSource = ( tokenAmounts.amount0 == 0 ? vault.token1.address : vault.token0.address )
+        swapSource = ( tokenAmountsExcludingFees.amount0 == 0 ? vault.token1.address : vault.token0.address )
       }
       
       let params = abi.encode(["uint8", "uint", "address", "address[]"], [0, vault.poolId, account, [swapSource] ]);
@@ -95,7 +93,7 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
           </> : <Spin style={{ width: '100%', margin: '0 auto'}}/> }
          
           </div>
-        <div style={{marginTop: 8}}>Max OI Available: <span style={{ float: 'right' }}>{parseFloat(maxOI).toFixed(5)} {tokenTraded}</span></div>
+        <div style={{marginTop: 8}}>Max Borrowable: <span style={{ float: 'right' }}>{parseFloat(maxOI).toFixed(5)} {tokenTraded}</span></div>
         <Input placeholder="Amount" suffix={tokenTraded} 
           onChange={(e)=> setInputValue(e.target.value)} 
           key='inputamount'

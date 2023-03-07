@@ -185,7 +185,7 @@
     "lendingPools": [
       {
         "name": "WETH-USDC",
-        "ohlcUrl": "https://api.binance.us/api/v3/klines?symbol=ETHUSDT&interval=",
+        "ohlcUrl": "https://api.bybit.com/v5/market/index-price-kline?category=linear&symbol=ETHUSDT&interval=",
         "address": "0x60b3f0C7709075776C38eC5812C8A1EF9fD522d7",
         "poolId": 0,
         "tlv": "95k",
@@ -308,13 +308,56 @@
       },
       {
         "name": "GMX-USDC",
-        "ohlcUrl": "https://api.binance.com/api/v3/klines?symbol=GMXUSDT&interval=",
+        "ohlcUrl": "https://api.bybit.com/v5/market/index-price-kline?category=linear&symbol=GMXUSDT&interval=",
         "address": "0x79835a8538f111dD5C226b242afa346FF633E5D4",
         "poolId": 2,
         "tlv": "45k",
         "rangeManager": "0xC2Bd913A49017E62Eb21976071367028C4f8f5bd",
         "ranges": [],
-        "ticks": [],
+        "ticks": [
+          {
+            "address": "0x55a444e98DeC5C4864608f1B308C99241559C7B4",
+            "roeAddress": "0xAFB4F528E75173D4232c63f571bCc25D80690bDF",
+            "debtAddress": "0xb08a194653DA8573DFD079865647b63D49e3B8Aa",
+            "price": "60",
+            "tokenId": 323594
+          },
+          {
+            "address": "0xCf68c0967F5d1C11c1d5A4e4981297B765f9b67C",
+            "roeAddress": "0xEAB65A542e3F14AB897ae65138526dE435f6966f",
+            "debtAddress": "0x8C188c87c12f31922e3075aB196f555f0cBA3429",
+            "price": "65",
+            "tokenId": 323597
+          },
+          {
+            "address": "0x55C77eF9a14Ab468Abc9908B9AfA9B1Fa2ADC601",
+            "roeAddress": "0x5989b7B6236B9701434ccC3D658aCf90440Ce8EC",
+            "debtAddress": "0x3E7b7cD8aC4D5cC9297aeD5c40948ef9be8Fd71C",
+            "price": "70",
+            "tokenId": 323600
+          },
+          {
+            "address": "0xAb703535087781B735bcaa5d9187233e7883B21a",
+            "roeAddress": "0xA08e20671C923B870237BB9b3afe4807a3F4f66B",
+            "debtAddress": "0xe7E8DEe6F79F9136e53dD2302B92e6aD9F089852",
+            "price": "75",
+            "tokenId": 323604
+          },
+          {
+            "address": "0xF858B8FAeeA7432FD326525e2BebE3a5E248fd2E",
+            "roeAddress": "0xBdB0039F1c796cbe0a077202dc08762Fa99f9685",
+            "debtAddress": "0x0B07D6817441ab16dEa53fFbdCEFc2F2cf4c9e16",
+            "price": "80",
+            "tokenId": 323607
+          },
+          {
+            "address": "0x2D9DC18866CCE4D3F20b2d5aD0766e812f383058",
+            "roeAddress": "0xC9F731290D7b480fB3C1156e867b76202B9a3A51",
+            "debtAddress": "0xc832701dC1a228476127d7Ce096aC14494e5CA4F",
+            "price": "85",
+            "tokenId": 323610
+          }
+        ],
         "token0": {
           "name": "GMX", 
           "address": "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a",

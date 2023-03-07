@@ -2,14 +2,17 @@
 import Head from "next/head";
 import Link from "next/link";
 import { Layout, Menu, theme } from 'antd';
-import NavRight from './navRight';
-import NavMenu from './navMenu';
+import NavRight from './nav/navRight';
+import NavMenu from './nav/navMenu';
+import Banner from './nav/banner';
 const { useToken } = theme;
 
 const MyLayout = ({ children }) =>  {
   const { token } = useToken();
   
   return (
+  <>
+    <Banner />
     <Layout style={{ display: 'flex', alignItems: 'center', minHeight: '100vh', 
       backgroundImage: `url("/images/gradientpink.png")`
       }}>
@@ -32,6 +35,7 @@ const MyLayout = ({ children }) =>  {
         </Layout.Footer>
 
     </Layout>
+  </>
   )
 }
 

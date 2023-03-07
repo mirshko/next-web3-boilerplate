@@ -31,6 +31,7 @@ const VaultPositionsBox = ({assetAddress, vault, hideEmpty}) => {
   
   const toReadable = (value) => {
     if ( value == 0 ) return 0;
+    if ( value < 10) return parseFloat(value).toFixed(2)
     if ( value < 1000) return parseFloat(value).toFixed(0)
     if ( value < 1e6) return (value/1000).toFixed(0) + 'k'
     if ( value < 1e9) return (value/1000).toFixed(0) + 'M'
@@ -81,13 +82,14 @@ const VaultPositionsBox = ({assetAddress, vault, hideEmpty}) => {
           <Divider type="vertical" style={{ height: 28, marginTop: 6 }} />
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 64 }}>
             <span style={{ fontSize: 'smaller', fontWeight: 'bold', color: 'grey'}}>My Assets</span>
-            ${asset.deposited == 0 ? <>0</> : toReadable(asset.depositedValue)}
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 6}} >
+              {asset.type=='single' ? <img src={asset.icon} height={12} alt={asset.name} /> : <>$</> }
+              {toReadable(asset.type=='single'?asset.deposited:asset.depositedValue)}
+            </div>
           </div>
         </div>
         
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 25, transform: 'rotate(180deg)'}}>
-          <img src={asset.icon} height={20} alt={asset.name.toLowerCase()} />
-          <span style={{ fontSize: 'larger', fontWeight: 'bold', marginLeft: 8 }}>{asset.name == 'WETH' ? 'ETH' : asset.name}</span>
         </div>
 
       </div>
