@@ -21,7 +21,7 @@ const MyLayout = ({ children }) =>  {
             backgroundColor: token.colorBgBase, borderBottomWidth: 1, borderColor: 'red',
             display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: 1500, alignItems: 'center'
           }}>
-          <img src="/logo.svg" width={32} height={32} alt='GoodEntry Icon' />
+          <img src="/logo.svg" width={32} height={32} alt='Good Entry Logo' />
           <NavMenu bgColor={ token.colorBgBase } />
           <NavRight />
         </Layout.Header>
