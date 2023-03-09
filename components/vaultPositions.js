@@ -4,6 +4,7 @@ import { Card, Row, Col, Typography, Checkbox, Button } from 'antd';
 import useAddresses from '../hooks/useAddresses';
 import getUserLendingPoolData from '../hooks/getUserLendingPoolData';
 import VaultPositionsBox from "./vaultPositionsBox"
+import MyMargin from "./myMargin"
 import {ethers} from 'ethers'
 import axios from "axios"
 
@@ -77,7 +78,7 @@ const VaultPositions = ({vault}) => {
     <Typography.Title level={2}>Vault {vault.name}</Typography.Title>
     <Typography.Text>
       Margin Available: ${parseFloat(totalCollateral).toFixed(2)} - Debt: ${parseFloat(totalDebt).toFixed(2)} - 
-      Margin Ratio: {(100 * parseFloat(totalDebt).toFixed(2) / parseFloat(totalCollateral) / 0.94).toFixed(2)}% - 
+      Margin Ratio: <MyMargin value={(100 * parseFloat(totalDebt).toFixed(2) / parseFloat(totalCollateral) / 0.94).toFixed(2)} /> - 
       Health Factor: {healthFactor > 100 ? <>&infin;</> : parseFloat(healthFactor).toFixed(3)}
       <Checkbox style={{ float: 'right', marginBottom: 4, marginRight: 24 }} defaultChecked={oorVisible}  onChange={()=>{setOorVisible(!oorVisible)}}>Show Out of Range Vaults</Checkbox>
       <Checkbox style={{ float: 'right', marginBottom: 4, marginRight: 24 }} defaultChecked={hideEmpty}  onChange={onChange}>Hide empty positions</Checkbox>

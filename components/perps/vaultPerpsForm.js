@@ -8,6 +8,7 @@ import useLendingPoolContract from "../../hooks/useLendingPoolContract";
 import DepositWithdrawalModal from "../depositWithdrawalModal"
 import VaultPerpsStrikes from './vaultPerpsStrikes'
 import PayoutChart from './payoutChart'
+import MyMargin from '../myMargin'
 import {ethers} from 'ethers'
 import { useWeb3React } from "@web3-react/core";
 

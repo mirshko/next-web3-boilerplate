@@ -3,6 +3,7 @@ import { Dropdown, Button, Card } from 'antd'
 import axios from 'axios'
 import VaultsDropdown from '../vaultsDropdown'
 import getUserLendingPoolData from '../../hooks/getUserLendingPoolData'
+import MyMargin from '../myMargin'
 import {ethers} from 'ethers'
 
 const Infobar = ({vaults, current, selectVault, price }) => {
@@ -69,7 +70,7 @@ const Infobar = ({vaults, current, selectVault, price }) => {
     
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <span style={{ fontSize: 'x-small', color: 'grey' }}>Margin Usage</span>
-      <span style={{ fontSize: 'smaller', color: (marginUsage > 80 ? 'yellow' : 'rgba(255,255,255,085)')}}>{(marginUsage).toFixed(2)}%</span>
+      <span style={{ fontSize: 'smaller'}}><MyMargin value={marginUsage} /></span>
     </div>
   </div>)
   
