@@ -19,7 +19,7 @@ const NavRight = () =>  {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center'}}>
-      <a href='https://discord.gg/xnu8JH9QDm' target="_blank" rel="noreferrer" style={{marginRight: 24}}><img src="/images/discord-white.svg" height={13} /></a>
+      <a href='https://discord.gg/7rCQCZV9YR' target="_blank" rel="noreferrer" style={{marginRight: 24}}><img src="/images/discord-white.svg" height={13} /></a>
       <a href='https://twitter.com/goodentrylabs' target="_blank" rel="noreferrer" style={{marginRight: 24}}><TwitterOutlined style={{ fontSize: 'larger'}}/></a>
       <NavChain />
       <Account triedToEagerConnect={triedToEagerConnect} />
