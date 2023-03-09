@@ -16,6 +16,7 @@ const NavChain = () => {
     catch(e){console.log('Switch chain', e)}
   }
   
+  if (!chainId) return (<></>)
   
   const items = [
     {
@@ -44,17 +45,14 @@ const NavChain = () => {
   for (let k of items)
     if (k.key == chainId ) label = k
   
-  return(<>
-  <Dropdown menu={{ items, onClick }}>
-    <a onClick={(e) => e.preventDefault()}>
-      <Button style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 8, marginRight: 24}}
-        icon={label.icon}
-      >
-        {label.label ? label.label : 'Wrong Network'}
-      </Button>
-    </a>
-  </Dropdown>
-  </>)
+  
+  return(
+    <Button style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 8, marginRight: -1}}
+      icon={label.icon}
+    >
+      {label.label ? label.label : 'Wrong Network'}
+    </Button>
+  )
   
 }
 

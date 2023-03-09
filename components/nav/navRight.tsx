@@ -3,7 +3,7 @@ import { useWeb3React } from "@web3-react/core";
 import { Menu } from "antd"
 import { TwitterOutlined } from '@ant-design/icons';
 import Link from "next/link";
-import Account from "../../components/Account";
+import Account from "./Account";
 
 import NavChain from "./navChain";
 import useEagerConnect from "../../hooks/useEagerConnect";
