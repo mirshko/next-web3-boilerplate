@@ -42,6 +42,9 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
 
   const upperAsset = vault.name.split('-')[0] == underlyingAsset.name ? otherAsset : underlyingAsset
   const lowerAsset = vault.name.split('-')[0] == underlyingAsset.name ? underlyingAsset : otherAsset
+  const token0 = vault.token1.name == underlyingAsset.name ? otherAsset : underlyingAsset
+  const token1 = vault.token1.name == underlyingAsset.name ? underlyingAsset : otherAsset
+
   const apr24h = ( parseFloat(asset.feeApr) + parseFloat(asset.supplyApr) ) / 365
 
   
@@ -123,7 +126,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
   
   var actionComponent ;
   if (action == 'Supply' ) actionComponent = "Supply "+(useEth && underlyingAsset.name == 'WETH' ? 'ETH': underlyingAsset.name)+" to "+asset.name;
-  else if (action =="Withdraw") actionComponent = "Withdraw "+(useEth ? 'ETH' : underlyingAsset.name)+" from "+asset.name;
+  else if (action =="Withdraw") actionComponent = "Withdraw from "+asset.name;
   var assetBal = action == "Withdraw" ? asset.deposited : underlyingAsset.wallet;
   
   
@@ -212,11 +215,24 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
         />
         
         { action == 'Withdraw' ?
-          <div style={{marginBottom: 12}}>Underlying: {inputValue * (tokenAmounts.amount0 > 0 ? tokenAmounts.amount0 : tokenAmounts.amount1) * 1e18 / totalSupply } {underlyingAsset.name}</div>
+          <div style={{marginBottom: 12, display: 'flex'}}>Underlying:
+            <div style={{ marginLeft: 24 }}>
+              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                <img src={token0.icon} alt={token0.name} height={20} style={{marginRight: 8 }}/>
+                {(inputValue * tokenAmounts.amount0 * 1e18 / totalSupply).toFixed(3)} {token0.name}
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                <img src={token1.icon} alt={token1.name} height={20} style={{marginRight: 8 }}/>
+                {(inputValue * tokenAmounts.amount1 * 1e18 / totalSupply).toFixed(3)} {token1.name}
+              </div>
+            </div>
+          </div>
           : null
         }
         
-        { underlyingAsset.name == 'WETH' ? <Checkbox onChange={()=>{ setUseEth(!useEth)}} checked={!useEth} >Use Wrapped ETH</Checkbox> : null }
+        { underlyingAsset.name == 'WETH' || (action == 'Withdraw' && otherAsset.name == 'WETH' ) 
+          ? <Checkbox onChange={()=>{ setUseEth(!useEth)}} checked={!useEth} >Use Wrapped ETH</Checkbox> 
+          : null }
         
         <Button type={isSpinning ? "default":"primary"} style={{width: '100%', marginTop: 12}} onClick={() => goTxGo(action)} disabled={isSpinning}>
           { isSpinning ? <Spin /> : <>{actionComponent}</> }
