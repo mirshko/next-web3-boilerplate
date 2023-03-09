@@ -12,7 +12,7 @@ export default function useAddresses(pool) {
   else
     chainAddresses = addresses[chainId]
       ? JSON.parse(JSON.stringify(addresses[chainId]))
-      : JSON.parse(JSON.stringify(addresses[1]));
+      : JSON.parse(JSON.stringify(addresses['42161'])); // default network is 42161
 
   // if pool is specified, it acts as a filter for the lendingPools
   if (pool) {
