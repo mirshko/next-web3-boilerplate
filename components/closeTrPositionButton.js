@@ -23,10 +23,8 @@ const CloseTrPositionButton = ({address, vault, opmAddress}) => {
           uint repayAmount,  // use 0 to repay all
           address collateralAsset // useless here since no liquidation
         ) */
-        console.log('sdf')
       console.log(vault.poolId, account, address, 0, ethers.constants.AddressZero)
       let res = await opm.close(vault.poolId, account, address, 0, ethers.constants.AddressZero )
-      console.log('closedPos', res)
       openNotification("success", "Tx Sent", "Tx mined")
     }
     catch(e){
