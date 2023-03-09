@@ -5,12 +5,16 @@ import getUserLendingPoolData from '../../hooks/getUserLendingPoolData'
 import useUnderlyingAmount from "../../hooks/useUnderlyingAmount";
 import useOptionsPositionManager from "../../hooks/useOptionsPositionManager";
 import useLendingPoolContract from "../../hooks/useLendingPoolContract";
+import DepositWithdrawalModal from "../depositWithdrawalModal"
 import VaultPerpsStrikes from './vaultPerpsStrikes'
 import PayoutChart from './payoutChart'
 import {ethers} from 'ethers'
 import { useWeb3React } from "@web3-react/core";
 
 const VaultPerpsForm = ({vault, price, opmAddress}) => {
+  const [isVisibleMargin0, setVisibleMargin0] = useState(false)
+  const [isVisibleMargin1, setVisibleMargin1] = useState(false)
+  
   const [assetInfo, setAssetData] = useState()
   const [strike, setStrike] = useState({})
   const [lowerStrike, setLowerStrike] = useState({})
@@ -27,8 +31,13 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
   const userAccountData = getUserLendingPoolData(vault.address) 
   var healthFactor = ethers.utils.formatUnits(userAccountData.healthFactor ?? 0, 18)
   var availableCollateral = ethers.utils.formatUnits(userAccountData.availableBorrowsETH ?? 0, 8)
+  var totalCollateral = ethers.utils.formatUnits(userAccountData.totalCollateralETH ?? 0, 8)
+  var totalDebt = ethers.utils.formatUnits(userAccountData.totalDebtETH ?? 0, 8)
+  let marginUsage = (totalCollateral> 0 ? 100 * parseFloat(totalDebt).toFixed(2) / parseFloat(totalCollateral) / 0.94 : 0 )
 
   const strikeAsset = useAssetData(strike.address)
+  const quoteAsset = useAssetData(vault.name.split('-')[0] == vault.token0.name? vault.token0.address : vault.token1.address)
+  const baseAsset = useAssetData(vault.name.split('-')[1] == vault.token0.name? vault.token0.address : vault.token1.address)
   const { tokenAmounts, tokenAmountsExcludingFees, totalSupply } = useUnderlyingAmount(strike.address, vault)
   let tokenTraded = tokenAmountsExcludingFees.amount0 == 0 ? vault.token1.name : vault.token0.name  ;
   let maxOI = tokenAmountsExcludingFees.amount0 == 0 ? tokenAmounts.amount1 : tokenAmounts.amount0;
@@ -108,8 +117,20 @@ const VaultPerpsForm = ({vault, price, opmAddress}) => {
         <PayoutChart direction={direction} strike={strike.price} price={price} step={upperStrike.price-lowerStrike.price} />
         
         <Divider />
-        <span>Margin available: <span style={{ float: 'right'}}>${parseFloat(availableCollateral).toFixed(2)}</span></span>
-        <Button href='/farm'>Add Margin</Button>
+        <span>Margin Available: <span style={{ float: 'right'}}>${10*parseFloat(availableCollateral).toFixed(2)}</span></span>
+        <span>Margin Usage: <span style={{ float: 'right'}}>{parseFloat(marginUsage).toFixed(2)}%</span></span>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <Button onClick={()=>{setVisibleMargin0(true)}} style={{display: 'flex', alignItems: 'center'}}>
+            Deposit {quoteAsset.name}&nbsp;
+            <img src={quoteAsset.icon} alt={quoteAsset.name} height={16}/>
+          </Button>
+          <Button onClick={()=>{setVisibleMargin1(true)}} style={{display: 'flex', alignItems: 'center'}}>
+            Deposit {baseAsset.name}&nbsp;
+            <img src={baseAsset.icon} alt={baseAsset.name} height={16}/>
+          </Button>
+        </div>
+        <DepositWithdrawalModal asset={quoteAsset} vault={vault} setVisible={setVisibleMargin0} isVisible={isVisibleMargin0} />
+        <DepositWithdrawalModal asset={baseAsset} vault={vault} setVisible={setVisibleMargin1} isVisible={isVisibleMargin1} />
       </div>
     </div>
   )

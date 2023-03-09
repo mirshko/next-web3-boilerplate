@@ -14,6 +14,8 @@ const Infobar = ({vaults, current, selectVault, price }) => {
   const userAccountData = getUserLendingPoolData(currentVault.address) 
   var healthFactor = ethers.utils.formatUnits(userAccountData.healthFactor ?? 0, 18)
   var availableCollateral = ethers.utils.formatUnits(userAccountData.availableBorrowsETH ?? 0, 8)
+  var totalCollateral = ethers.utils.formatUnits(userAccountData.totalCollateralETH ?? 0, 8)
+  var totalDebt = ethers.utils.formatUnits(userAccountData.totalDebtETH ?? 0, 8)
 
   useEffect( () => {
     // get candles from geckoterminal
@@ -36,6 +38,7 @@ const Infobar = ({vaults, current, selectVault, price }) => {
 
   let change = parseFloat(dailyCandle[1]) - parseFloat(dailyCandle[4])
   let changePercent = 100 * change / ( parseFloat(dailyCandle[1]) || 1 )
+  let marginUsage = (totalCollateral> 0 ? 100 * parseFloat(totalDebt).toFixed(2) / parseFloat(totalCollateral) / 0.94 : 0 )
 
   let red = '#e57673' 
   let green = '#55d17c'
@@ -61,14 +64,13 @@ const Infobar = ({vaults, current, selectVault, price }) => {
     
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <span style={{ fontSize: 'x-small', color: 'grey' }}>Avail. Margin</span>
-      <span style={{ fontSize: 'smaller'}}>$ {parseFloat(availableCollateral).toFixed(2)}</span>
+      <span style={{ fontSize: 'smaller'}}>$ {10*parseFloat(availableCollateral).toFixed(2)}</span>
     </div>
     
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-      <span style={{ fontSize: 'x-small', color: 'grey' }}>Health Factor</span>
-      <span style={{ fontSize: 'smaller'}}>{parseFloat(healthFactor).toFixed(2)}</span>
+      <span style={{ fontSize: 'x-small', color: 'grey' }}>Margin Usage</span>
+      <span style={{ fontSize: 'smaller', color: (marginUsage > 80 ? 'yellow' : 'rgba(255,255,255,085)')}}>{(marginUsage).toFixed(2)}%</span>
     </div>
-    
   </div>)
   
   
