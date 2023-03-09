@@ -12,7 +12,7 @@ export default function useKeepSWRDataLiveAsBlocksArrive(
   });
 
   // then, whenever a new block arrives, trigger a mutation
-  const { data } = Math.round(useBlockNumber() / 5);
+  const { data } = Math.round(useBlockNumber() / 10);
 
   useEffect(() => {
     mutateRef.current();

@@ -14,7 +14,7 @@ const PositionsRow = ({address, vault, price, addPosition }) => {
   const { tokenAmounts, tokenAmountsExcludingFees, totalSupply } = useUnderlyingAmount(address, vault)
   
   // avoid spamming arbiscan by providing a valid address only when the debt is non null, rate limit is 5 req/s
-  const posEvent = usePerpsEventLogs(asset.debt > 0 ? address : null, vault.address) 
+  const posEvent = usePerpsEventLogs(address, vault.address, asset.debt) 
   
   if (asset.debt == 0) return <></>
 
