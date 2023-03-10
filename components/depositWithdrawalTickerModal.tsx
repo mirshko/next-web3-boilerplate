@@ -128,7 +128,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
   if (action == 'Supply' ) actionComponent = "Supply "+(useEth && underlyingAsset.name == 'WETH' ? 'ETH': underlyingAsset.name)+" to "+asset.name;
   else if (action =="Withdraw") actionComponent = "Withdraw from "+asset.name;
   var assetBal = action == "Withdraw" ? asset.deposited : underlyingAsset.wallet;
-  
+  var availableBal = useEth&&action=="Supply"? ethBalance : assetBal
   
   const GetIcon = ({index}) => {
     if (index == runningTx) return (errorTx ? <ExclamationCircleOutlined  style={{float: 'right', color: theme.colorError}} /> : <LoadingOutlined style={{float: 'right'}} />)
@@ -206,7 +206,7 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10}}>
           <span>Amount</span>
-          <span style={{ cursor: "pointer"}} onClick={()=>{setInputValue(assetBal)}} >Wallet: {parseFloat(useEth&&action=="Supply"? ethBalance : assetBal).toFixed(5)} {action == "Supply" ? (useEth && underlyingAsset.name == 'WETH' ? 'ETH': underlyingAsset.name) : asset.name}</span>
+          <span style={{ cursor: "pointer"}} onClick={()=>{setInputValue(assetBal)}} >Wallet: {parseFloat(availableBal).toFixed(5)} {action == "Supply" ? (useEth && underlyingAsset.name == 'WETH' ? 'ETH': underlyingAsset.name) : asset.name}</span>
         </div>
         <Input type="number" style={{ width: '100%', marginBottom: 20}} min={0} max={assetBal} onChange={(e)=> setInputValue(e.target.value)} 
           key='inputamount'
@@ -234,7 +234,9 @@ const DepositWithdrawalTickerModal = ({asset, vault, size, oracleAddress, isVisi
           ? <Checkbox onChange={()=>{ setUseEth(!useEth)}} checked={!useEth} >Use Wrapped ETH</Checkbox> 
           : null }
         
-        <Button type={isSpinning ? "default":"primary"} style={{width: '100%', marginTop: 12}} onClick={() => goTxGo(action)} disabled={isSpinning}>
+        <Button type={isSpinning ? "default":"primary"} style={{width: '100%', marginTop: 12}} onClick={() => goTxGo(action)} disabled={isSpinning}
+          disabled={!inputValue || parseFloat(inputValue) == 0 || parseFloat(availableBal) < parseFloat(inputValue)}
+        >
           { isSpinning ? <Spin /> : <>{actionComponent}</> }
         </Button>
         
