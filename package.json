@@ -3,16 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "yarn compile-contract-types && next dev",
+    "build": "yarn compile-contract-types && next build",
+    "start": "yarn compile-contract-types && next start",
     "export": "next build && next export -o build/",
     "react-build": "react-scripts build",
     "react-start": "react-scripts start",
-    "lint": "next lint",
-    "compile-contract-types": "typechain --target ethers-v5 --out-dir './contracts/types' './contracts/*.json'",
-    "compile-contract-types2": "typechain --target ethers-v5  './contracts/*.json'",
-    "postinstall": "yarn compile-contract-types"
+    "lint": "yarn compile-contract-types && next lint",
+    "compile-contract-types": "typechain --target ethers-v5 --out-dir './contracts/types' './contracts/*.json'"
   },
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
@@ -25,6 +23,8 @@
     "chart.js": "^4.2.1",
     "chartjs-plugin-annotation": "^2.1.2",
     "lightweight-charts": "^3.8.0",
+    "logrocket": "^3.0.1",
+    "logrocket-react": "^5.0.1",
     "next": "^13.1.6",
     "react": "18.2.0",
     "react-chartjs-2": "^5.2.0",

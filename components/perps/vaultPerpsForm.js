@@ -1,141 +1,318 @@
-import { useState, useEffect } from 'react'
-import { Button, Radio, Input, Divider, Spin, notification } from 'antd'
-import useAssetData from '../../hooks/useAssetData'
-import getUserLendingPoolData from '../../hooks/getUserLendingPoolData'
+import { useState, useEffect } from "react";
+import { Button, Input, Divider, Spin, notification } from "antd";
+import useAssetData from "../../hooks/useAssetData";
+import getUserLendingPoolData from "../../hooks/getUserLendingPoolData";
 import useUnderlyingAmount from "../../hooks/useUnderlyingAmount";
 import useOptionsPositionManager from "../../hooks/useOptionsPositionManager";
 import useLendingPoolContract from "../../hooks/useLendingPoolContract";
-import DepositWithdrawalModal from "../depositWithdrawalModal"
-import VaultPerpsStrikes from './vaultPerpsStrikes'
-import PayoutChart from './payoutChart'
-import MyMargin from '../myMargin'
-import {ethers} from 'ethers'
+import DepositWithdrawalModal from "../depositWithdrawalModal";
+import VaultPerpsStrikes from "./vaultPerpsStrikes";
+import PayoutChart from "./payoutChart";
+import MyMargin from "../myMargin";
+import { ethers } from "ethers";
 import { useWeb3React } from "@web3-react/core";
 
-const VaultPerpsForm = ({vault, price, opmAddress}) => {
-  const [isVisibleMargin0, setVisibleMargin0] = useState(false)
-  const [isVisibleMargin1, setVisibleMargin1] = useState(false)
-  
-  const [assetInfo, setAssetData] = useState()
-  const [strike, setStrike] = useState({})
-  const [lowerStrike, setLowerStrike] = useState({})
-  const [upperStrike, setUpperStrike] = useState({})
-  const [direction, setDirection ] = useState('Long')
+const VaultPerpsForm = ({ vault, price, opmAddress }) => {
+  const [isVisibleMargin0, setVisibleMargin0] = useState(false);
+  const [isVisibleMargin1, setVisibleMargin1] = useState(false);
+
+  const [assetInfo, setAssetData] = useState();
+  const [strike, setStrike] = useState({});
+  const [lowerStrike, setLowerStrike] = useState({});
+  const [upperStrike, setUpperStrike] = useState({});
+  const [direction, setDirection] = useState("Long");
   const { account, chainId } = useWeb3React();
   const [api, contextHolder] = notification.useNotification();
-  const openNotification = (type, title, message) => { api[type]({message: title, description: message }); }
+  const openNotification = (type, title, message) => {
+    api[type]({ message: title, description: message });
+  };
   const [isSpinning, setSpinning] = useState(false);
   const [inputValue, setInputValue] = useState("0");
-  
-  const lpContract = useLendingPoolContract(vault.address)
-  //const opm = useOptionsPositionManager(opmAddress)
-  const userAccountData = getUserLendingPoolData(vault.address) 
-  var healthFactor = ethers.utils.formatUnits(userAccountData.healthFactor ?? 0, 18)
-  var availableCollateral = ethers.utils.formatUnits(userAccountData.availableBorrowsETH ?? 0, 8)
-  var totalCollateral = ethers.utils.formatUnits(userAccountData.totalCollateralETH ?? 0, 8)
-  var totalDebt = ethers.utils.formatUnits(userAccountData.totalDebtETH ?? 0, 8)
-  let marginUsage = (totalCollateral> 0 ? 100 * parseFloat(totalDebt).toFixed(2) / parseFloat(totalCollateral) / 0.94 : 0 )
 
-  const strikeAsset = useAssetData(strike.address)
-  const quoteAsset = useAssetData(vault.name.split('-')[0] == vault.token0.name? vault.token0.address : vault.token1.address)
-  const baseAsset = useAssetData(vault.name.split('-')[1] == vault.token0.name? vault.token0.address : vault.token1.address)
-  const { tokenAmounts, tokenAmountsExcludingFees, totalSupply } = useUnderlyingAmount(strike.address, vault)
-  let tokenTraded = tokenAmountsExcludingFees.amount0 == 0 ? vault.token1.name : vault.token0.name  ;
-  let maxOI = tokenAmountsExcludingFees.amount0 == 0 ? tokenAmounts.amount1 : tokenAmounts.amount0;
+  const lpContract = useLendingPoolContract(vault.address);
+  //const opm = useOptionsPositionManager(opmAddress)
+  const userAccountData = getUserLendingPoolData(vault.address);
+  var healthFactor = ethers.utils.formatUnits(
+    userAccountData.healthFactor ?? 0,
+    18
+  );
+  var availableCollateral = ethers.utils.formatUnits(
+    userAccountData.availableBorrowsETH ?? 0,
+    8
+  );
+  var totalCollateral = ethers.utils.formatUnits(
+    userAccountData.totalCollateralETH ?? 0,
+    8
+  );
+  var totalDebt = ethers.utils.formatUnits(
+    userAccountData.totalDebtETH ?? 0,
+    8
+  );
+  let marginUsage =
+    totalCollateral > 0
+      ? (100 * parseFloat(totalDebt).toFixed(2)) /
+        parseFloat(totalCollateral) /
+        0.94
+      : 0;
+
+  const strikeAsset = useAssetData(strike.address);
+  const quoteAsset = useAssetData(
+    vault.name.split("-")[0] == vault.token0.name
+      ? vault.token0.address
+      : vault.token1.address
+  );
+  const baseAsset = useAssetData(
+    vault.name.split("-")[1] == vault.token0.name
+      ? vault.token0.address
+      : vault.token1.address
+  );
+  const { tokenAmounts, tokenAmountsExcludingFees, totalSupply } =
+    useUnderlyingAmount(strike.address, vault);
+
+  let asset = tokenAmountsExcludingFees.amount0 == 0 ? baseAsset : quoteAsset;
+  let tokenTraded =
+    tokenAmountsExcludingFees.amount0 == 0
+      ? vault.token1.name
+      : vault.token0.name;
+  let maxOI =
+    tokenAmountsExcludingFees.amount0 == 0
+      ? tokenAmounts.amount1
+      : tokenAmounts.amount0;
+
+  const balance = asset.wallet;
 
   const openPosition = async () => {
     if (inputValue == 0) return;
-    setSpinning(true)
+    setSpinning(true);
     try {
-      let tickerAmount = (inputValue / (parseFloat(tokenAmountsExcludingFees.amount0) || parseFloat(tokenAmountsExcludingFees.amount1) ) * totalSupply).toFixed(0)  // whichever is non null
-      
+      let tickerAmount = (
+        (inputValue /
+          (parseFloat(tokenAmountsExcludingFees.amount0) ||
+            parseFloat(tokenAmountsExcludingFees.amount1))) *
+        totalSupply
+      ).toFixed(0); // whichever is non null
+
       const abi = ethers.utils.defaultAbiCoder;
       let swapSource = ethers.constants.AddressZero;
       // if buying ITM, need to swap
-      if ( (direction == "Long" && strike.price < price)  || (direction == "Short" && strike.price > price) ){
-        swapSource = ( tokenAmountsExcludingFees.amount0 == 0 ? vault.token1.address : vault.token0.address )
+      if (
+        (direction == "Long" && strike.price < price) ||
+        (direction == "Short" && strike.price > price)
+      ) {
+        swapSource =
+          tokenAmountsExcludingFees.amount0 == 0
+            ? vault.token1.address
+            : vault.token0.address;
       }
-      
-      let params = abi.encode(["uint8", "uint", "address", "address[]"], [0, vault.poolId, account, [swapSource] ]);
+
+      let params = abi.encode(
+        ["uint8", "uint", "address", "address[]"],
+        [0, vault.poolId, account, [swapSource]]
+      );
       // flashloan( receiver, tokens, amounts, modes[2 for open debt], onBehalfOf, calldata params, refcode)
-      console.log(opmAddress, [strike.address], [tickerAmount], [2], account, params, 0)
-      let res = await lpContract.flashLoan(opmAddress, [strike.address], [tickerAmount], [2], account, params, 0)
-      openNotification("success", "Tx Sent", "Tx mined")
+      console.log(
+        opmAddress,
+        [strike.address],
+        [tickerAmount],
+        [2],
+        account,
+        params,
+        0
+      );
+      let res = await lpContract.flashLoan(
+        opmAddress,
+        [strike.address],
+        [tickerAmount],
+        [2],
+        account,
+        params,
+        0
+      );
+      openNotification("success", "Tx Sent", "Tx mined");
+    } catch (e) {
+      console.log("Error opening position", e.message);
+      openNotification("error", e.code, e.message);
     }
-    catch(e){
-      console.log('Error opening position', e.message)
-      openNotification("error", e.code, e.message)
-    }
-    setSpinning(false)
-  }
-  
-  useEffect(()=>{
+    setSpinning(false);
+  };
+
+  useEffect(() => {
     if (price == 0) return;
-    for (let k of vault.ticks){
-      if ( k.price < price){
-        setLowerStrike({ price: k.price, address: k.address })
+    for (let k of vault.ticks) {
+      if (k.price < price) {
+        setLowerStrike({ price: k.price, address: k.address });
       }
-      if ( k.price > price){
+      if (k.price > price) {
         setUpperStrike({ price: k.price, address: k.address });
-        if (!strike.price) setStrike({ price: k.price, address: k.address })
+        if (!strike.price) setStrike({ price: k.price, address: k.address });
         break;
       }
     }
-  }, [JSON.stringify(vault), price, strike.price])
-  
+  }, [JSON.stringify(vault), price, strike.price]);
+
   return (
     <div>
-      <Button type={ direction == 'Long' ? "primary" : "default"} style={{width: '50%', textAlign: 'center'}} 
-        onClick={()=>{setDirection('Long')}}
-      ><strong>Long</strong></Button>
-      <Button type={ direction == 'Short' ? "primary" : "default"} style={{width: '50%', textAlign: 'center'}}
-        onClick={()=>{setDirection('Short')}}>
-        <strong>Short</strong></Button>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 24 }}>
-          <div>
-            Strike-In<span style={{ float: 'right'}}>Hourly Funding</span>
-          </div>
-          <div>
-          { price > 0 ? <>
-            { upperStrike.address ?
-            <VaultPerpsStrikes key={upperStrike.address} address={upperStrike.address} vault={vault} onClick={setStrike} isSelected={strike.price==upperStrike.price} /> : null }
-              { lowerStrike.address ? <VaultPerpsStrikes key={lowerStrike.address} address={lowerStrike.address} vault={vault} onClick={setStrike} isSelected={strike.price==lowerStrike.price} /> : null }
-          </> : <Spin style={{ width: '100%', margin: '0 auto'}}/> }
-         
-          </div>
-        <div style={{marginTop: 8}}>Max Borrowable: <span style={{ float: 'right' }}>{parseFloat(maxOI).toFixed(5)} {tokenTraded}</span></div>
-        <Input placeholder="Amount" suffix={tokenTraded} 
-          onChange={(e)=> setInputValue(e.target.value)} 
-          key='inputamount'
+      <Button
+        type={direction == "Long" ? "primary" : "default"}
+        style={{ width: "50%", textAlign: "center" }}
+        onClick={() => {
+          setDirection("Long");
+        }}
+      >
+        <strong>Long</strong>
+      </Button>
+      <Button
+        type={direction == "Short" ? "primary" : "default"}
+        style={{ width: "50%", textAlign: "center" }}
+        onClick={() => {
+          setDirection("Short");
+        }}
+      >
+        <strong>Short</strong>
+      </Button>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+          marginTop: 24,
+        }}
+      >
+        <div>
+          Strike-In<span style={{ float: "right" }}>Hourly Funding</span>
+        </div>
+        <div>
+          {price > 0 ? (
+            <>
+              {upperStrike.address ? (
+                <VaultPerpsStrikes
+                  key={upperStrike.address}
+                  address={upperStrike.address}
+                  vault={vault}
+                  onClick={setStrike}
+                  isSelected={strike.price == upperStrike.price}
+                />
+              ) : null}
+              {lowerStrike.address ? (
+                <VaultPerpsStrikes
+                  key={lowerStrike.address}
+                  address={lowerStrike.address}
+                  vault={vault}
+                  onClick={setStrike}
+                  isSelected={strike.price == lowerStrike.price}
+                />
+              ) : null}
+            </>
+          ) : (
+            <Spin style={{ width: "100%", margin: "0 auto" }} />
+          )}
+        </div>
+        <div style={{ marginTop: 8 }}>
+          Max Borrowable:{" "}
+          <span style={{ float: "right" }}>
+            {parseFloat(maxOI).toFixed(5)} {tokenTraded}
+          </span>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: 10,
+          }}
+        >
+          <span>Amount</span>
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setInputValue(balance);
+            }}
+          >
+            Wallet: {balance}
+          </span>
+        </div>
+        <Input
+          placeholder="Amount"
+          suffix={tokenTraded}
+          onChange={(e) => setInputValue(e.target.value)}
+          key="inputamount"
           value={inputValue}
         />
-        
-        { isSpinning ?
-          <Button type="default" style={{width: '100%'}} ><Spin /></Button>
-          : <Button type="primary" onClick={openPosition} disabled={!strike.price || isSpinning}>{!strike.price ? 'Pick a Strike-In' : 'Open '+direction}</Button>
-        }
-        
-        <PayoutChart direction={direction} strike={strike.price} price={price} step={upperStrike.price-lowerStrike.price} />
-        
-        <Divider />
-        <span>Margin Available: <span style={{ float: 'right'}}>${10*parseFloat(availableCollateral).toFixed(2)}</span></span>
-        <span>Margin Usage: <span style={{ float: 'right'}}>{parseFloat(marginUsage).toFixed(2)}%</span></span>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-          <Button onClick={()=>{setVisibleMargin0(true)}} style={{display: 'flex', alignItems: 'center'}}>
-            Deposit {quoteAsset.name}&nbsp;
-            <img src={quoteAsset.icon} alt={quoteAsset.name} height={16}/>
+        {isSpinning ? (
+          <Button type="default" style={{ width: "100%" }}>
+            <Spin />
           </Button>
-          <Button onClick={()=>{setVisibleMargin1(true)}} style={{display: 'flex', alignItems: 'center'}}>
+        ) : (
+          <Button
+            type="primary"
+            onClick={openPosition}
+            disabled={!strike.price || isSpinning}
+          >
+            {!strike.price ? "Pick a Strike-In" : "Open " + direction}
+          </Button>
+        )}
+
+        <PayoutChart
+          direction={direction}
+          strike={strike.price}
+          price={price}
+          step={upperStrike.price - lowerStrike.price}
+        />
+
+        <Divider />
+        <span>
+          Margin Available:{" "}
+          <span style={{ float: "right" }}>
+            ${10 * parseFloat(availableCollateral).toFixed(2)}
+          </span>
+        </span>
+        <span>
+          Margin Usage:{" "}
+          <span style={{ float: "right" }}>
+            {parseFloat(marginUsage).toFixed(2)}%
+          </span>
+        </span>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Button
+            onClick={() => {
+              setVisibleMargin0(true);
+            }}
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            Deposit {quoteAsset.name}&nbsp;
+            <img src={quoteAsset.icon} alt={quoteAsset.name} height={16} />
+          </Button>
+          <Button
+            onClick={() => {
+              setVisibleMargin1(true);
+            }}
+            style={{ display: "flex", alignItems: "center" }}
+          >
             Deposit {baseAsset.name}&nbsp;
-            <img src={baseAsset.icon} alt={baseAsset.name} height={16}/>
+            <img src={baseAsset.icon} alt={baseAsset.name} height={16} />
           </Button>
         </div>
-        <DepositWithdrawalModal asset={quoteAsset} vault={vault} setVisible={setVisibleMargin0} isVisible={isVisibleMargin0} />
-        <DepositWithdrawalModal asset={baseAsset} vault={vault} setVisible={setVisibleMargin1} isVisible={isVisibleMargin1} />
+        <DepositWithdrawalModal
+          asset={quoteAsset}
+          vault={vault}
+          setVisible={setVisibleMargin0}
+          isVisible={isVisibleMargin0}
+        />
+        <DepositWithdrawalModal
+          asset={baseAsset}
+          vault={vault}
+          setVisible={setVisibleMargin1}
+          isVisible={isVisibleMargin1}
+        />
       </div>
     </div>
-  )
-  
-}
+  );
+};
 
 export default VaultPerpsForm;
