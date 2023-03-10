@@ -40,7 +40,6 @@ const DepositWithdrawalModal = ({asset, vault, size, isVisible, setVisible}) => 
   if (asset.name == 'MATIC' && (chainId == 137 || chainId == 1337) ) nativeToken = true;
   
 
-
   const goTxGo = async (action) => {
     setRunningTx(1)
     setSpinning(true)
@@ -97,7 +96,7 @@ const DepositWithdrawalModal = ({asset, vault, size, isVisible, setVisible}) => 
 
   var actionComponent = action+" "+(useEth && asset.name == 'WETH' ? 'ETH' : asset.name );
   var assetBal = action == "Withdraw" ? asset.deposited : asset.wallet;
-  
+  let availableBal = useEth && action == 'Supply' ? ethBalance : assetBal
 
   
   return (
@@ -126,7 +125,7 @@ const DepositWithdrawalModal = ({asset, vault, size, isVisible, setVisible}) => 
         {contextHolder}
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10}}>
           <span>Amount</span>
-          <span style={{ cursor: "pointer"}} onClick={()=>{setInputValue(assetBal)}} >{ action == 'Supply' ? 'Wallet':'Available'}: {useEth && action == 'Supply' ? parseFloat(ethBalance).toFixed(5) : parseFloat(assetBal).toFixed(5)}</span>
+          <span style={{ cursor: "pointer"}} onClick={()=>{setInputValue(assetBal)}} >{ action == 'Supply' ? 'Wallet':'Available'}: {parseFloat(availableBal).toFixed(5)}</span>
         </div>
         <Input type="number" style={{ width: '100%', marginBottom: 20}} min={0} max={assetBal} onChange={(e)=> setInputValue(e.target.value)} 
           key='inputamount'
@@ -135,7 +134,9 @@ const DepositWithdrawalModal = ({asset, vault, size, isVisible, setVisible}) => 
         />
         { asset.name == 'WETH' ? <Checkbox onChange={()=>{ setUseEth(!useEth)}} checked={!useEth} >Use Wrapped ETH</Checkbox> : null }
         
-        <Button type={isSpinning ? "default":"primary"} style={{width: '100%', marginTop: 16}} onClick={() => goTxGo(action)} >
+        <Button type={isSpinning ? "default":"primary"} style={{width: '100%', marginTop: 16}} onClick={() => goTxGo(action)} 
+          disabled={!inputValue || parseFloat(inputValue) == 0 || parseFloat(inputValue) > parseFloat(availableBal)}
+        >
           { isSpinning ? <Spin /> : <>{actionComponent}</> }
         </Button>
         
