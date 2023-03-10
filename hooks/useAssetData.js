@@ -12,8 +12,8 @@ import { ethers } from "ethers";
 /// @param address if a string, use that asset, if object, iterates over as a list of addresses
 export default function useAssetData(address, vaultAddress) {
   const { account } = useWeb3React()
-  const [roeTotalSupply, setRoeTotalSupply] = useState()
-  const [roeAssetSupply, setRoeAssetSupply] = useState(0)
+  const [totalSupply, setTotalSupply] = useState()
+  const [roeTotalSupply, setRoeTotalSupply] = useState(0)
   const [debt, setDebt] = useState(0)
   const [price, setPrice] = useState(0)
   const [variableRate, setVariableRate] = useState(0)
@@ -57,7 +57,8 @@ export default function useAssetData(address, vaultAddress) {
     debtApr: variableRate,
     wallet: 0, deposited: 0, tlv: 0, 
     debt: debt,
-    tlv: roeAssetSupply * price,
+    tlv: totalSupply * price,
+    totalSupply: totalSupply,
     roeTotalSupply: roeTotalSupply,
     oraclePrice: price,
     rangeData: rangeData,
@@ -81,7 +82,7 @@ export default function useAssetData(address, vaultAddress) {
     try {
       if (!assetContract) return;
       var data = await assetContract.balanceOf(asset.roeAddress)
-      setRoeAssetSupply(ethers.utils.formatUnits(data, asset.decimals))
+      setTotalSupply(ethers.utils.formatUnits(data, asset.decimals))
     }
     catch(e){
       //console.log('get asset data error', e)
@@ -137,6 +138,7 @@ export default function useAssetData(address, vaultAddress) {
     const { data } = useTokenBalance(account, asset.address)
     asset.wallet = ethers.utils.formatUnits(data ?? 0, asset.decimals) ?? 0
   }
-  asset.depositedValue = asset.deposited / asset.roeTotalSupply * asset.tlv
+  asset.depositedValue = asset.deposited / asset.totalSupply * asset.tlv
+
   return asset;
 }
