@@ -13,19 +13,19 @@
         "ohlcUrl": "https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=",
         "address": "0xD14a7c302051A0F1e9cE8e9a8C4845a45F41B46f",
         "poolId": 0,
-        "tlv": "251k",
+        "tvl": "251k",
         "rangeManager": "0x2846C5d4F2B6db7DA0ed15e3EAd2Ae55b9ED2985",
         "ranges": [],
         "ticks": [],
         "token0": {
-          "name": "USDC", 
+          "name": "USDC",
           "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
           "roeAddress": "0x9A3FC87b4fc6394b45650240feF7450467725D9b",
           "debtAddress": "0x0785980983594EC497d8e3D691e1b8f1964D12e2",
           "decimals": 6
         },
         "token1": {
-          "name": "WETH", 
+          "name": "WETH",
           "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
           "roeAddress": "0x72474a772F377461aF1049212d4BA60c337Da5E2",
           "debtAddress": "0xd209678fb4062ffb920E457Dc9181FBdA42a1350",
@@ -55,7 +55,7 @@
         "ohlcUrl": "https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=",
         "address": "0x4D39CBBf7368a68F62AD1a1a0aB873044A7c5ee1",
         "poolId": 0,
-        "tlv": "58k",
+        "tvl": "58k",
         "rangeManager": "0x71C4527Efd60B981215826FF49FBEef4D155c46C",
         "ranges": [
           {
@@ -122,14 +122,14 @@
           }
         ],
         "token0": {
-          "name": "USDC", 
+          "name": "USDC",
           "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
           "roeAddress": "0xE1fF95f7a96e447e9F13d8502e0b21F1A5cB3f31",
           "debtAddress": "0xaa19B502D4EF24D9d3507E7A52bc07330E83CcaA",
           "decimals": 6
         },
         "token1": {
-          "name": "WETH", 
+          "name": "WETH",
           "address": "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
           "roeAddress": "0xf2456dE51138F67a1B41Aced4fD52d9ccB2AE434",
           "debtAddress": "0xb900BA6ECe28cd3769f71F07F6394821F2A2e1aC",
@@ -148,17 +148,17 @@
         "ohlcUrl": "https://api.binance.com/api/v3/klines?symbol=MATICUSDT&interval=",
         "address": "0xBfdDD4a965BdB753dcEAA386ED9B19B655407967",
         "poolId": 1,
-        "tlv": "0",
+        "tvl": "0",
         "ranges": [],
         "ticks": [],
         "token0": {
-          "name": "WMATIC", 
+          "name": "WMATIC",
           "address": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
           "roeAddress": "0x8c1040ec75C724e159aaCC2a40ba808Fea3AA35a",
           "decimals": 18
         },
         "token1": {
-          "name": "USDC", 
+          "name": "USDC",
           "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
           "roeAddress": "0xAdE800738cd024F4a384F882bbCe72c56d27Bb27",
           "decimals": 6
@@ -188,7 +188,7 @@
         "ohlcUrl": "https://api.bybit.com/v5/market/index-price-kline?category=linear&symbol=ETHUSDT&interval=",
         "address": "0x60b3f0C7709075776C38eC5812C8A1EF9fD522d7",
         "poolId": 0,
-        "tlv": "95k",
+        "tvl": "95k",
         "rangeManager": "0xFB11ABbAbd18a2D86FA99C0950d63C0462e16ee8",
         "ranges": [
           {
@@ -285,14 +285,14 @@
           }
         ],
         "token0": {
-          "name": "WETH", 
+          "name": "WETH",
           "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
           "roeAddress": "0x0381411306C289B2259ea8606A120FF0e9489f06",
           "debtAddress": "0x9A429DD419Ac1287a0C1Eb4F8bB57c636C023e23",
           "decimals": 18
         },
         "token1": {
-          "name": "USDC", 
+          "name": "USDC",
           "address": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
           "roeAddress": "0xa756937ECF00982b82C6995c2891e3148c460A54",
           "debtAddress": "0x6135B89e5b2D871c7D55954Cf0eB33F7d008439c",
@@ -311,7 +311,7 @@
         "ohlcUrl": "https://api.bybit.com/v5/market/index-price-kline?category=linear&symbol=GMXUSDT&interval=",
         "address": "0x79835a8538f111dD5C226b242afa346FF633E5D4",
         "poolId": 2,
-        "tlv": "45k",
+        "tvl": "45k",
         "rangeManager": "0xC2Bd913A49017E62Eb21976071367028C4f8f5bd",
         "ranges": [],
         "ticks": [
@@ -359,14 +359,14 @@
           }
         ],
         "token0": {
-          "name": "GMX", 
+          "name": "GMX",
           "address": "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a",
           "roeAddress": "0x566A1F87164Db0524aAD0a0D5968b8755E80B8F3",
           "debtAddress": "0xEC67D0F6e33a8d5738550da3115F078678a2881D",
           "decimals": 18
         },
         "token1": {
-          "name": "USDC", 
+          "name": "USDC",
           "address": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
           "roeAddress": "0x9D323FF60cDb26aaa6589F5EfB7F3c42E4078D18",
           "debtAddress": "0xa7201F84fdf260614685a9eced397d4cC7B4e79c",
