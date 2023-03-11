@@ -1,3 +1,5 @@
+import { Button, Dropdown } from "antd";
+import { SelectOutlined } from "@ant-design/icons";
 import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError } from "@web3-react/injected-connector";
 import { useEffect, useState } from "react";
@@ -5,14 +7,13 @@ import { injected } from "../../connectors";
 import useENSName from "../../hooks/useENSName";
 import useMetaMaskOnboarding from "../../hooks/useMetaMaskOnboarding";
 import { formatEtherscanLink, shortenHex } from "../../util";
-import { Button } from 'antd';
 
 type AccountProps = {
   triedToEagerConnect: boolean;
 };
 
 const Account = ({ triedToEagerConnect }: AccountProps) => {
-  const { active, error, activate, chainId, account, setError } =
+  const { active, error, activate, deactivate, chainId, account, setError } =
     useWeb3React();
 
   const {
@@ -32,6 +33,32 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
   }, [active, error, stopOnboarding]);
 
   const ENSName = useENSName(account);
+
+  const shortenAccount = ENSName || `${shortenHex(account ?? "", 4)}`;
+
+  const items = [
+    {
+      key: "account",
+      label: (
+        <a
+          href={formatEtherscanLink("Account", [chainId, account])}
+          target={"_blank"}
+          rel={"noopener noreferrer"}
+        >
+          Account
+        </a>
+      ),
+      icon: <SelectOutlined rotate={90} />,
+    },
+    { key: "disconnect", label: "Disconnect" },
+  ];
+
+  const onAccountButtonClick = ({ key }) => {
+    switch (key) {
+      case "disconnect":
+        deactivate();
+    }
+  };
 
   if (error) {
     return null;
@@ -70,17 +97,9 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
   }
 
   return (
-  <Button>
-    <a
-      {...{
-        href: formatEtherscanLink("Account", [chainId, account]),
-        target: "_blank",
-        rel: "noopener noreferrer",
-      }}
-    >
-      {ENSName || `${shortenHex(account, 4)}`}
-    </a>
-  </Button>
+    <Dropdown menu={{ items, onClick: onAccountButtonClick }}>
+      <Button>{shortenAccount}</Button>
+    </Dropdown>
   );
 };
 

@@ -1,28 +1,35 @@
-import React from 'react';
+import React from "react";
 import { useWeb3React } from "@web3-react/core";
-import { Dropdown, Button } from 'antd';
-import { ethers } from "ethers";
+import { Button } from "antd";
 
 const NavChain = () => {
   const { chainId } = useWeb3React();
-  
+
   const onClick = async ({ key }) => {
     try {
       await window.ethereum.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0x'+parseInt(key).toString(16) }]
-        });
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: "0x" + parseInt(key).toString(16) }],
+      });
+    } catch (e) {
+      console.log("Switch chain", e);
     }
-    catch(e){console.log('Switch chain', e)}
-  }
-  
-  if (!chainId) return (<></>)
-  
+  };
+
+  if (!chainId) return <></>;
+
   const items = [
     {
-      key: '42161',
+      key: "42161",
       label: "Arbitrum",
-      icon: <img src="/icons/arbitrum.svg" height={16} width={16} alt="Arbitrum Logo" />
+      icon: (
+        <img
+          src="/icons/arbitrum.svg"
+          height={16}
+          width={16}
+          alt="Arbitrum Logo"
+        />
+      ),
     },
     /*{
       key: '137',
@@ -42,19 +49,22 @@ const NavChain = () => {
   ];
 
   let label = {};
-  for (let k of items)
-    if (k.key == chainId ) label = k
-  
-  
-  return(
-    <Button style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 8, marginRight: -1}}
+  for (let k of items) if (k.key == chainId) label = k;
+
+  return (
+    <Button
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8,
+        marginRight: -1,
+      }}
       icon={label.icon}
     >
-      {label.label ? label.label : 'Wrong Network'}
+      {label.label ? label.label : "Wrong Network"}
     </Button>
-  )
-  
-}
-
+  );
+};
 
 export default NavChain;
