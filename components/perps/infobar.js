@@ -65,7 +65,7 @@ const Infobar = ({vaults, current, selectVault, price }) => {
     
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <span style={{ fontSize: 'x-small', color: 'grey' }}>Avail. Margin</span>
-      <span style={{ fontSize: 'smaller'}}>$ {10*parseFloat(availableCollateral).toFixed(2)}</span>
+      <span style={{ fontSize: 'smaller'}}>$ {parseFloat(10*availableCollateral).toFixed(2)}</span>
     </div>
     
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
