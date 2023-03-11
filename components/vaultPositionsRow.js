@@ -136,6 +136,7 @@ const VaultPositionsRow = ({ assetAddress, vault, hideEmpty }) => {
           </span>
           <br /> <br />
         </div>
+
         <Tooltip
           placement="right"
           title={

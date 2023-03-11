@@ -61,9 +61,8 @@ export default function useAssetData(address, vaultAddress) {
     supplyApr: supplyRate,
     feeApr: feeApr,
     debtApr: variableRate,
-    wallet: 0,
+    wallet: 0, 
     deposited: 0,
-    tvl: 0,
     debt: debt,
     tvl: totalSupply * price,
     totalSupply: totalSupply,
@@ -143,7 +142,7 @@ export default function useAssetData(address, vaultAddress) {
     const { data } = useTokenBalance(account, asset.address);
     asset.wallet = ethers.utils.formatUnits(data ?? 0, asset.decimals) ?? 0;
   }
-  asset.depositedValue = (asset.deposited / asset.totalSupply) * asset.tvl;
+  asset.depositedValue = asset.deposited / asset.totalSupply * asset.tvl
 
   return asset;
 }
