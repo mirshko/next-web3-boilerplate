@@ -55,9 +55,10 @@ export default function useAssetData(address, vaultAddress) {
     supplyApr: supplyRate, 
     feeApr: feeApr,
     debtApr: variableRate,
-    wallet: 0, deposited: 0, tlv: 0, 
+    wallet: 0, 
+    deposited: 0,
     debt: debt,
-    tlv: totalSupply * price,
+    tvl: totalSupply * price,
     totalSupply: totalSupply,
     roeTotalSupply: roeTotalSupply,
     oraclePrice: price,
@@ -90,7 +91,7 @@ export default function useAssetData(address, vaultAddress) {
   }
   getAssetData()
 
-  // get token supply = TLV
+  // get token supply = TVL
   const roeToken = useTokenContract(asset.roeAddress);
   const getRoeSupply = async () => {
     try {
@@ -138,7 +139,7 @@ export default function useAssetData(address, vaultAddress) {
     const { data } = useTokenBalance(account, asset.address)
     asset.wallet = ethers.utils.formatUnits(data ?? 0, asset.decimals) ?? 0
   }
-  asset.depositedValue = asset.deposited / asset.totalSupply * asset.tlv
+  asset.depositedValue = asset.deposited / asset.totalSupply * asset.tvl
 
   return asset;
 }

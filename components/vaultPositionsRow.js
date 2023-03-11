@@ -82,7 +82,7 @@ const VaultPositionsRow = ({assetAddress, vault, hideEmpty}) => {
   
       <Row style={{ width: '100%', marginBottom: 24}}>
         <Col span={12}>
-          <span style={{ fontSize: 'smaller', fontWeight: 'bold'}}>TLV</span>
+          <span style={{ fontSize: 'smaller', fontWeight: 'bold'}}>TVL</span>
           <br/>
           {asset.deposited == 0 ? <>0</> : parseFloat(asset.deposited).toFixed(6)}
         </Col>

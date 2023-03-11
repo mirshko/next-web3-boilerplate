@@ -98,7 +98,7 @@ function ProtectedYield() {
     let amount0 = tokenAmounts.amount0 * availableCollateral * percentDebt / 100 * leverage
     let amount1 = tokenAmounts.amount1 * availableCollateral * percentDebt / 100 * leverage
 
-    if (amount0 > token0.tlv || amount1 > token1.tlv) { console.log('Not enough assets to borrow'); return;}
+    if (amount0 > token0.tvl || amount1 > token1.tvl) { console.log('Not enough assets to borrow'); return;}
     let amounts = [
       ethers.utils.parseUnits( (amount0).toFixed(token0.decimals), token0.decimals),
       ethers.utils.parseUnits( (amount1).toFixed(token1.decimals), token1.decimals)
@@ -293,11 +293,11 @@ function ProtectedYield() {
             </div>
             <div style={{float: 'right'}}>
               <Button type="primary" onClick={buyInsurance}
-                disabled={availableCollateral == 0 || !selectedAsset.insuranceAsset || insuranceAsset.tlv < selectedAsset.deposited * selectedAsset.oraclePrice / insuranceAsset.oraclePrice * coverage / 100}
+                disabled={availableCollateral == 0 || !selectedAsset.insuranceAsset || insuranceAsset.tvl < selectedAsset.deposited * selectedAsset.oraclePrice / insuranceAsset.oraclePrice * coverage / 100}
                 >
                 { isInsuranceSpinning ? <Spin /> : 
                   !selectedAsset.insuranceAsset ? <>Not Available</> :
-                  insuranceAsset.tlv < selectedAsset.deposited * selectedAsset.oraclePrice / insuranceAsset.oraclePrice * coverage / 100 ?
+                  insuranceAsset.tvl < selectedAsset.deposited * selectedAsset.oraclePrice / insuranceAsset.oraclePrice * coverage / 100 ?
                   <>Not enough supply</>
                   :<>Buy Insurance</> 
                 }
