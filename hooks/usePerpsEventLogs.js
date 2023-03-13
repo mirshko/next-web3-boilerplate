@@ -92,7 +92,6 @@ const usePerpsEventLogs = (tickerAddress, vaultAddress, debt) => {
         data.hasSwapped = hasSwapped;
         data.token0Amount = token0Amount;
         data.token1Amount = token1Amount;
-        console.log("firstts", data);
         setdata(data);
       } catch (e) {
         console.log("Get events", e);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Input, Divider, Spin, notification } from "antd";
+import { Button, Input, Divider, Spin, notification, Slider } from "antd";
 import useAssetData from "../../hooks/useAssetData";
 import getUserLendingPoolData from "../../hooks/getUserLendingPoolData";
 import useUnderlyingAmount from "../../hooks/useUnderlyingAmount";
@@ -28,6 +28,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
   };
   const [isSpinning, setSpinning] = useState(false);
   const [inputValue, setInputValue] = useState("0");
+  const [leverage, setLeverage] = useState(0)
 
   const lpContract = useLendingPoolContract(vault.address);
   //const opm = useOptionsPositionManager(opmAddress)
@@ -52,6 +53,12 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
     totalCollateral > 0
       ? (100 * parseFloat(totalDebt).toFixed(2)) /
         parseFloat(totalCollateral) /
+        0.94
+      : 0;
+  let marginAfterUsage =
+    totalCollateral > 0
+      ? (100 * (parseFloat(totalDebt) + parseFloat(inputValue)).toFixed(2)) /
+        (parseFloat(totalCollateral) + parseFloat(inputValue)) /
         0.94
       : 0;
 
@@ -210,25 +217,13 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
         </div>
         <div style={{ marginTop: 8 }}>
           Max Borrowable:{" "}
-          <span style={{ float: "right" }}>
-            {parseFloat(maxOI).toFixed(5)} {tokenTraded}
-          </span>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: 10,
-          }}
-        >
-          <span>Amount</span>
-          <span
-            style={{ cursor: "pointer" }}
+          <span 
+            style={{ float: "right", cursor: "pointer", color: parseFloat(inputValue) > maxOI ? '#e57673' : '' }}
             onClick={() => {
-              setInputValue(balance);
+              setInputValue(maxOI);
             }}
           >
-            Wallet: {balance}
+            {parseFloat(maxOI).toFixed(5)} {tokenTraded}
           </span>
         </div>
         <Input
@@ -238,6 +233,24 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
           key="inputamount"
           value={inputValue}
         />
+        <span>Leverage</span>
+        <Slider 
+          min={0} 
+          max={10}
+          step={0.1}
+          onChange={
+            (newValue) => {
+              setLeverage(newValue); 
+              setInputValue( (availableCollateral * newValue / asset.oraclePrice).toFixed(6) )
+            }
+          }
+          value={typeof leverage === 'number' ? leverage : 0}
+          style={{ marginBottom: -8, marginTop: -2 }}
+        />
+        <div>
+          <span>1x</span>
+          <span style={{float: "right"}}>10x</span>
+        </div>
         {isSpinning ? (
           <Button type="default" style={{ width: "100%" }}>
             <Spin />
@@ -246,7 +259,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
           <Button
             type="primary"
             onClick={openPosition}
-            disabled={!strike.price || isSpinning}
+            disabled={!strike.price || isSpinning || parseFloat(inputValue) == 0 || parseFloat(inputValue) > maxOI}
           >
             {!strike.price ? "Pick a Strike-In" : "Open " + direction}
           </Button>
@@ -263,13 +276,17 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
         <span>
           Margin Available:{" "}
           <span style={{ float: "right" }}>
-            ${10 * parseFloat(availableCollateral).toFixed(2)}
+            ${parseFloat(10 * availableCollateral).toFixed(2)}
           </span>
         </span>
         <span>
           Margin Usage:{" "}
           <span style={{ float: "right" }}>
             {parseFloat(marginUsage).toFixed(2)}%
+            { marginAfterUsage > marginUsage && parseFloat(inputValue) > 0
+              ? <> &rarr; {marginAfterUsage.toFixed(2)}%</>
+              : ""
+            }
           </span>
         </span>
         <div
