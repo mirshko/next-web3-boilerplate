@@ -69,6 +69,9 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
   const { tokenAmounts, tokenAmountsExcludingFees, totalSupply } =
     useUnderlyingAmount(strike.address, vault);
 
+  const lowerStrikeAsset = useAssetData(lowerStrike.address, vault.address);
+  const upperStrikeAsset = useAssetData(upperStrike.address, vault.address);
+
   let asset = tokenAmountsExcludingFees.amount0 == 0 ? baseAsset : quoteAsset;
   let tokenTraded =
     tokenAmountsExcludingFees.amount0 == 0
@@ -184,20 +187,18 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
         <div>
           {price > 0 ? (
             <>
-              {upperStrike.address ? (
+              {upperStrike.address && upperStrikeAsset.price > 0 ? (
                 <VaultPerpsStrikes
                   key={upperStrike.address}
-                  address={upperStrike.address}
-                  vault={vault}
+                  asset={upperStrikeAsset}
                   onClick={setStrike}
                   isSelected={strike.price == upperStrike.price}
                 />
               ) : null}
-              {lowerStrike.address ? (
+              {lowerStrike.address && lowerStrikeAsset.price > 0 ? (
                 <VaultPerpsStrikes
                   key={lowerStrike.address}
-                  address={lowerStrike.address}
-                  vault={vault}
+                  asset={lowerStrikeAsset}
                   onClick={setStrike}
                   isSelected={strike.price == lowerStrike.price}
                 />
