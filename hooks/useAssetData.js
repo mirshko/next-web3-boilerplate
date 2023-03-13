@@ -53,10 +53,10 @@ export default function useAssetData(address, vaultAddress) {
   if (asset.name && asset.type != "ticker")
     asset.icon = "/icons/" + asset.name.toLowerCase() + ".svg";
   const rangeData = useRangeStats(asset && asset.tokenId);
-  const feeApr =
-    rangeData && rangeData.history_24h && rangeData.history_24h.length > 0
-      ? parseFloat(rangeData.history_24h[0].fee_apr).toFixed(2)
-      : 0;
+  // aprReported = (24hApr * 1day + (positionAgeInDays - 1) * previousAprReported )/ positionAgeInDays
+  // -> 24hrApr = aprReported * positionAge - (positionAge-1) * previousAprReported
+  // but here we dont havea  full day, just the last 23h, that will do (=0.958d)
+  const feeApr = rangeData.apr 
   asset = {
     supplyApr: supplyRate,
     feeApr: feeApr,

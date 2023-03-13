@@ -127,7 +127,7 @@ const VaultPositionsBox = ({ assetAddress, vault, hideEmpty }) => {
                 {asset.feeApr > 0 ? (
                   <>
                     V3 Fees:{" "}
-                    <span style={{ float: "right" }}>{asset.feeApr} %</span>
+                    <span style={{ float: "right" }}>{parseFloat(asset.feeApr).toFixed(2)} %</span>
                   </>
                 ) : null}
               </div>
