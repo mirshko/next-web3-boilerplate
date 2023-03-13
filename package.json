@@ -13,6 +13,7 @@
     "compile-contract-types": "typechain --target ethers-v5 --out-dir './contracts/types' './contracts/*.json'"
   },
   "dependencies": {
+    "@ant-design/static-style-extract": "^1.0.1",
     "@metamask/detect-provider": "^2.0.0",
     "@metamask/onboarding": "^1.0.1",
     "@next/font": "^13.1.1",

@@ -1,8 +1,6 @@
-import useAssetData from "../../hooks/useAssetData";
 import useTheme from "../../hooks/useTheme";
 
-const VaultPerpsStrikes = ({ address, vault, onClick, isSelected }) => {
-  const asset = useAssetData(address, vault.address);
+const VaultPerpsStrikes = ({ asset, onClick, isSelected }) => {
   const theme = useTheme();
 
   var style = {
