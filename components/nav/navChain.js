@@ -61,6 +61,7 @@ const NavChain = () => {
         marginRight: -1,
       }}
       icon={label.icon}
+      onClick={()=>{onClick({key: "42161"})}}
     >
       {label.label ? label.label : "Wrong Network"}
     </Button>
