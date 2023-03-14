@@ -36,8 +36,10 @@ const PositionsRow = ({ address, vault, price, addPosition }) => {
   let pnl = 0;
   let pnlPercent = 0;
   let direction = "-";
+  let entry = 0
 
   if (posEvent) {
+    console.log("posEvent", posEvent)
     let costDebt = amount0 * token0.oraclePrice + amount1 * token1.oraclePrice;
     pnl =
       (posEvent.token0Amount * token0.oraclePrice) / 10 ** token0.decimals +
@@ -53,6 +55,9 @@ const PositionsRow = ({ address, vault, price, addPosition }) => {
     } else {
       direction = "Long";
     }
+    // from the event we have received X usdc + Y weth = assetValue => entry = ( assetValue -  X ) / Y
+    if (posEvent.token0Amount > 0)
+      entry = (posEvent.assetValue - posEvent.token1Amount / 10 ** token1.decimals ) / posEvent.token0Amount * 10 ** token0.decimals  
   }
 
   const tdStyle = { paddingTop: 4, paddingBottom: 4 };
@@ -80,6 +85,9 @@ const PositionsRow = ({ address, vault, price, addPosition }) => {
         >
           {direction.toUpperCase()}
         </span>
+      </td>
+      <td style={tdStyle}>
+        {entry.toFixed(2)}
       </td>
       <td style={tdStyle}>
         {amount0EF > 0 && (

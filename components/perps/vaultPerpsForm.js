@@ -90,6 +90,20 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
       : tokenAmounts.amount0;
 
   const balance = asset.wallet;
+  const slippage = 
+    (direction == "Long" && strike.price < price) || (direction == "Short" && strike.price > price)
+      ? 0.32
+      : 0
+  const belowMin = 
+    parseFloat(inputValue) * asset.oraclePrice < 5
+    ? true
+    : false
+  const buttonMessage = 
+    !strike.price 
+      ? "Pick a Strike-In" 
+      : belowMin 
+        ? "Amount too low" 
+        : "Open " + direction
 
   const openPosition = async () => {
     if (inputValue == 0) return;
@@ -189,7 +203,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
         }}
       >
         <div>
-          Strike-In<span style={{ float: "right" }}>Hourly Funding</span>
+          Activation Price<span style={{ float: "right" }}>Hourly Funding</span>
         </div>
         <div>
           {price > 0 ? (
@@ -251,6 +265,12 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
           <span>1x</span>
           <span style={{float: "right"}}>10x</span>
         </div>
+        <div style={{ marginTop: 0 }}>
+          Slippage:
+          <span style={{ float: "right", cursor: "pointer", color: slippage > 0 ? '#e57673' : '' }}>
+            {slippage}%
+          </span>
+        </div>
         {isSpinning ? (
           <Button type="default" style={{ width: "100%" }}>
             <Spin />
@@ -259,9 +279,9 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
           <Button
             type="primary"
             onClick={openPosition}
-            disabled={!strike.price || isSpinning || parseFloat(inputValue) == 0 || parseFloat(inputValue) > maxOI}
+            disabled={!strike.price || isSpinning || parseFloat(inputValue) == 0 || parseFloat(inputValue) > maxOI || belowMin}
           >
-            {!strike.price ? "Pick a Strike-In" : "Open " + direction}
+            {buttonMessage}
           </Button>
         )}
 

@@ -16,6 +16,7 @@ const Positions = ({vaults, positions, addPosition}) => {
         <tr>
           <th align='left'>Asset</th>
           <th align='left'>Side</th>
+          <th align='left'>Entry</th>
           <th align='left'>Size</th>
           <th align='right'>Funding <Tooltip placement="right" title="Hourly funding rate"><QuestionCircleOutlined /></Tooltip></th>
           <th align='right'>PnL&nbsp;&nbsp;</th>
