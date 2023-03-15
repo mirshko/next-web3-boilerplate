@@ -28,7 +28,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
   };
   const [isSpinning, setSpinning] = useState(false);
   const [inputValue, setInputValue] = useState("0");
-  const [leverage, setLeverage] = useState(0)
+  const [leverage, setLeverage] = useState(0);
 
   const lpContract = useLendingPoolContract(vault.address);
   //const opm = useOptionsPositionManager(opmAddress)
@@ -89,21 +89,12 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
       ? tokenAmounts.amount1
       : tokenAmounts.amount0;
 
-  const balance = asset.wallet;
-  const slippage = 
-    (direction == "Long" && strike.price < price) || (direction == "Short" && strike.price > price)
+  const slippage =
+    (direction == "Long" && strike.price < price) ||
+    (direction == "Short" && strike.price > price)
       ? 0.32
-      : 0
-  const belowMin = 
-    parseFloat(inputValue) * asset.oraclePrice < 5
-    ? true
-    : false
-  const buttonMessage = 
-    !strike.price 
-      ? "Pick a Strike-In" 
-      : belowMin 
-        ? "Amount too low" 
-        : "Open " + direction
+      : 0;
+  const belowMin = parseFloat(inputValue) * asset.oraclePrice < 5;
 
   const openPosition = async () => {
     if (inputValue == 0) return;
@@ -174,6 +165,25 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
     }
   }, [JSON.stringify(vault), price, strike.price]);
 
+  const isOpenPositionButtonDisabled =
+    !strike.price ||
+    isSpinning ||
+    parseFloat(inputValue) == 0 ||
+    parseFloat(inputValue) > maxOI ||
+    belowMin;
+
+  let openPositionButtonErrorTitle = "...";
+
+  if (!strike.price) {
+    openPositionButtonErrorTitle = "Pick a Strike-In";
+  } else if (parseFloat(inputValue) == 0) {
+    openPositionButtonErrorTitle = "Enter an Amount";
+  } else if (parseFloat(inputValue) > maxOI) {
+    openPositionButtonErrorTitle = "Max Borrowable Reached";
+  } else if (belowMin) {
+    openPositionButtonErrorTitle = "Amount too Low";
+  }
+
   return (
     <div>
       <Button
@@ -231,8 +241,12 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
         </div>
         <div style={{ marginTop: 8 }}>
           Max Borrowable:{" "}
-          <span 
-            style={{ float: "right", cursor: "pointer", color: parseFloat(inputValue) > maxOI ? '#e57673' : '' }}
+          <span
+            style={{
+              float: "right",
+              cursor: "pointer",
+              color: parseFloat(inputValue) > maxOI ? "#e57673" : undefined,
+            }}
             onClick={() => {
               setInputValue(maxOI);
             }}
@@ -248,26 +262,32 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
           value={inputValue}
         />
         <span>Leverage</span>
-        <Slider 
-          min={0} 
+        <Slider
+          min={0}
           max={10}
           step={0.1}
-          onChange={
-            (newValue) => {
-              setLeverage(newValue); 
-              setInputValue( (availableCollateral * newValue / asset.oraclePrice).toFixed(6) )
-            }
-          }
-          value={typeof leverage === 'number' ? leverage : 0}
+          onChange={(newValue) => {
+            setLeverage(newValue);
+            setInputValue(
+              ((availableCollateral * newValue) / asset.oraclePrice).toFixed(6)
+            );
+          }}
+          value={typeof leverage === "number" ? leverage : 0}
           style={{ marginBottom: -8, marginTop: -2 }}
         />
         <div>
           <span>1x</span>
-          <span style={{float: "right"}}>10x</span>
+          <span style={{ float: "right" }}>10x</span>
         </div>
         <div style={{ marginTop: 0 }}>
           Slippage:
-          <span style={{ float: "right", cursor: "pointer", color: slippage > 0 ? '#e57673' : '' }}>
+          <span
+            style={{
+              float: "right",
+              cursor: "pointer",
+              color: slippage > 0 ? "#e57673" : undefined,
+            }}
+          >
             {slippage}%
           </span>
         </div>
@@ -279,9 +299,11 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
           <Button
             type="primary"
             onClick={openPosition}
-            disabled={!strike.price || isSpinning || parseFloat(inputValue) == 0 || parseFloat(inputValue) > maxOI || belowMin}
+            disabled={isOpenPositionButtonDisabled}
           >
-            {buttonMessage}
+            {isOpenPositionButtonDisabled
+              ? openPositionButtonErrorTitle
+              : "Open " + direction}
           </Button>
         )}
 
@@ -303,10 +325,11 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
           Margin Usage:{" "}
           <span style={{ float: "right" }}>
             {parseFloat(marginUsage).toFixed(2)}%
-            { marginAfterUsage > marginUsage && parseFloat(inputValue) > 0
-              ? <> &rarr; {marginAfterUsage.toFixed(2)}%</>
-              : ""
-            }
+            {marginAfterUsage > marginUsage && parseFloat(inputValue) > 0 ? (
+              <> &rarr; {marginAfterUsage.toFixed(2)}%</>
+            ) : (
+              ""
+            )}
           </span>
         </span>
         <div

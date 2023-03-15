@@ -1,62 +1,79 @@
-import { useEffect, useState } from 'react'
-import { Col, Row, Button, Card, Input, Typography, Spin, Divider } from 'antd';
+import { useEffect, useState } from "react";
+import { Col, Row, Button, Card, Input, Typography, Spin, Divider } from "antd";
 
-import VaultPerpsForm from "../components/perps/vaultPerpsForm"
-import Positions from "../components/perps/positions"
-import Infobar from '../components/perps/infobar'
-import Chart from '../components/perps/chart'
-import useAddresses from '../hooks/useAddresses';
-import useCandles from '../hooks/useCandles';
+import VaultPerpsForm from "../components/perps/vaultPerpsForm";
+import Positions from "../components/perps/positions";
+import Infobar from "../components/perps/infobar";
+import Chart from "../components/perps/chart";
+import useAddresses from "../hooks/useAddresses";
+import useCandles from "../hooks/useCandles";
 
 // Display all user assets and positions in all ROE LPs
 const ProtectedPerps = () => {
-  const [currentVault, selectVault ] = useState(0)
+  const [currentVault, selectVault] = useState(0);
   const [price, setPrice] = useState(0);
-  const [positions, setPositions ] = useState([])
-  const [ interval, setInterval ] = useState('1h')
+  const [positions, setPositions] = useState([]);
+  const [interval, setInterval] = useState("1h");
   const ADDRESSES = useAddresses();
-  let vaults = ADDRESSES['lendingPools'];
-  
-  let intervalBybit = interval
-  if (interval == '15m') intervalBybit = '15'
-  else if (interval == '1h') intervalBybit = '60'
-  else if (interval == '4h') intervalBybit = '240'
-  else if (interval == '1d' ) intervalBybit = 'D'
-  
-  let candles = useCandles( vaults[currentVault].ohlcUrl + intervalBybit )
+  let vaults = ADDRESSES["lendingPools"];
 
-  useEffect( () => {
-    if (candles.length>0) setPrice( (parseFloat(candles[candles.length-1].close)).toFixed(2) )
-  }, [candles])
+  let intervalBybit = interval;
+  if (interval == "15m") intervalBybit = "15";
+  else if (interval == "1h") intervalBybit = "60";
+  else if (interval == "4h") intervalBybit = "240";
+  else if (interval == "1d") intervalBybit = "D";
+
+  let candles = useCandles(vaults[currentVault].ohlcUrl + intervalBybit);
+
+  useEffect(() => {
+    if (candles.length > 0)
+      setPrice(parseFloat(candles[candles.length - 1].close).toFixed(2));
+  }, [candles]);
 
   const addPosition = (newPos) => {
     for (let p of positions)
       if (p.name == newPos.name && p.price == newPos.price) return;
-    setPositions([...positions, newPos])
-  }
+    setPositions([...positions, newPos]);
+  };
 
   return (
-    <div style={{ minWidth: 1200, display: 'flex', flexDirection: 'row' }}>
+    <div style={{ minWidth: 1200, display: "flex", flexDirection: "row" }}>
       <div style={{ width: 850 }}>
         <Card style={{ marginBottom: 24 }} bodyStyle={{ padding: 8 }}>
-          <Infobar vaults={vaults} current={currentVault} selectVault={selectVault} price={price} />
+          <Infobar
+            vaults={vaults}
+            current={currentVault}
+            selectVault={selectVault}
+            price={price}
+          />
         </Card>
-        <Chart interval={interval} setInterval={setInterval} candles={candles} positions={positions} />
-        <Positions vaults={vaults} addPosition={addPosition}/>
+        <Chart
+          interval={interval}
+          setInterval={setInterval}
+          candles={candles}
+          positions={positions}
+        />
+        <Positions vaults={vaults} addPosition={addPosition} price={price} />
       </div>
       <div>
         <Card style={{ marginLeft: 24, minWidth: 300 }}>
-          <VaultPerpsForm vault={vaults[currentVault]} price={price} opmAddress={ADDRESSES['optionsPositionManager']} />
+          <VaultPerpsForm
+            vault={vaults[currentVault]}
+            price={price}
+            opmAddress={ADDRESSES["optionsPositionManager"]}
+          />
         </Card>
         <Card style={{ marginLeft: 24, marginTop: 24, minWidth: 300 }}>
-          Above the strike-in, your PnL behaves like regular perps; below, your PnL stays at 0, cannot be negative, and you only pay funding.
+          Above the strike-in, your PnL behaves like regular perps; below, your
+          PnL stays at 0, cannot be negative, and you only pay funding.
           <br />
-          <Button style={{float: 'right'}} disabled>More Details &rarr;</Button>
+          <Button style={{ float: "right" }} disabled>
+            More Details &rarr;
+          </Button>
         </Card>
       </div>
     </div>
-);
-  
-}
+  );
+};
 
 export default ProtectedPerps;

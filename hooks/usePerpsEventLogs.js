@@ -42,7 +42,7 @@ const usePerpsEventLogs = (tickerAddress, vaultAddress, debt) => {
       try {
         var eventsBuy = await axios.get(url + "&topic0=" + topicBuy);
         var eventsSell = await axios.get(url + "&topic0=" + topicClose);
-        // to know the total opened, we need to loop over all the BuyOptions tx since last ClosePosition (no partial close) -> concat and order 
+        // to know the total opened, we need to loop over all the BuyOptions tx since last ClosePosition (no partial close) -> concat and order
         var events = eventsBuy.data.result
           .concat(eventsSell.data.result)
           .sort((a, b) => {
@@ -61,7 +61,7 @@ const usePerpsEventLogs = (tickerAddress, vaultAddress, debt) => {
           // currently no partial close: if ClosePosition event, exit
           if (e.topics[0] == topicClose) break;
 
-          assetValue += ( Number("0x" + e.data.substring(66, 130)) / 10**8 );
+          assetValue += Number("0x" + e.data.substring(66, 130)) / 10 ** 8;
           data = e;
           // check tx logs: in each tx, check whether there was a swap, and how many of each tokens was deposited inthe LP
           let receipt = await library.getTransactionReceipt(e.transactionHash);
@@ -71,7 +71,6 @@ const usePerpsEventLogs = (tickerAddress, vaultAddress, debt) => {
               "0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822"
             ) {
               hasSwapped = true; // swap topic
-              
             }
             if (
               log.topics[0] ==
