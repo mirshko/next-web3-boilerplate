@@ -346,7 +346,7 @@
         "name": "GMX-USDC",
         "ohlcUrl": "https://api.bybit.com/v5/market/index-price-kline?category=linear&symbol=GMXUSDT&interval=",
         "address": "0x79835a8538f111dD5C226b242afa346FF633E5D4",
-        "uniswapPool": "0xb435ebfe0bf4ce66810aa4d44e3a5ca875d40db1",
+        "uniswapPool": "0xbed2589fefae17d62a8a4fdac92fa5895cae90d2",
         "poolId": 2,
         "tvl": "45k",
         "rangeManager": "0xC2Bd913A49017E62Eb21976071367028C4f8f5bd",

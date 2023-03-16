@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Card, Row, Col, Typography, Checkbox, Button } from 'antd';
 import useAddresses from '../hooks/useAddresses';
 import getUserLendingPoolData from '../hooks/getUserLendingPoolData';
+import useUniswapPrice from "../hooks/useUniswapPrice";
 import VaultPositionsBox from "./vaultPositionsBox"
 import MyMargin from "./myMargin"
 import {ethers} from 'ethers'
@@ -20,10 +21,10 @@ const VaultPositions = ({vault}) => {
   const [ assets, setAssets ] = useState([])
   const [ hideEmpty, setHideEmpty ] = useState(false);
   const [ oorVisible, setOorVisible ] = useState(false)
-  const [ price, setPrice] = useState(0)
   const { chainId } = useWeb3React();
   const ADDRESSES = useAddresses();
   const onChange = (e) => { setHideEmpty(!hideEmpty); };
+  const price = useUniswapPrice(vault.uniswapPool, vault.token0.decimals - vault.token1.decimals)
   
   // Vault-level data
   const userAccountData = getUserLendingPoolData(vault.address) 
@@ -39,26 +40,6 @@ const VaultPositions = ({vault}) => {
     { key: 'pnl', title: 'PnL', dataIndex: 'pnl' },
     { key: "action", dataIndex: "action", title: "Action" }
   ]
-  
-  useEffect( () => {
-    const getPrice = async () => {
-      try {
-        var tokenName = vault.name.split('-')[0]
-        if (tokenName == 'WETH') tokenName = 'ETH'
-        // binance US doesnt have GMX
-        //const url = "https://api.binance.us/api/v3/ticker/price?symbol="+tokenName+"USDT"
-        //setPrice(parseFloat(data.data.price))
-        
-        // https://bybit-exchange.github.io/docs/v5/market/index-kline
-        const url = "https://api.bybit.com/v5/market/index-price-kline?category=linear&interval=D&limit=1&symbol="+tokenName+"USDT"
-        const data = await axios.get(url)
-        const result = data.data.result
-        setPrice(result.list[0][4])
-      }
-      catch(e){console.log('getPrice error', e)}
-    }
-    getPrice()
-  }, [])
   
   var assetsList = [
     vault.token0.address,
@@ -77,9 +58,7 @@ const VaultPositions = ({vault}) => {
   return (<div style={{width: '100%'}}>
     <Typography.Title level={2}>Vault {vault.name}</Typography.Title>
     <Typography.Text>
-      Margin Available: ${parseFloat(totalCollateral).toFixed(2)} - Debt: ${parseFloat(totalDebt).toFixed(2)} - 
-      Margin Ratio: <MyMargin value={(100 * parseFloat(totalDebt).toFixed(2) / parseFloat(totalCollateral) / 0.94).toFixed(2)} /> - 
-      Health Factor: {healthFactor > 100 ? <>&infin;</> : parseFloat(healthFactor).toFixed(3)}
+      Price: 1 {vault.name.split('-')[0]} = {price.toFixed(2)} {vault.name.split('-')[1]}
       <Checkbox style={{ float: 'right', marginBottom: 4, marginRight: 24 }} defaultChecked={oorVisible}  onChange={()=>{setOorVisible(!oorVisible)}}>Show Out of Range Vaults</Checkbox>
       <Checkbox style={{ float: 'right', marginBottom: 4, marginRight: 24 }} defaultChecked={hideEmpty}  onChange={onChange}>Hide empty positions</Checkbox>
     </Typography.Text>
