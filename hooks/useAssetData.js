@@ -74,11 +74,12 @@ export default function useAssetData(address, vaultAddress) {
 
   const oracle = usePriceOracle();
   const getPrice = async () => {
+    if(!oracle || !address) return;
     try {
       var data = await oracle.getAssetPrice(address);
       setPrice(ethers.utils.formatUnits(data, 8));
     } catch (e) {
-      console.error;
+      //console.log('get oracle asset price', e, oracle, address);
     }
   };
   getPrice();
