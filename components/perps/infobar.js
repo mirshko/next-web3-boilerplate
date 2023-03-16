@@ -47,7 +47,7 @@ const Infobar = ({vaults, current, selectVault, price }) => {
   return (<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 40 }}>
     <VaultsDropdown selectVault={selectVault} vaults={vaults} currentVault={currentVault} />
     
-    <span style={{ fontSize: 'larger' }}>{price}</span>
+    <span style={{ fontSize: 'larger' }}>{price.toFixed(2)}</span>
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <span style={{ fontSize: 'x-small', color: 'grey' }}>24h Change</span>
       <span style={{ fontSize: 'smaller', color: change > 0 ? green:red }}>{change.toFixed(2)} {changePercent.toFixed(2)}%</span>

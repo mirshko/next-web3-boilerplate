@@ -6,12 +6,12 @@ import Positions from "../components/perps/positions";
 import Infobar from "../components/perps/infobar";
 import Chart from "../components/perps/chart";
 import useAddresses from "../hooks/useAddresses";
+import useUniswapPrice from "../hooks/useUniswapPrice";
 import useCandles from "../hooks/useCandles";
 
 // Display all user assets and positions in all ROE LPs
 const ProtectedPerps = () => {
   const [currentVault, selectVault] = useState(0);
-  const [price, setPrice] = useState(0);
   const [positions, setPositions] = useState([]);
   const [interval, setInterval] = useState("1h");
   const ADDRESSES = useAddresses();
@@ -24,11 +24,7 @@ const ProtectedPerps = () => {
   else if (interval == "1d") intervalBybit = "D";
 
   let candles = useCandles(vaults[currentVault].ohlcUrl + intervalBybit);
-
-  useEffect(() => {
-    if (candles.length > 0)
-      setPrice(parseFloat(candles[candles.length - 1].close).toFixed(2));
-  }, [candles]);
+  let price = useUniswapPrice(vaults[currentVault].uniswapPool, vaults[currentVault].token0.decimals - vaults[currentVault].token1.decimals)
 
   const addPosition = (newPos) => {
     for (let p of positions)
