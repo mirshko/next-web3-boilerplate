@@ -185,7 +185,7 @@
     "lendingPools": [
       {
         "name": "WETH-USDC",
-        "ohlcUrl": "https://api.bybit.com/v5/market/index-price-kline?category=linear&symbol=ETHUSDT&interval=",
+        "ohlcUrl": "https://api.bybit.com/v5/market/kline?category=spot&symbol=ETHUSDC&interval=",
         "address": "0x60b3f0C7709075776C38eC5812C8A1EF9fD522d7",
         "uniswapPool": "0xc31e54c7a869b9fcbecc14363cf510d1c41fa443",
         "poolId": 0,
