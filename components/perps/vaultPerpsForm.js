@@ -89,11 +89,11 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
       ? tokenAmounts.amount1
       : tokenAmounts.amount0;
 
-  const slippage =
+  const expectedEntry =
     (direction == "Long" && strike.price < price) ||
     (direction == "Short" && strike.price > price)
-      ? 0.32
-      : 0;
+      ? price * 0.9965
+      : price;
   const belowMin = parseFloat(inputValue) * asset.oraclePrice < 5;
 
   const openPosition = async () => {
@@ -280,15 +280,14 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
           <span style={{ float: "right" }}>10x</span>
         </div>
         <div style={{ marginTop: 0 }}>
-          Slippage:
+          Expected Entry:
           <span
             style={{
               float: "right",
               cursor: "pointer",
-              color: slippage > 0 ? "#e57673" : undefined,
             }}
           >
-            {slippage}%
+            {(expectedEntry).toFixed(2)}
           </span>
         </div>
         {isSpinning ? (
