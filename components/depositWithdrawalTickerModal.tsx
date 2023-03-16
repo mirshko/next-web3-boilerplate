@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import {
   Modal,
@@ -6,7 +6,6 @@ import {
   Tabs,
   Input,
   Spin,
-  notification,
   Divider,
   Row,
   Col,
@@ -34,6 +33,7 @@ import useAssetData from "../hooks/useAssetData";
 import { useWeb3React } from "@web3-react/core";
 import useTheme from "../hooks/useTheme";
 import useETHBalance from "../hooks/useETHBalance";
+import { useTxNotification } from "../hooks/useTxNotification";
 
 const DepositWithdrawalTickerModal = ({
   asset,
@@ -54,10 +54,9 @@ const DepositWithdrawalTickerModal = ({
   const router = useRouter();
   const { account, chainId } = useWeb3React();
   const ethBalance = useETHBalance(account).data / 1e18;
-  const [api, contextHolder] = notification.useNotification();
-  const openNotification = (type, title, message) => {
-    api[type]({ message: title, description: message });
-  };
+  const [showSuccessNotification, showErrorNotification, contextHolder] =
+    useTxNotification();
+
   const openModal = () => {
     setVisible(true);
   };
@@ -163,12 +162,14 @@ const DepositWithdrawalTickerModal = ({
               ? ethers.utils.parseUnits(inputValue, vault.token1.decimals)
               : 0
           );
+
+          showSuccessNotification(
+            "Assets deposited",
+            "Assets deposited successful",
+            result.hash
+          );
         }
-        openNotification(
-          "success",
-          "Tx Mined",
-          "Assets Successfully Deposited"
-        );
+
         setRunningTx(3);
         //closeModal()
       } else if (action == "Withdraw") {
@@ -199,10 +200,11 @@ const DepositWithdrawalTickerModal = ({
           ethers.utils.parseUnits(inputValue, asset.decimals),
           useEth
         );
-        openNotification(
-          "success",
-          "Tx Mined",
-          "Assets Successfully Withdrawn"
+
+        showSuccessNotification(
+          "Assets withdrawn",
+          "Assets withdrawn successful",
+          result.hash
         );
         setRunningTx(3);
         //closeModal()
@@ -210,9 +212,9 @@ const DepositWithdrawalTickerModal = ({
     } catch (e) {
       setErrorTx(true);
       console.log(e.message);
-      openNotification("error", e.code, e.message);
+      showErrorNotification(e.code, e.message);
     }
-    setInputValue(0);
+    setInputValue("0");
     setSpinning(false);
   };
 
@@ -467,8 +469,13 @@ const DepositWithdrawalTickerModal = ({
             value={inputValue}
             suffix={
               <>
-                <Tag onClick={()=>{setInputValue(assetBal)}} style={{ cursor: 'pointer'}}>
-                  <span style={{fontSize: 'x-small'}}>MAX</span>
+                <Tag
+                  onClick={() => {
+                    setInputValue(assetBal);
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
+                  <span style={{ fontSize: "x-small" }}>MAX</span>
                 </Tag>
                 <img
                   src={action == "Supply" ? underlyingAsset.icon : asset.icon}
