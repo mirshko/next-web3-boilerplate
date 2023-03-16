@@ -118,7 +118,7 @@ const VaultPositionsBox = ({ assetAddress, vault, hideEmpty }) => {
             placement="right"
             title="APR"
             content={
-              <div style={{ width: 200 }}>
+              <div style={{ width: 250 }}>
                 Borrowing Fees:{" "}
                 <span style={{ float: "right" }}>{asset.supplyApr} %</span>
                 <br />
@@ -126,7 +126,7 @@ const VaultPositionsBox = ({ assetAddress, vault, hideEmpty }) => {
                 <br />
                 {asset.feeApr > 0 ? (
                   <>
-                    V3 Fees:{" "}
+                    V3 Fees (24h annualized):{" "}
                     <span style={{ float: "right" }}>{parseFloat(asset.feeApr).toFixed(2)} %</span>
                   </>
                 ) : null}
