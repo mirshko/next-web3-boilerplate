@@ -35,7 +35,7 @@ const usePerpsEventLogs = (tickerAddress, vaultAddress, debt) => {
 
   const [data, setdata] = useState(null);
   // only update debt when a serious change happens, like new position opened, but dont poll every minimal interest accrual
-  const rDebt = Math.round(debt / 20);
+  const rDebt = Math.round(debt / 2);
 
   useEffect(() => {
     const getEvents = async () => {
