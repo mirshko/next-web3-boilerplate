@@ -1,6 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Modal, Button, Tabs, Input, Spin, notification, Checkbox, Divider } from "antd";
+import { Modal, Button, Tabs, Input, Spin, notification, Checkbox, Divider, Tag } from "antd";
 import { UploadOutlined, DownloadOutlined } from "@ant-design/icons";
 import { ethers } from "ethers";
 import useLendingPoolContract from "../hooks/useLendingPoolContract";
@@ -130,7 +130,11 @@ const DepositWithdrawalModal = ({asset, vault, size, isVisible, setVisible}) => 
         <Input type="number" style={{ width: '100%', marginBottom: 20}} min={0} max={assetBal} onChange={(e)=> setInputValue(e.target.value)} 
           key='inputamount'
           value={inputValue}
-          suffix={<><img src={asset.icon} width={18} alt="tokenIcon" />&nbsp;{useEth ? 'ETH' : asset.name}</>}
+          suffix={<>
+            <Tag onClick={()=>{setInputValue(assetBal)}} style={{ cursor: 'pointer'}}><span style={{fontSize: 'x-small'}}>MAX</span></Tag>
+            <img src={asset.icon} width={18} alt="tokenIcon" />&nbsp;{useEth ? 'ETH' : asset.name}
+          </>
+          }
         />
         { asset.name == 'WETH' ? <Checkbox onChange={()=>{ setUseEth(!useEth)}} checked={!useEth} >Use Wrapped ETH</Checkbox> : null }
         

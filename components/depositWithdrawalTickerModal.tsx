@@ -11,6 +11,7 @@ import {
   Row,
   Col,
   Checkbox,
+  Tag,
 } from "antd";
 import {
   UploadOutlined,
@@ -466,6 +467,9 @@ const DepositWithdrawalTickerModal = ({
             value={inputValue}
             suffix={
               <>
+                <Tag onClick={()=>{setInputValue(assetBal)}} style={{ cursor: 'pointer'}}>
+                  <span style={{fontSize: 'x-small'}}>MAX</span>
+                </Tag>
                 <img
                   src={action == "Supply" ? underlyingAsset.icon : asset.icon}
                   width={18}
