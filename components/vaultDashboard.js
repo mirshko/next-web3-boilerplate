@@ -4,7 +4,7 @@ import { Card, Row, Col, Typography, Checkbox, Button } from 'antd';
 import useAddresses from '../hooks/useAddresses';
 import getUserLendingPoolData from '../hooks/getUserLendingPoolData';
 import useUniswapPrice from "../hooks/useUniswapPrice";
-import VaultPositionsBox from "./vaultPositionsBox"
+import VaultPositionsRow from "./vaultPositionsRow"
 import MyMargin from "./myMargin"
 import {ethers} from 'ethers'
 import axios from "axios"
@@ -19,8 +19,7 @@ import axios from "axios"
 */
 const VaultPositions = ({vault}) => {
   const [ assets, setAssets ] = useState([])
-  const [ hideEmpty, setHideEmpty ] = useState(false);
-  const [ oorVisible, setOorVisible ] = useState(false)
+  const [ hideEmpty, setHideEmpty ] = useState(true);
   const { chainId } = useWeb3React();
   const ADDRESSES = useAddresses();
   const onChange = (e) => { setHideEmpty(!hideEmpty); };
@@ -42,15 +41,15 @@ const VaultPositions = ({vault}) => {
   ]
   
   var assetsList = [
-    //vault.token0.address,
-    //vault.token1.address,
+    vault.token0.address,
+    vault.token1.address,
     //vault.lpToken.address,
   ]
   //for (let r of vault.ranges) assetsList.push(r['address'])
   for (let r of vault.ticks) {
     // TODO: better definition
     let step = (vault.name == 'WETH-USDC') ? 100 : 5 // 100 step for weth, 5 step for gmx
-    if ( oorVisible || price == 0 || Math.abs(price - parseFloat(r.price)) < 2*step ) assetsList.push(r['address'])
+    assetsList.push(r['address'])
   }
   
   var orderedList = []
@@ -58,16 +57,24 @@ const VaultPositions = ({vault}) => {
   return (<div style={{width: '100%'}}>
     <Typography.Title level={2}>Vault {vault.name}</Typography.Title>
     <Typography.Text>
-      Price: 1 {vault.name.split('-')[0]} = {price.toFixed(2)} {vault.name.split('-')[1]}
-      <Checkbox style={{ float: 'right', marginBottom: 4, marginRight: 24 }} defaultChecked={oorVisible}  onChange={()=>{setOorVisible(!oorVisible)}}>Show Out of Range Vaults</Checkbox>
+      Price: 1 {vault.name.split('-')[0]} = {price.toFixed(2)} {vault.name.split('-')[1]}<br />
+      Margin Available: ${parseFloat(totalCollateral).toFixed(2)} - Debt: ${parseFloat(totalDebt).toFixed(2)} - 
+      Margin Ratio: <MyMargin value={(100 * parseFloat(totalDebt).toFixed(2) / parseFloat(totalCollateral) / 0.94).toFixed(2)} /> - 
+      Health Factor: {healthFactor > 100 ? <>&infin;</> : parseFloat(healthFactor).toFixed(3)}
       <Checkbox style={{ float: 'right', marginBottom: 4, marginRight: 24 }} defaultChecked={hideEmpty}  onChange={onChange}>Hide empty positions</Checkbox>
     </Typography.Text>
-    
-    <Row gutter={24} style={{ width: '100%', marginTop: 12}}>
-      {
-        assetsList.map((assetAddress)=> <VaultPositionsBox assetAddress={assetAddress} vault={vault} hideEmpty={hideEmpty} key={assetAddress} />)
-      }
-    </Row>
+    <Card style={{borderWidth: 0}} bodyStyle={{padding: 0}}>
+      <table>
+        <thead>
+          <tr><th>Asset</th><th>Balance</th><th>APR</th><th>Actions</th> <th>Debt</th><th>Debt APR</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+        {
+          assetsList.map((assetAddress)=> <VaultPositionsRow assetAddress={assetAddress} vault={vault} hideEmpty={hideEmpty} key={assetAddress} />)
+        }
+        </tbody>
+      </table>
+    </Card>
   </div>)
 }
 

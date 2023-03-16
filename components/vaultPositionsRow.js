@@ -28,6 +28,7 @@ import { ethers } from "ethers";
 */
 const VaultPositionsRow = ({ assetAddress, vault, hideEmpty }) => {
   const [assets, setAssets] = useState([]);
+  const [isModalVisible, setModalVisible] = useState(false);
   const ADDRESSES = useAddresses();
   const asset = useAssetData(assetAddress, vault.address);
 
@@ -41,164 +42,57 @@ const VaultPositionsRow = ({ assetAddress, vault, hideEmpty }) => {
   ];
 
   if (asset.type == "single")
+    asset.depositedAction = (<>
+      <DepositWithdrawalModal
+        asset={asset}
+        vault={vault}
+        setVisible={setModalVisible}
+        isVisible={isModalVisible}
+      />
+      <Button size="small" onClick={()=>{setModalVisible(true)}}>
+        Deposit / Withdraw
+      </Button>
+    </>
+    );
+  else if (asset.type == "ticker") {
     asset.depositedAction = (
-      <DepositWithdrawalModal asset={asset} size="small" lendingPool={vault} />
-    );
-  else if (asset.type == "lpv2") {
-    asset.depositedAction = (
-      <>
-        <Button size="small" type="primary" href={"/ranger/" + vault.address}>
-          Farm {vault.name}
-        </Button>
-        &nbsp;
-        <CloseDebt asset={asset} type="closeV2" vault={vault} />
-      </>
-    );
-    asset.debtAction = (
-      <>
-        <Button
-          type="primary"
-          size="small"
-          href={"/cds?vault=" + vault.address + "&asset=" + asset.address}
-        >
-          Buy CDS
-        </Button>
-        &nbsp;
-        <CloseDebt asset={asset} type="closeV2longg" vault={vault} />
-      </>
-    );
-  } else if (asset.type == "ranger") {
-    asset.depositedAction = (
-      <>
-        <Button size="small" type="primary" href={"/ranger/" + vault.address}>
-          Farm {vault.name}
-        </Button>
-        &nbsp;
-        <CloseDebt asset={asset} type="closeRange" vault={vault} />
-      </>
-    );
-    asset.debtAction = (
-      <>
-        <CloseTrPositionButton
-          address={assetAddress}
-          vault={vault}
-          opmAddress={ADDRESSES["optionsPositionManager"]}
-        />
-      </>
-    );
-  } else if (asset.type == "ticker") {
-    asset.depositedAction = (
+    <>
       <DepositWithdrawalTickerModal
         asset={asset}
-        size="small"
         vault={vault}
         opmAddress={ADDRESSES["optionsPositionManager"]}
+        setVisible={setModalVisible}
+        isVisible={isModalVisible}
       />
+      <Button size="small" onClick={()=>{setModalVisible(true)}}>
+        Deposit / Withdraw
+      </Button>
+    </>
     );
     asset.debtAction = (
       <>
-        <Button size="small" type="primary" href={"/protectedperps/"}>
+        <Button size="small" href={"/protectedperps/"}>
           Protected Perps
         </Button>
-        &nbsp;
-        <CloseTrPositionButton
-          address={assetAddress}
-          vault={vault}
-          opmAddress={ADDRESSES["optionsPositionManager"]}
-        />
       </>
     );
   }
 
-  return (
-    <Col md={6} xs={24} style={{ marginBottom: 24 }}>
-      <Card
-        onClick={() => {}}
-        bodyStyle={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <img src={asset.icon} height={24} alt={asset.name.toLowerCase()} />
-          <span
-            style={{ fontSize: "large", fontWeight: "bold", marginLeft: 8 }}
-          >
-            {asset.name}
-          </span>
-          <br /> <br />
+  return (<>
+    <tr>
+      <td>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          <img src={asset.icon} height={24} alt={asset.name.toLowerCase()} />&nbsp;
+          {asset.name}
         </div>
-
-        <Tooltip
-          placement="right"
-          title={
-            <>
-              ROE APR: {asset.supplyApr}%<br />
-              {asset.feeApr > 0 ? <>v3 APR: {asset.feeApr}%</> : null}
-            </>
-          }
-        >
-          <div
-            style={{
-              width: "100%",
-              backgroundColor: "#444",
-              display: "flex",
-              justifyContent: "center",
-              padding: 8,
-              marginTop: 8,
-              marginBottom: 8,
-            }}
-          >
-            <span
-              style={{
-                textDecoration: "underline #ccc dotted",
-                fontSize: "large",
-              }}
-            >
-              APR{" "}
-              {(parseFloat(asset.supplyApr) + parseFloat(asset.feeApr)).toFixed(
-                2
-              )}{" "}
-              %
-            </span>
-          </div>
-        </Tooltip>
-
-        <Row style={{ width: "100%", marginBottom: 24 }}>
-          <Col span={12}>
-            <span style={{ fontSize: "smaller", fontWeight: "bold" }}>TVL</span>
-            <br />
-            {asset.deposited == 0 ? (
-              <>0</>
-            ) : (
-              parseFloat(asset.deposited).toFixed(6)
-            )}
-          </Col>
-          <Col span={12}>
-            <span style={{ fontSize: "smaller", fontWeight: "bold" }}>
-              My Assets
-            </span>
-            <br />
-            {asset.deposited == 0 ? (
-              <>0</>
-            ) : (
-              parseFloat(asset.deposited).toFixed(6)
-            )}
-          </Col>
-        </Row>
-
-        <>{asset.depositedAction}</>
-      </Card>
-    </Col>
-  );
+      </td>
+      <td>{asset.deposited == 0 ? <>0</> : parseFloat(asset.deposited).toFixed(6)}</td>
+      <td>{(parseFloat(asset.supplyApr) + parseFloat(asset.feeApr)).toFixed(2)} %</td>
+      <td>{asset.depositedAction}</td>
+      <td>{asset.debt == 0 ? <>0</> : parseFloat(asset.debt).toFixed(6)}</td>
+      <td>{asset.debtApr} %</td>
+      <td>{asset.debtAction}</td>
+  </tr></>)
 };
 
 export default VaultPositionsRow;

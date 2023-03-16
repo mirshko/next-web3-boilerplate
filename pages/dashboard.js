@@ -1,5 +1,5 @@
 import { Col, Row, Button, Card, Input, Slider, Typography, Spin, Tooltip } from 'antd';
-import VaultPositions from "../components/vaultPositions"
+import VaultDashboard from "../components/vaultDashboard"
 import useAddresses from '../hooks/useAddresses';
 
 
@@ -9,12 +9,8 @@ const Dashboard = ({}) => {
   let vaults = ADDRESSES['lendingPools'];
   
   return (<div style={{ minWidth: 1200 }}>
-    <Typography.Title>
-      Dashboard
-    </Typography.Title>
-    
     {
-      vaults.map((vault) => {return <VaultPositions vault={vault} key={vault.name} />})
+      vaults.map((vault) => {return <VaultDashboard vault={vault} key={vault.name} />})
     }
   </div>);
   
