@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Input, Divider, Spin, notification, Slider } from "antd";
+import { Button, Input, Divider, Spin, Slider } from "antd";
 import useAssetData from "../../hooks/useAssetData";
 import getUserLendingPoolData from "../../hooks/getUserLendingPoolData";
 import useUnderlyingAmount from "../../hooks/useUnderlyingAmount";
@@ -11,6 +11,7 @@ import PayoutChart from "./payoutChart";
 import MyMargin from "../myMargin";
 import { ethers } from "ethers";
 import { useWeb3React } from "@web3-react/core";
+import { useTxNotification } from "../../hooks/useTxNotification";
 
 const VaultPerpsForm = ({ vault, price, opmAddress }) => {
   const [isVisibleMargin0, setVisibleMargin0] = useState(false);
@@ -22,13 +23,11 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
   const [upperStrike, setUpperStrike] = useState({});
   const [direction, setDirection] = useState("Long");
   const { account, chainId } = useWeb3React();
-  const [api, contextHolder] = notification.useNotification();
-  const openNotification = (type, title, message) => {
-    api[type]({ message: title, description: message });
-  };
   const [isSpinning, setSpinning] = useState(false);
   const [inputValue, setInputValue] = useState("0");
   const [leverage, setLeverage] = useState(0);
+  const [showSuccessNotification, showErrorNotification, contextHolder] =
+    useTxNotification();
 
   const lpContract = useLendingPoolContract(vault.address);
   //const opm = useOptionsPositionManager(opmAddress)
@@ -134,7 +133,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
         params,
         0
       );
-      let res = await lpContract.flashLoan(
+      const { hash } = await lpContract.flashLoan(
         opmAddress,
         [strike.address],
         [tickerAmount],
@@ -143,10 +142,15 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
         params,
         0
       );
-      openNotification("success", "Tx Sent", "Tx mined");
+
+      showSuccessNotification(
+        "Position opened",
+        "Position opened successful",
+        hash
+      );
     } catch (e) {
       console.log("Error opening position", e.message);
-      openNotification("error", e.code, e.message);
+      showErrorNotification(e.code, e.message);
     }
     setSpinning(false);
   };
@@ -186,6 +190,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
 
   return (
     <div>
+      {contextHolder}
       <Button
         type={direction == "Long" ? "primary" : "default"}
         style={{ width: "50%", textAlign: "center" }}
@@ -287,7 +292,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
               cursor: "pointer",
             }}
           >
-            {(expectedEntry).toFixed(2)}
+            {expectedEntry.toFixed(2)}
           </span>
         </div>
         {isSpinning ? (

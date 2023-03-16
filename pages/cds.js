@@ -1,17 +1,14 @@
 import { useWeb3React } from "@web3-react/core";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Col,
   Row,
   Button,
   Card,
   Input,
-  Slider,
   Typography,
-  Spin,
   Tooltip,
   Divider,
-  notification,
 } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import Link from "next/link";
@@ -28,6 +25,7 @@ import getUserLendingPoolData from "../hooks/getUserLendingPoolData";
 import useLendingPoolContract from "../hooks/useLendingPoolContract";
 import useLonggPositionManager from "../hooks/useLonggPositionManager";
 import { ethers } from "ethers";
+import { useTxNotification } from "../hooks/useTxNotification";
 
 function CDS() {
   const { account } = useWeb3React();
@@ -45,10 +43,9 @@ function CDS() {
   const onChangeLeverage = (newVal) => {
     setLeverage(newVal);
   };
-  const [api, contextHolder] = notification.useNotification();
-  const openNotification = (type, title, message) => {
-    api[type]({ message: title, description: message });
-  };
+
+  const [showSuccessNotification, showErrorNotification, contextHolder] =
+    useTxNotification();
 
   const vaultAddresses = useAddresses(lpAddress);
   const lendingPool =
@@ -122,7 +119,8 @@ function CDS() {
         params,
         0
       );
-      let res = await lpContract.flashLoan(
+
+      const { hash } = await lpContract.flashLoan(
         lpm.address,
         [cdsAsset.address],
         [ethers.utils.parseUnits(parseFloat(inputValue).toFixed(18), 18)],
@@ -131,10 +129,15 @@ function CDS() {
         params,
         0
       );
-      openNotification("success", "Tx Sent", "Longg Position Opened");
+
+      showSuccessNotification(
+        "Position opened",
+        "Position opened successful",
+        hash
+      );
     } catch (e) {
       console.log("longg error", e);
-      openNotification("error", e.code, e.message);
+      showErrorNotification(e.code, e.message);
     }
   };
 

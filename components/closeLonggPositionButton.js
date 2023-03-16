@@ -1,19 +1,19 @@
-import { useState } from 'react'
-import { Button, notification, Spin } from 'antd'
+import { useState } from "react";
+import { Button, Spin } from "antd";
 import useLonggPositionManager from "../hooks/useLonggPositionManager";
 import { useWeb3React } from "@web3-react/core";
-import {ethers} from 'ethers'
- 
+import { ethers } from "ethers";
+import { useTxNotification } from "../hooks/useTxNotification";
 
-const CloseLonggPositionButton = ({address, vault}) => {
+const CloseLonggPositionButton = ({ address, vault }) => {
   const { account } = useWeb3React();
   const [isSpinning, setSpinning] = useState(false);
-  const [api, contextHolder] = notification.useNotification();
-  const openNotification = (type, title, message) => { api[type]({message: title, description: message }); }
-  const lpm = useLonggPositionManager() 
-  
-   const closePosition = async ()  => {
-    setSpinning(true)
+  const [showSuccessNotification, showErrorNotification, contextHolder] =
+    useTxNotification();
+  const lpm = useLonggPositionManager();
+
+  const closePosition = async () => {
+    setSpinning(true);
     try {
       /*
         function close(
@@ -22,26 +22,46 @@ const CloseLonggPositionButton = ({address, vault}) => {
           uint repayAmount, 
           address remainingAsset
         ) */
-        console.log(vault.poolId, account, address, 0, ethers.constants.AddressZero)
-      let res = await lpm.close(vault.poolId, address, 0, ethers.constants.AddressZero )
-      console.log('closedPos', res)
-      openNotification("success", "Tx Sent", "Tx mined")
+      console.log(
+        vault.poolId,
+        account,
+        address,
+        0,
+        ethers.constants.AddressZero
+      );
+      const { hash } = await lpm.close(
+        vault.poolId,
+        address,
+        0,
+        ethers.constants.AddressZero
+      );
+
+      console.log("closedPos", res);
+
+      showSuccessNotification(
+        "Position closed",
+        "Position closed successful",
+        hash
+      );
+    } catch (e) {
+      console.log("Error closing position", e.message);
+      showErrorNotification(e.code, e.message);
     }
-    catch(e){
-      console.log('Error closing position', e.message)
-      openNotification("error", e.code, e.message)
-    }
-    setSpinning(false)
-  }
-  
+    setSpinning(false);
+  };
+
   return (
     <>
       {contextHolder}
-      { isSpinning ? <Spin /> : <Button size="small" onClick={closePosition}>Close</Button> }
+      {isSpinning ? (
+        <Spin />
+      ) : (
+        <Button size="small" onClick={closePosition}>
+          Close
+        </Button>
+      )}
     </>
-  )
-
-}
-
+  );
+};
 
 export default CloseLonggPositionButton;
