@@ -73,15 +73,13 @@ const DepositWithdrawalTickerModal = ({
     tokenAmountsExcludingFees.amount0 > 0
       ? vault.token0.address
       : vault.token1.address,
-    vault.address,
-    oracleAddress
+    vault.address
   );
   const otherAsset = useAssetData(
     tokenAmountsExcludingFees.amount0 > 0
       ? vault.token1.address
       : vault.token0.address,
-    vault.address,
-    oracleAddress
+    vault.address
   );
   const assetContract = useTokenContract(asset.address);
   const roeAssetContract = useTokenContract(asset.roeAddress);

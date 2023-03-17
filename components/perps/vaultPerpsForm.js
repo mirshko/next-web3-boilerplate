@@ -61,16 +61,19 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
         0.94
       : 0;
 
-  const strikeAsset = useAssetData(strike.address);
+  // const strikeAsset = useAssetData(strike.address);
   const quoteAsset = useAssetData(
     vault.name.split("-")[0] == vault.token0.name
       ? vault.token0.address
-      : vault.token1.address
+      : vault.token1.address,
+    vault.address
   );
+
   const baseAsset = useAssetData(
     vault.name.split("-")[1] == vault.token0.name
       ? vault.token0.address
-      : vault.token1.address
+      : vault.token1.address,
+    vault.address
   );
   const { tokenAmounts, tokenAmountsExcludingFees, totalSupply } =
     useUnderlyingAmount(strike.address, vault);

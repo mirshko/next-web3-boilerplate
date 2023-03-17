@@ -24,7 +24,10 @@ const ProtectedPerps = () => {
   else if (interval == "1d") intervalBybit = "D";
 
   let candles = useCandles(vaults[currentVault].ohlcUrl + intervalBybit);
-  let price = useUniswapPrice(vaults[currentVault].uniswapPool, vaults[currentVault].token0.decimals - vaults[currentVault].token1.decimals)
+  let price = useUniswapPrice(
+    vaults[currentVault].uniswapPool,
+    vaults[currentVault].token0.decimals - vaults[currentVault].token1.decimals
+  );
 
   const addPosition = (newPos) => {
     for (let p of positions)
@@ -60,10 +63,15 @@ const ProtectedPerps = () => {
           />
         </Card>
         <Card style={{ marginLeft: 24, marginTop: 24, minWidth: 300 }}>
-          Above the strike-in, your PnL behaves like regular perps; below, your
-          PnL stays at 0, cannot be negative, and you only pay funding.
+          Regardless if you long or short the asset, the max loss is always the
+          activation price selected while the max gains are uncapped. The main
+          risk is paying the hourly funding rate to maintain your position.
           <br />
-          <Button style={{ float: "right" }} disabled>
+          <Button
+            href="https://goodentry.io/academy"
+            target="_blank"
+            style={{ marginTop: "10px" }}
+          >
             More Details &rarr;
           </Button>
         </Card>
