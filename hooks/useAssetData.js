@@ -56,12 +56,12 @@ export default function useAssetData(address, vaultAddress) {
   // aprReported = (24hApr * 1day + (positionAgeInDays - 1) * previousAprReported )/ positionAgeInDays
   // -> 24hrApr = aprReported * positionAge - (positionAge-1) * previousAprReported
   // but here we dont havea  full day, just the last 23h, that will do (=0.958d)
-  const feeApr = rangeData.apr 
+  const feeApr = rangeData.apr;
   asset = {
     supplyApr: supplyRate,
     feeApr: feeApr,
     debtApr: variableRate,
-    wallet: 0, 
+    wallet: 0,
     deposited: 0,
     debt: debt,
     tvl: totalSupply * price,
@@ -74,7 +74,7 @@ export default function useAssetData(address, vaultAddress) {
 
   const oracle = usePriceOracle();
   const getPrice = async () => {
-    if(!oracle || !address) return;
+    if (!oracle || !address) return;
     try {
       var data = await oracle.getAssetPrice(address);
       setPrice(ethers.utils.formatUnits(data, 8));
@@ -143,7 +143,7 @@ export default function useAssetData(address, vaultAddress) {
     const { data } = useTokenBalance(account, asset.address);
     asset.wallet = ethers.utils.formatUnits(data ?? 0, asset.decimals) ?? 0;
   }
-  asset.depositedValue = asset.deposited / asset.totalSupply * asset.tvl
+  asset.depositedValue = (asset.deposited / asset.totalSupply) * asset.tvl;
 
   return asset;
 }

@@ -1,5 +1,4 @@
 import { Button, Dropdown } from "antd";
-import { SelectOutlined } from "@ant-design/icons";
 import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError } from "@web3-react/injected-connector";
 import { useEffect, useState } from "react";
@@ -45,10 +44,9 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
           target={"_blank"}
           rel={"noopener noreferrer"}
         >
-          Account
+          Account &rarr;
         </a>
       ),
-      icon: <SelectOutlined rotate={90} />,
     },
     { key: "disconnect", label: "Disconnect" },
   ];
