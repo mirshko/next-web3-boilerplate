@@ -43,7 +43,7 @@ export default function useAssetData(address, vaultAddress) {
         if (address == k.address) {
           asset = {
             type: "ticker",
-            name: "Tick-" + k.price,
+            name: "geVault-" + k.price,
             icon: "/icons/" + lp.name.toLowerCase() + ".svg",
             ...k,
           };
