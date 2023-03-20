@@ -27,6 +27,7 @@
     "logrocket": "^3.0.1",
     "logrocket-react": "^5.0.1",
     "next": "^13.1.6",
+    "next-password-protect": "^1.8.0",
     "react": "18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
