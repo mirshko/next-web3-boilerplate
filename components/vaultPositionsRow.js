@@ -86,12 +86,9 @@ const VaultPositionsRow = ({ assetAddress, vault, hideEmpty }) => {
           {asset.name}
         </div>
       </td>
-      <td>{asset.deposited == 0 ? <>0</> : parseFloat(asset.deposited).toFixed(6)}</td>
-      <td>{(parseFloat(asset.supplyApr) + parseFloat(asset.feeApr)).toFixed(2)} %</td>
-      <td>{asset.depositedAction}</td>
-      <td>{asset.debt == 0 ? <>0</> : parseFloat(asset.debt).toFixed(6)}</td>
-      <td>{asset.debtApr} %</td>
-      <td>{asset.debtAction}</td>
+      <td align="right">{asset.deposited == 0 ? <>0</> : parseFloat(asset.deposited).toFixed(6)}</td>
+      <td align="right">{(parseFloat(asset.supplyApr) + parseFloat(asset.feeApr)).toFixed(2)} %</td>
+      <td align="right">{asset.depositedAction}</td>
   </tr></>)
 };
 

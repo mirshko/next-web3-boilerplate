@@ -93,11 +93,9 @@ const VaultPositions = ({ vault }) => {
           <thead>
             <tr>
               <th>Asset</th>
-              <th>Balance</th>
-              <th>APR</th>
-              <th>Actions</th> <th>Debt</th>
-              <th>Debt APR</th>
-              <th>Actions</th>
+              <th align="right">Balance</th>
+              <th align="right">APR</th>
+              <th align="right">Actions</th>
             </tr>
           </thead>
           <tbody>
