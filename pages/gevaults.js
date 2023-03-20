@@ -1,14 +1,4 @@
-import {
-  Col,
-  Row,
-  Button,
-  Card,
-  Input,
-  Slider,
-  Typography,
-  Spin,
-  Tooltip,
-} from "antd";
+import { Button, Card } from "antd";
 import VaultPositions from "../components/vaultPositions";
 import useAddresses from "../hooks/useAddresses";
 
