@@ -328,7 +328,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
         <span>
           Margin Available:{" "}
           <span style={{ float: "right" }}>
-            ${parseFloat(10 * availableCollateral).toFixed(2)}
+            ${parseFloat(10 * availableCollateral).toFixed(2)} / {parseFloat(10*availableCollateral/quoteAsset.oraclePrice).toFixed(3)} {quoteAsset.name}
           </span>
         </span>
         <span>
