@@ -1,5 +1,5 @@
 import { passwordCheckHandler } from "next-password-protect";
 
-export default passwordCheckHandler(process.env.STAGING_PASSWORD, {
+export default passwordCheckHandler(process.env.PRODUCTION_PASSWORD, {
   cookieName: "authorization",
 });

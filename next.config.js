@@ -12,6 +12,6 @@ module.exports = {
   },
   env: {
     PASSWORD_PROTECT: process.env.NODE_ENV === "production",
-    STAGING_PASSWORD: "goodentry888!",
+    PRODUCTION_PASSWORD: "GoodEntry69420",
   },
 };
