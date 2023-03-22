@@ -188,7 +188,7 @@
         "ohlcUrl": "https://api.bybit.com/v5/market/kline?category=spot&symbol=ETHUSDC&interval=",
         "address": "0x1259F436D981c1DA8b279205b5dc405B1f6Bf80b",
         "uniswapPool": "0xc31e54c7a869b9fcbecc14363cf510d1c41fa443",
-        "poolId": 0,
+        "poolId": 10,
         "tvl": "95k",
         "rangeManager": "0x172EE56600B2Df3fDBFCC3e2F968E60a333dc3C4",
         "ranges": [
@@ -297,7 +297,7 @@
         "ohlcUrl": "https://api.bybit.com/v5/market/index-price-kline?category=linear&symbol=GMXUSDT&interval=",
         "address": "0x79835a8538f111dD5C226b242afa346FF633E5D4",
         "uniswapPool": "0xbed2589fefae17d62a8a4fdac92fa5895cae90d2",
-        "poolId": 2,
+        "poolId": 12,
         "tvl": "45k",
         "rangeManager": "0xC2Bd913A49017E62Eb21976071367028C4f8f5bd",
         "ranges": [
