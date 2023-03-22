@@ -189,7 +189,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
     openPositionButtonErrorTitle = "Enter an Amount";
   } else if (parseFloat(inputValue) > maxOI) {
     openPositionButtonErrorTitle = "Max Borrowable Reached";
-  } else if (parseFloat(inputValue) > availableCollateral) {
+  } else if (parseFloat(inputValue) > availableCollateral * 10) {
     openPositionButtonErrorTitle = "Not Enough Margin";
   } else if (belowMin) {
     openPositionButtonErrorTitle = "Amount too Low";
