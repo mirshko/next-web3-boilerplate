@@ -81,7 +81,6 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
 
   const lowerStrikeAsset = useAssetData(lowerStrike.address, vault.address);
   const upperStrikeAsset = useAssetData(upperStrike.address, vault.address);
-  console.log('uppp', upperStrike, upperStrikeAsset)
 
   let asset = tokenAmountsExcludingFees.amount0 == 0 ? baseAsset : quoteAsset;
   let tokenTraded =
