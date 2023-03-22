@@ -1,15 +1,17 @@
 import React from "react";
 import { Card, Tooltip, Spin } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
+import { useWeb3React } from "@web3-react/core";
 import PositionsRow from "./positionsRow";
 
 // show all positions
 // unlike the rest, it should show positions from other pools as well
 const Positions = ({ vaults, positions, addPosition, price }) => {
+  const { account} = useWeb3React();
   return (
     <Card style={{ marginTop: 24 }}>
       <strong>Positions</strong>
-      {price > 0 ? (
+      { !account || price > 0 ? (
         <table>
           <thead>
             <tr>
