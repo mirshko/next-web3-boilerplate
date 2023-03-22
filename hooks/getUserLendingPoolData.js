@@ -12,15 +12,15 @@ export default function getUserLendingPoolData(vault) {
 
   const getData = async () => {
     try {
-      if(!lendingPool) return;
+      if(!lendingPool || !account) return;
       var data = await lendingPool.getUserAccountData(account)
       setUserData(data);
-    } catch(e){console.log('err getUserAcountData',e)}
+    } catch(e){console.log('err getUserAcountData', account, e)}
   }
 
   useEffect(() => {
     getData()
-  }, [lendingPool])
+  }, [lendingPool, account])
   
   
   return userData;
