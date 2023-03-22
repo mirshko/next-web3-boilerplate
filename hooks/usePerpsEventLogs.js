@@ -36,11 +36,13 @@ const usePerpsEventLogs = (tickerAddress, vaultAddress, debt) => {
   const [data, setdata] = useState(null);
   // only update debt when a serious change happens, like new position opened, but dont poll every minimal interest accrual
   const rDebt = Math.round(debt / 2);
+  const delay = ms => new Promise(res => setTimeout(res, ms));
 
   useEffect(() => {
     const getEvents = async () => {
       try {
         var eventsBuy = await axios.get(url + "&topic0=" + topicBuy);
+        await delay(1200)
         var eventsSell = await axios.get(url + "&topic0=" + topicClose);
         // to know the total opened, we need to loop over all the BuyOptions tx since last ClosePosition (no partial close) -> concat and order
         var events = eventsBuy.data.result
