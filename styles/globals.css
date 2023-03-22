@@ -30,6 +30,7 @@ tr {
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 4;
+  background-color: rgba(54, 54, 58, 1);
 }
 .dropdownPerp:hover .dropdownPerp-content {
   display: block;

@@ -97,7 +97,7 @@ function Chart({setPrice, width, height, interval, setInterval, positions, candl
 
   return (
     <Card>
-    <Radio.Group value={interval} onChange={(e) => setInterval(e.target.value)} style={{ marginBottom: 0, backgroundColor: token.colorBgContainer, zIndex: 3 }}
+    <Radio.Group value={interval} onChange={(e) => setInterval(e.target.value)} style={{ marginBottom: 0, backgroundColor: 'rgba(54, 54, 58, 1)', zIndex: 3 }}
       className='intervalButtons'
     >
       <Radio.Button value="15m">15m</Radio.Button>
