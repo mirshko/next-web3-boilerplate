@@ -40,6 +40,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
     userAccountData.availableBorrowsETH ?? 0,
     8
   );
+  
   var totalCollateral = ethers.utils.formatUnits(
     userAccountData.totalCollateralETH ?? 0,
     8
@@ -80,6 +81,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
 
   const lowerStrikeAsset = useAssetData(lowerStrike.address, vault.address);
   const upperStrikeAsset = useAssetData(upperStrike.address, vault.address);
+  console.log('uppp', upperStrike, upperStrikeAsset)
 
   let asset = tokenAmountsExcludingFees.amount0 == 0 ? baseAsset : quoteAsset;
   let tokenTraded =
@@ -227,7 +229,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
           Activation Price<span style={{ float: "right" }}>Hourly Funding</span>
         </div>
         <div>
-          {price > 0 ? (
+          {!account || price > 0 ? (
             <>
               {upperStrike.address && upperStrikeAsset.price > 0 ? (
                 <VaultPerpsStrikes
@@ -328,7 +330,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
         <span>
           Margin Available:{" "}
           <span style={{ float: "right" }}>
-            ${parseFloat(10 * availableCollateral).toFixed(2)} / {parseFloat(10*availableCollateral/quoteAsset.oraclePrice).toFixed(3)} {quoteAsset.name}
+            ${parseFloat(10 * availableCollateral).toFixed(2)} / {parseFloat(10*availableCollateral/(quoteAsset.oraclePrice?quoteAsset.oraclePrice:1)).toFixed(3)} {quoteAsset.name}
           </span>
         </span>
         <span>
