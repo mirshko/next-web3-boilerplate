@@ -178,7 +178,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
     isSpinning ||
     parseFloat(inputValue) == 0 ||
     parseFloat(inputValue) > maxOI ||
-    parseFloat(inputValue) > availableCollateral ||
+    parseFloat(inputValue) > availableCollateral * 10 ||
     belowMin;
 
   let openPositionButtonErrorTitle = "...";
