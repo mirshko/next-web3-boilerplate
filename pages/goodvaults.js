@@ -3,14 +3,14 @@ import GeVaultBox from "../components/geVaultBox";
 import useAddresses from "../hooks/useAddresses";
 
 // Display all user assets and positions in all ROE LPs
-const GeVaults = ({}) => {
+const GoodVaults = ({}) => {
   const ADDRESSES = useAddresses();
   let vaults = ADDRESSES["lendingPools"];
 
   return (
     <div style={{ minWidth: 1200 }}>
       <Card>
-        GoodEntry Vaults (GEVaults) aggregate and automatically rebalance liquidity.
+        Good Vaults aggregate and automatically rebalance liquidity.
         <br />
         <Button
           href="https://goodentry.io/academy"
@@ -29,4 +29,4 @@ const GeVaults = ({}) => {
   );
 };
 
-export default GeVaults;
+export default GoodVaults;
