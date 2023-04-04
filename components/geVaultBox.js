@@ -35,9 +35,6 @@ const GeVaultBox = ({ vault }) => {
       onClick={()=>{router.push("/vaults/"+vault.name)}}
     >
       <Card
-        onClick={() => {
-          setModalVisible(true);
-        }}
         bodyStyle={{
           display: "flex",
           flexDirection: "column",
