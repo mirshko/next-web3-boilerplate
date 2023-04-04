@@ -1,5 +1,5 @@
 import { Button, Card, Row } from "antd";
-import GeVault from "../components/geVault";
+import GeVaultBox from "../components/geVaultBox";
 import useAddresses from "../hooks/useAddresses";
 
 // Display all user assets and positions in all ROE LPs
@@ -22,7 +22,7 @@ const GeVaults = ({}) => {
       </Card>
       <Row gutter={24} style={{ marginTop: 24 }}>
         {vaults.map((vault) => {
-          return <GeVault vault={vault} key={vault.name} />;
+          return <GeVaultBox vault={vault} key={vault.name} />;
         })}
       </Row>
     </div>
