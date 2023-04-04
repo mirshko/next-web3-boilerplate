@@ -1,0 +1,32 @@
+import { Button, Card, Row } from "antd";
+import GeVault from "../components/geVault";
+import useAddresses from "../hooks/useAddresses";
+
+// Display all user assets and positions in all ROE LPs
+const GeVaults = ({}) => {
+  const ADDRESSES = useAddresses();
+  let vaults = ADDRESSES["lendingPools"];
+
+  return (
+    <div style={{ minWidth: 1200 }}>
+      <Card>
+        GoodEntry Vaults (GEVaults) aggregate and automatically rebalance liquidity.
+        <br />
+        <Button
+          href="https://goodentry.io/academy"
+          target="_blank"
+          style={{ marginTop: "10px" }}
+        >
+          More Details &rarr;
+        </Button>
+      </Card>
+      <Row gutter={24} style={{ marginTop: 24 }}>
+        {vaults.map((vault) => {
+          return <GeVault vault={vault} key={vault.name} />;
+        })}
+      </Row>
+    </div>
+  );
+};
+
+export default GeVaults;

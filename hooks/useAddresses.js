@@ -18,7 +18,7 @@ export default function useAddresses(pool) {
   if (pool) {
     let lp = [];
     for (let k = 0; k < chainAddresses["lendingPools"].length; k++) {
-      if (chainAddresses["lendingPools"][k].address == pool) {
+      if (chainAddresses["lendingPools"][k].address == pool || chainAddresses["lendingPools"][k].name == pool) {
         lp = [chainAddresses["lendingPools"][k]];
         break;
       }
