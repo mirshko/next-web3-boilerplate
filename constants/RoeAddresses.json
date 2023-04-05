@@ -301,6 +301,7 @@
         "poolId": 12,
         "tvl": "45k",
         "rangeManager": "0xC2Bd913A49017E62Eb21976071367028C4f8f5bd",
+        "geVault": "0x10ca4492b9A4b74964C9b4763B87eFD0689aB0bE",
         "ranges": [
           {
             "address": "0xc8d9fBc9907D1E1c808e26BF38a05A4d88683A46",
@@ -392,6 +393,206 @@
           "address": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
           "roeAddress": "0x908194859F95BFc2384f23e541f73fE68Cd615f2",
           "debtAddress": "0xEb0aefC0bbfa27eE85256d534bCF3AbDc972648C",
+          "decimals": 6
+        },
+        "lpToken": {
+          "name": "SushiSwap GMX-USDC SLP",
+          "address": "0xB2FA688396F35c93Ba4f054866eF8527902fec07",
+          "roeAddress": "0x7FCAA02131342e5b37363a71e9F75a62bb08B0f5",
+          "debtAddress": "0x974F906419b1922A0c686dCE68291A360652126f",
+          "ammRouter": "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506"
+        }
+      },
+      {
+        "name": "ARB-USDC",
+        "ohlcUrl": "https://api.bybit.com/v5/market/index-price-kline?category=linear&symbol=ARBUSDT&interval=",
+        "address": "0x912ce59144191c1204e64559fe8253a0e49e6548",
+        "uniswapPool": "0xcda53b1f66614552f834ceef361a8d12a0b8dad8",
+        "poolId": 3,
+        "tvl": "45k",
+        "rangeManager": "0xA9227643f940d412ebC019D99219677EbbE5Aa2f",
+        "geVault": "0x31C3871B369bE1B2C3A26f963bcc407ee208099E",
+        "ranges": [
+          {
+            "address": "0x7337Da74fEb7AfB20C3F49596B7870D2F32Df9f7",
+            "roeAddress": "0xd0E7d0d8B4cF768A9941C5A81F2365879deE6B99",
+            "debtAddress": "0x7C52ef7ef34090611580eEcBFB3BDe00dd0F4Fa9",
+            "price": "0.45-0.55",
+            "insuranceAsset": "0x95fb709322198b1F3174a0ad61DbaC0b40bbe742",
+            "tokenId": 404465
+          },
+          {
+            "address": "0x06b00545FCd1aa5e22e657F8311825830b749898",
+            "roeAddress": "0xCCbed82F7E27754766Cd5c679E22ae392870A45F",
+            "debtAddress": "0x1A294b78dF90DF3af0De5BE6d53587EC202DE55F",
+            "price": "0.55-0.65",
+            "insuranceAsset": "0x6fF9816dBaa38016f74995cFA40309966ca01959",
+            "tokenId": 404469
+          },
+          {
+            "address": "0xB8e152675AB308F1f611f49ef10c9c7e9366C01d",
+            "roeAddress": "0x2221ee9f2Ef57403699E8161eab27F10108d09d0",
+            "debtAddress": "0x9ae95207808E5e29084995A8327305b4981c4F54",
+            "price": "0.65-0.75",
+            "insuranceAsset": "0xeAeCC3F2247b8C37FCdc7C33244AefA19AaE1797",
+            "tokenId": 404473
+          },
+          {
+            "address": "0x4CAC4cf29Fb4cd4239312eE53B81f6fbe523C145",
+            "roeAddress": "0xEF76892c813BD72A5583eF5c8BF5244435398Bf2",
+            "debtAddress": "0xA5D4A45Cbd15063c7f5abe17FcDC474772Ba4BCf",
+            "price": "0.75-0.85",
+            "insuranceAsset": "0xE1255d346F349405e71841e14a8364D1B813D8B6",
+            "tokenId": 404475
+          },
+          {
+            "address": "0x4b1839b60a0766B6269c8460ca706E5C2756A786",
+            "roeAddress": "0x6c85652B785f8866ecd4De8B2d2DDC8223af16C1",
+            "debtAddress": "0xDA2E3eAc69f64D0c33b54488D8c863349C4901Aa",
+            "price": "0.85-0.95",
+            "insuranceAsset": "0x5db91A5c9741D07F07D823E45fF97cC937dd4773",
+            "tokenId": 404477
+          },
+          {
+            "address": "0xf51a6A6e7f9Aa1b82DADF0B840E5a1e57f298069",
+            "roeAddress": "0x5Dd07806712Ed5B89fAca868BB544F456097EC64",
+            "debtAddress": "0xB8477668d5422f18fF42D3fEE8b68a99711B869f",
+            "price": "0.95-1.05",
+            "insuranceAsset": "0xf757bfE018485DD82191e84cAACd1b06aCb8E1C4",
+            "tokenId": 404479
+          },
+          {
+            "address": "0x3904bb0d8274B09545e1e819Bc8F152ab04Ecb21",
+            "roeAddress": "0x0C8ccAbe2d4BB7D392d345f3798C78a08d1F26c8",
+            "debtAddress": "0xBAa1E0118934177f9630b78D7912A67f3ad4161F",
+            "price": "1.05-1.15",
+            "insuranceAsset": "0x574373cbB4De913E43E54eC47173358799b1Ce19",
+            "tokenId": 404486
+          },
+          {
+            "address": "0x4240Ea2cb26f303C1176c777F3b74fa37d4cDc90",
+            "roeAddress": "0x559bB4A2D240c44DEC3944eAfB9894A87cE13f48",
+            "debtAddress": "0x18a8a1934Df30B1Aa1d9f86cFEe2EDD2142c49Fe",
+            "price": "1.15-1.25",
+            "insuranceAsset": "0x093650AC482c13CA72Fecc29A1A120476A4fbFdE",
+            "tokenId": 404489
+          },
+          {
+            "address": "0x20788CebE20445cadB00CEce46715134e7C0229C",
+            "roeAddress": "0xED33F164D9bDCEEB3Fb00058AF1f97EDbC11c1d7",
+            "debtAddress": "0xB9EDB354e2e15C7300971aB2815FC91c66c524b5",
+            "price": "1.25-1.35",
+            "insuranceAsset": "0x593E8e0Fb96Fa5707bd7F1D61409331FD5414246",
+            "tokenId": 404492
+          },
+          {
+            "address": "0xFDd38d577F9AF5C53dC8dd89e8e60E054e1df922",
+            "roeAddress": "0x88c36aC235d34ce30Ac9b2476CFF71781c808Ed6",
+            "debtAddress": "0x840245808509b71Cde4466dbEEF0E2178CD6B076",
+            "price": "1.35-1.45",
+            "insuranceAsset": "0x20814df302Bf89E6882C2Ff4c0f3b4ACc7a7bbe4",
+            "tokenId": 404494
+          },
+          {
+            "address": "0xBD610f866F2EF401988AF75cE7716BC41fbc1096",
+            "roeAddress": "0x1543e55116D11F3718B42148E248dDA32c47EBBe",
+            "debtAddress": "0x8081dFFae77ea6C5b9C42e518F6248753f20A95f",
+            "price": "1.45-1.55",
+            "insuranceAsset": "0x5db91A5c9741D07F07D823E45fF97cC937dd4773",
+            "tokenId": 404496
+          }
+        ],
+        "ticks": [
+          {
+            "address": "0x95fb709322198b1F3174a0ad61DbaC0b40bbe742",
+            "roeAddress": "0x934e995B9DA687Ad80771280aaCF4A61e2Fe927F",
+            "debtAddress": "0xcf4831151417c799d0d01b5601E215B60ec8b284",
+            "price": "0.5",
+            "tokenId": 404466
+          },
+          {
+            "address": "0x6fF9816dBaa38016f74995cFA40309966ca01959",
+            "roeAddress": "0xb946191aCA73042C477D5F3C6c690fC217aF6692",
+            "debtAddress": "0x071EFF38Db75E8FEe46a1E48241fDD48e1397D32",
+            "price": "0.6",
+            "tokenId": 404471
+          },
+          {
+            "address": "0xeAeCC3F2247b8C37FCdc7C33244AefA19AaE1797",
+            "roeAddress": "0x27C1267aFF51638bD5e6072DbE7522c05aa769d5",
+            "debtAddress": "0xE285C37901Acdca06256Ef1c8Ae4Ed6a913B4d3f",
+            "price": "0.7",
+            "tokenId": 404474
+          },
+          {
+            "address": "0xE1255d346F349405e71841e14a8364D1B813D8B6",
+            "roeAddress": "0xb602CA639aE39773397387dfFa4de3921f2c18e4",
+            "debtAddress": "0x6E3CC04FBD47c42bB744423f61f69daA57B549e6",
+            "price": "0.8",
+            "tokenId": 404476
+          },
+          {
+            "address": "0x5db91A5c9741D07F07D823E45fF97cC937dd4773",
+            "roeAddress": "0x0E239E4C865e21e28F53DDE754d085726728E1d2",
+            "debtAddress": "0x57A7adae2CcFB252cF9b514f07079294f5c8285E",
+            "price": "0.9",
+            "tokenId": 404478
+          },
+          {
+            "address": "0xf757bfE018485DD82191e84cAACd1b06aCb8E1C4",
+            "roeAddress": "0x792809841c16CFCc5228D8b2Ae9673C0521D64f6",
+            "debtAddress": "0x4Ae267308215Cc76D2DBC449132f7DB5E4Ec81B0",
+            "price": "1",
+            "tokenId": 404484
+          },
+          {
+            "address": "0x574373cbB4De913E43E54eC47173358799b1Ce19",
+            "roeAddress": "0x54EAcc1F908833Ab2A0D8075600dDDE577870464",
+            "debtAddress": "0xf40406A0eB2f361009E9402BF9B280fb4acB1ce2",
+            "price": "1.1",
+            "tokenId": 404487
+          },
+          {
+            "address": "0x093650AC482c13CA72Fecc29A1A120476A4fbFdE",
+            "roeAddress": "0x9F66fc15483c9947E39360Aff17d0d27e4F709ac",
+            "debtAddress": "0xC3AEf7b28E57b6de164bB95Cc0177758f028A386",
+            "price": "1.2",
+            "tokenId": 404490
+          },
+          {
+            "address": "0x593E8e0Fb96Fa5707bd7F1D61409331FD5414246",
+            "roeAddress": "0xD93f1452aC9A2e9CF47D1765d1698d0aEC3D5C8E",
+            "debtAddress": "0x28314557a5c6b7b1656Aef7C9518b4913D041c79",
+            "price": "1.3",
+            "tokenId": 404493
+          },
+          {
+            "address": "0x20814df302Bf89E6882C2Ff4c0f3b4ACc7a7bbe4",
+            "roeAddress": "0xC7E5387ed2e9ea2b711860AF4D2735B2A573e6bE",
+            "debtAddress": "0xC01d84B3aDB9b2130F31c43A48655c28bB810501",
+            "price": "1.4",
+            "tokenId": 404495
+          },
+          {
+            "address": "0x352ed8e7E0C91C91F289dED7187fD0cd95b0953F",
+            "roeAddress": "0xb6238D49c2cd3B181a86485BCEeB96e9906FF4FE",
+            "debtAddress": "0xf8edE97f4f20B117Ce12A8C4dDaB3fCD1456Da5d",
+            "price": "1.5",
+            "tokenId": 404497
+          }
+        ],
+        "token0": {
+          "name": "ARB",
+          "address": "0x912CE59144191C1204E64559FE8253a0e49E6548",
+          "roeAddress": "0xbF41744E7a2D516A97422b676aAEe1CBb63D8aec",
+          "debtAddress": "0xE3710933b0957565f4344f74b9CEF52fb69eA17e",
+          "decimals": 18
+        },
+        "token1": {
+          "name": "USDC",
+          "address": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+          "roeAddress": "0x8596EeB5B15a27A574644000cE0EE5a490b8c0bd",
+          "debtAddress": "0x75Ce4e7f0546694ccDEc258769373321f2ea140A",
           "decimals": 6
         },
         "lpToken": {
