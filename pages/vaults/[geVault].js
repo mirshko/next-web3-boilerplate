@@ -56,7 +56,7 @@ const GeVaults = ({}) => {
         </Typography.Title>
         <Typography.Text>Good Vaults hold assets used for leverage trading. They also earn fees by depositing the liquidity in tight ranges in Uniswap.
         <br/><br/>
-        Rebalancing moves the underlying vaults assets in the adequate price ranges. This process is permissionless, lossless, and doesn't incur any swap fees or management fees.
+        Rebalancing moves the underlying vaults assets in the adequate price ranges. This process is permissionless, lossless, and doesn&apos;t incur any swap fees or management fees.
         </Typography.Text>
         <Card style={{ marginTop: 24 }}>
           Explanation Chart
