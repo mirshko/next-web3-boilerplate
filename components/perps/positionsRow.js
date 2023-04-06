@@ -39,7 +39,6 @@ const PositionsRow = ({ address, vault, price, addPosition }) => {
   let entry = 0;
 
   if (posEvent) {
-    console.log('clip', posEvent)
     let costDebt = amount0 * token0.oraclePrice + amount1 * token1.oraclePrice;
     pnl =
       (posEvent.token0Amount * token0.oraclePrice) / 10 ** token0.decimals +

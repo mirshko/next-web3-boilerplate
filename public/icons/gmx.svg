@@ -1,1 +1,74 @@
-<svg height="21.462" viewBox="0 0 29.515 21.462" width="29.515" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><linearGradient id="a" gradientUnits="objectBoundingBox" x1=".536" x2=".011" y1=".026" y2="1"><stop offset="0" stop-color="#03d1cf" stop-opacity=".988"/><stop offset="1" stop-color="#4e09f8"/></linearGradient><path d="m555.182 717.462-14.735-21.462-14.78 21.462h20.592l-5.812-8.191-2.883 4.256h-3.064l5.949-8.557 8.6 12.493z" fill="url(#a)" transform="translate(-525.667 -696)"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="20"
+   viewBox="0 0 20 20"
+   width="20"
+   version="1.1"
+   id="svg9"
+   sodipodi:docname="gmx.svg"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
+  <metadata
+     id="metadata15">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs13" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1678"
+     inkscape:window-height="967"
+     id="namedview11"
+     showgrid="false"
+     inkscape:zoom="25.41895"
+     inkscape:cx="12.838981"
+     inkscape:cy="8.8845683"
+     inkscape:window-x="0"
+     inkscape:window-y="112"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg9" />
+  <linearGradient
+     id="a"
+     gradientUnits="userSpaceOnUse"
+     x1="461.75531"
+     x2="448.54156"
+     y1="816.83337"
+     y2="841.34802"
+     gradientTransform="matrix(0.78801376,0,0,0.57303537,-353.16006,-465.04482)">
+    <stop
+       offset="0"
+       stop-color="#03d1cf"
+       stop-opacity=".988"
+       id="stop2" />
+    <stop
+       offset="1"
+       stop-color="#4e09f8"
+       id="stop4" />
+  </linearGradient>
+  <path
+     d="M 19.912229,17.076706 10.010574,2.6546297 0.07868146,17.076706 H 13.916133 L 10.010574,11.572503 8.0732508,14.432457 H 6.0142981 l 3.9976199,-5.7501492 5.779045,8.3950702 z"
+     fill="url(#a)"
+     id="path7"
+     style="fill:url(#a);stroke-width:0.671982" />
+</svg>

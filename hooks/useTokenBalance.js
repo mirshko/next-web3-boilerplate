@@ -8,6 +8,7 @@ export default function useTokenBalance(
   suspense
 ) {
   const contract = useTokenContract(tokenAddress);
+  if (tokenAddress == "0x566A1F87164Db0524aAD0a0D5968b8755E80B8F3")console.log(address, '--', tokenAddress)
 
   const shouldFetch =
     typeof address === "string" &&
