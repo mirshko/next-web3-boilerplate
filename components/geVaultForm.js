@@ -20,7 +20,7 @@ const GeVaultForm = ({vault}) => {
   const [showSuccessNotification, showErrorNotification, contextHolder] =
     useTxNotification();
   const geVault = useGeVault(vault);
-  console.log(geVault)
+
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
   
   const ethBalance = useETHBalance(account).data / 1e18;
@@ -174,7 +174,9 @@ const GeVaultForm = ({vault}) => {
       <span>TVL</span>
       <span>${parseFloat(geVault.tvl).toFixed(0)}</span>
     </div>
-    <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <span>Max TVL Cap</span>
+      <span>${parseFloat(geVault.maxTvl).toFixed(0)}</span>
     </div>
   </Card>);
 };

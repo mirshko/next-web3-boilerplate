@@ -47,7 +47,7 @@ export default function useGeVault(vault) {
         let uBal = ethers.utils.formatUnits(await gevaultContract.balanceOf(account), 18)
         setUserBalance(uBal);
         setUserValue(tValue == 0 ? 0 : tValue * uBal / tSupply);
-        setMaxTvl(ethers.utils.formatUnits(await gevaultContract.tvlCap(), 8));
+        setMaxTvl(ethers.utils.formatUnits(await gevaultContract.tvlCap(), 8).split('.')[0]);
         setFee0( (await gevaultContract.getAdjustedBaseFee(true) )/100 );
         setFee1( (await gevaultContract.getAdjustedBaseFee(false) )/100 );
       }

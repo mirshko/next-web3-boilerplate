@@ -35,6 +35,7 @@ const useGeVaultStats = (vault) => {
       catch(e) {
         console.log("APR data", e)
       }
+      return {apr: 0, earned: 0, uvalue: 0, age: 1 }
     }
     
     const getData = async () => {
@@ -52,7 +53,7 @@ const useGeVaultStats = (vault) => {
     }
     
     if (vault) getData();
-  }, [vault]);
+  }, [JSON.stringify(vault)]);
 
   return data;
 }
