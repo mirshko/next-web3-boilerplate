@@ -300,7 +300,7 @@
         "uniswapPool": "0xbed2589fefae17d62a8a4fdac92fa5895cae90d2",
         "poolId": 12,
         "tvl": "45k",
-        "rangeManager": "0xC2Bd913A49017E62Eb21976071367028C4f8f5bd",
+        "rangeManager": "0x8a5b3e5aC3bd5c5c80d875C2b89Ec5980F326FA6",
         "geVault": "0x10ca4492b9A4b74964C9b4763B87eFD0689aB0bE",
         "ranges": [
           {
