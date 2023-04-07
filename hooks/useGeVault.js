@@ -18,8 +18,9 @@ export default function useGeVault(vault) {
   const { account } = useWeb3React();
   const gevaultContract = useContract(vault.geVault, GEVAULT_ABI);
   const goodStats = useGoodStats();
-  const feesRate = goodStats && goodStats[vault] ? parseFloat(goodStats.feesRate).toFixed(2) : 0;
-  const supplyRate = goodStats && goodStats[vault] ? parseFloat(goodStats.supplyRate).toFixed(2) : 0;
+  const feesRate = goodStats && goodStats[vault.geVault] ? parseFloat(goodStats[vault.geVault].feesRate) : 0;
+  const supplyRate = goodStats && goodStats[vault.geVault] ? parseFloat(goodStats[vault.geVault].supplyRate) : 0;
+  const totalRate = feesRate + supplyRate
 
   var data = {
     address: vault.geVault,
@@ -31,8 +32,7 @@ export default function useGeVault(vault) {
     fee1: fee1,
     feeApr: feesRate,
     supplyApr: supplyRate,
-    totalApr: feesRate + supplyRate
-    ,
+    totalApr: totalRate,
     wallet: userBalance,
     walletValue: userValue,
     contract: gevaultContract,

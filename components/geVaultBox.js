@@ -19,7 +19,7 @@ const GeVaultBox = ({ vault }) => {
   };
   
   if (!vault.geVault) return <></>  
-  console.log(asset)
+  console.log(gevault)
   
   return (
     <Col

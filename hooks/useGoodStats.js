@@ -12,7 +12,8 @@ const useGoodStats = () => {
       try {
         const url = "https://roe.nicodeva.xyz/stats/arbitrum/stats.json"
         var dataraw = await axios.get(url)
-        var stats = dataraw.data.data
+
+        var stats = dataraw.data
         setdata(stats)
       }
       catch(e) {
