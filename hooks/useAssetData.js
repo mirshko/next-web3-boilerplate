@@ -4,7 +4,7 @@ import useAddresses from "./useAddresses";
 import useTokenBalance from "./useTokenBalance";
 import useTokenContract from "./useTokenContract";
 import usePriceOracle from "./usePriceOracle";
-import useRangeStats from "./useRangeStats";
+import useGoodStats from "./useGoodStats";
 import useLendingPoolContract from "./useLendingPoolContract";
 import { ethers } from "ethers";
 
@@ -57,11 +57,8 @@ export default function useAssetData(address, vaultAddress) {
   }
   if (asset.name && asset.type != "ticker" && asset.type != "geVault")
     asset.icon = "/icons/" + asset.name.toLowerCase() + ".svg";
-  const rangeData = useRangeStats(asset && asset.tokenId);
-  // aprReported = (24hApr * 1day + (positionAgeInDays - 1) * previousAprReported )/ positionAgeInDays
-  // -> 24hrApr = aprReported * positionAge - (positionAge-1) * previousAprReported
-  // but here we dont havea  full day, just the last 23h, that will do (=0.958d)
-  const feeApr = rangeData.apr;
+  const goodStats = useGoodStats();
+  const feeApr = goodStats && goodStats[address] ? goodStats[address].apr : 0;
   asset = {
     supplyApr: supplyRate,
     feeApr: feeApr,
@@ -73,7 +70,6 @@ export default function useAssetData(address, vaultAddress) {
     totalSupply: totalSupply,
     roeTotalSupply: roeTotalSupply,
     oraclePrice: price,
-    rangeData: rangeData,
     deposited: deposited,
     ...asset,
   };

@@ -4,7 +4,7 @@ import { useWeb3React } from "@web3-react/core";
 import GEVAULT_ABI from "../contracts/GeVault.json";
 import useContract from "./useContract";
 import { ethers } from "ethers";
-import useGeVaultStats from "./useGeVaultStats";
+import useGoodStats from "./useGoodStats";
 
 
 export default function useGeVault(vault) {
@@ -17,8 +17,9 @@ export default function useGeVault(vault) {
   const [totalSupply, setTotalSupply] = useState(0);
   const { account } = useWeb3React();
   const gevaultContract = useContract(vault.geVault, GEVAULT_ABI);
-  const statsApr = useGeVaultStats(vault);
-  const uniFees = statsApr ? parseFloat(statsApr.apr).toFixed(2) : 0;
+  const goodStats = useGoodStats();
+  const feesRate = goodStats && goodStats[vault] ? parseFloat(goodStats.feesRate).toFixed(2) : 0;
+  const supplyRate = goodStats && goodStats[vault] ? parseFloat(goodStats.supplyRate).toFixed(2) : 0;
 
   var data = {
     address: vault.geVault,
@@ -28,9 +29,10 @@ export default function useGeVault(vault) {
     totalSupply: totalSupply,
     fee0: fee0,
     fee1: fee1,
-    feeApr: uniFees,
-    supplyApr: "0.00",
-    totalApr: uniFees,
+    feeApr: feesRate,
+    supplyApr: supplyRate,
+    totalApr: feesRate + supplyRate
+    ,
     wallet: userBalance,
     walletValue: userValue,
     contract: gevaultContract,

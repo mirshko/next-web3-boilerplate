@@ -77,16 +77,12 @@ const GeVaultBox = ({ vault }) => {
             content={
               <div style={{ width: 250 }}>
                 Trading Fees:{" "}
-                <span style={{ float: "right" }}>{asset.supplyApr} %</span>
+                <span style={{ float: "right" }}>{parseFloat(asset.supplyApr).toFixed(2)} %</span>
+                <br />
+                V3 Fees (24h annualized):{" "}
+                <span style={{ float: "right" }}>{parseFloat(asset.feeApr).toFixed(2)} %</span>
                 <br />
                 Token Incentives: <span style={{ float: "right" }}>0.00 %</span>
-                <br />
-                {asset.feeApr > 0 ? (
-                  <>
-                    V3 Fees (24h annualized):{" "}
-                    <span style={{ float: "right" }}>{parseFloat(asset.feeApr).toFixed(2)} %</span>
-                  </>
-                ) : null}
               </div>
             }
           >
