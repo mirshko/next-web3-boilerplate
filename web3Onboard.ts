@@ -12,6 +12,17 @@ const Metamask = {
     platforms: ['desktop', 'mobile']
 };
 
+const Rabby = {
+    label: 'Rabby',
+    injectedNamespace: 'ethereum',
+    checkProviderIdentity: ({ provider }) => !!provider && !!provider[ProviderIdentityFlag.Rabby],
+    getIcon: async () => (await import('./node_modules/@web3-onboard/injected-wallets/dist/icons/rabby')).default,
+    getInterface: () => ({
+        provider: window['ethereum']
+    }),
+    platforms: ['desktop']
+};
+
 const OkxWallet = {
     label: 'OKX Wallet',
     injectedNamespace: 'ethereum',
@@ -27,15 +38,18 @@ const injected = injectedModule({
     custom: [
         Metamask,
         OkxWallet,
+        Rabby
     ],
     displayUnavailable: true,
     sort: (wallets) => {
         const okxwallet = wallets.find(({ label }) => label === ProviderLabel.OKXWallet)
         const metaMask = wallets.find(({ label }) => label === ProviderLabel.MetaMask)
+        const rabby = wallets.find(({ label }) => label === ProviderLabel.Rabby)
 
         return [
             okxwallet,
             metaMask,
+            rabby
         ]
     }
 });
