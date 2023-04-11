@@ -26,10 +26,6 @@ const GeVaultForm = ({vault}) => {
   const ethBalance = useETHBalance(account).data / 1e18;
   const assetData = useAssetData(vault.token0.name == token ? vault.token0.address : vault.token1.address, vault.address);
   const tokenContract = useTokenContract(assetData.address);
-  const isButtonDisabled = !inputValue
-    || (token == "ETH" && parseFloat(inputValue) > ethBalance )
-    || (token != "ETH" && parseFloat(inputValue) > assetData.wallet )
-    ;
 
   // if deposit token0 or withdraw token1, fee is fee0
   var operationFee = geVault.fee1;
@@ -40,6 +36,8 @@ const GeVaultForm = ({vault}) => {
     else balance = assetData.wallet
   }
   
+ const isButtonDisabled = !inputValue || parseFloat(inputValue) > balance
+    
   const deposit = async () => {
     setSpinning(true);
     try {
@@ -80,7 +78,7 @@ const GeVaultForm = ({vault}) => {
   const withdraw = async () => {
     setSpinning(true);
     try {
-      let result = await geVault.contract.withdraw(assetData.address, ethers.utils.parseUnits(inputValue, 18));
+      let result = await geVault.contract.withdraw(ethers.utils.parseUnits(inputValue, 18), assetData.address);
       showSuccessNotification(
         "Assets withdrawn",
         "Assets withdrawn successful",
