@@ -131,11 +131,18 @@ const DepositWithdrawalTickerModal = ({
             )
           ) {
             setRunningTx(1);
+            console.log(new Date(), "setrunn, await res");
             result = await tokenContract.approve(
               zapboxTRContract.address,
               ethers.constants.MaxUint256
             );
-            await delay(5000);
+            console.log(new Date(), "approval", result);
+            for (let k = 0; k< 20; k++){
+              let allowance = await tokenContract.allowance(account, zapboxTRContract.address);
+              console.log(new Date(), "allowance", allowance);
+              if ( allowance.gte(ethers.utils.parseUnits(inputValue, underlyingAsset.decimals)) ) break;
+              await delay(2000);
+            }
           }
           setRunningTx(2);
           console.log(
@@ -189,7 +196,11 @@ const DepositWithdrawalTickerModal = ({
             zapboxTRContract.address,
             ethers.constants.MaxUint256
           );
-          await delay(5000);
+          for (let k = 0; k< 20; k++){
+            let allowance = await tokenContract.allowance(account, zapboxTRContract.address);
+            if ( allowance.gte(ethers.utils.parseUnits(inputValue, await roeAssetContract.decimals())) ) break;
+            await delay(2000);
+          }
         }
         setRunningTx(2);
         result = await zapboxTRContract.zapOut(
