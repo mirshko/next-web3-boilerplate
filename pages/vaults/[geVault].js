@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useWeb3React } from "@web3-react/core";
 import { Card, Typography, Row, Col } from "antd";
+import TickChart from "../../components/goodvaults/tickChart";
 import GeVaultForm from "../../components/goodvaults/geVaultForm";
 import useGeVault from "../../hooks/useGeVault";
 import useAddresses from "../../hooks/useAddresses";
@@ -59,7 +60,7 @@ const GeVaults = ({}) => {
         Rebalancing moves the underlying vaults assets in the adequate price ranges. This process is permissionless, lossless, and doesn&apos;t incur any swap fees or management fees.
         </Typography.Text>
         <Card style={{ marginTop: 24 }}>
-          Explanation Chart
+          <TickChart vault={vault} />
         </Card>
         <Card style={{ marginTop: 24 }}>
           Performance Chart
