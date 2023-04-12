@@ -131,7 +131,7 @@ const DepositWithdrawalTickerModal = ({
             )
           ) {
             setRunningTx(1);
-            console.log(new Date(), "setrunn, await res");
+            console.log(new Date(), "approve");
             result = await tokenContract.approve(
               zapboxTRContract.address,
               ethers.constants.MaxUint256
