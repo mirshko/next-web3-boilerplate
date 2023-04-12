@@ -10,7 +10,7 @@ const useGoodStats = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const url = "https://roe.nicodeva.xyz/stats/arbitrum/stats.json"
+        const url = "https://roe.nicodeva.xyz/stats/arbitrum/stats7d.json"
         var dataraw = await axios.get(url)
 
         var stats = dataraw.data

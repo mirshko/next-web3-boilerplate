@@ -19,7 +19,6 @@ const GeVaultBox = ({ vault }) => {
   };
   
   if (!vault.geVault) return <></>  
-  console.log(gevault)
   
   return (
     <Col
@@ -79,7 +78,7 @@ const GeVaultBox = ({ vault }) => {
                 Trading Fees:{" "}
                 <span style={{ float: "right" }}>{parseFloat(asset.supplyApr).toFixed(2)} %</span>
                 <br />
-                V3 Fees (24h annualized):{" "}
+                V3 Fees (7d annualized):{" "}
                 <span style={{ float: "right" }}>{parseFloat(asset.feeApr).toFixed(2)} %</span>
                 <br />
                 Token Incentives: <span style={{ float: "right" }}>0.00 %</span>
