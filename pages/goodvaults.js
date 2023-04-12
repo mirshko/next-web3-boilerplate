@@ -1,5 +1,5 @@
 import { Button, Card, Row } from "antd";
-import GeVaultBox from "../components/geVaultBox";
+import GeVaultBox from "../components/goodvaults/geVaultBox";
 import useAddresses from "../hooks/useAddresses";
 
 // Display all user assets and positions in all ROE LPs

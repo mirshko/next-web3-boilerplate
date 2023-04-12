@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, Col, Popover, Divider } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useRouter } from 'next/router';
-import useGeVault from "../hooks/useGeVault";
+import useGeVault from "../../hooks/useGeVault";
 
 const GeVaultBox = ({ vault }) => {
   const [highlightBox, setHighlightBox] = useState(false);

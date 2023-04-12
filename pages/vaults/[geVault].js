@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useWeb3React } from "@web3-react/core";
 import { Card, Typography, Row, Col } from "antd";
-import GeVaultForm from "../../components/geVaultForm";
+import GeVaultForm from "../../components/goodvaults/geVaultForm";
 import useGeVault from "../../hooks/useGeVault";
 import useAddresses from "../../hooks/useAddresses";
 
