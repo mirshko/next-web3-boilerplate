@@ -63,6 +63,7 @@ export default function useAssetData(address, vaultAddress) {
     supplyApr: supplyRate,
     feeApr: feeApr,
     debtApr: variableRate,
+    totalApr: supplyRate + feeApr + variableRate,
     wallet: 0,
     deposited: 0,
     debt: debt,
