@@ -64,7 +64,7 @@ function Chart({setPrice, width, height, interval, setInterval, positions, candl
 
   useEffect(() => {
     const chart1 = createChart(ref.current, {
-      width: width ?? 800,
+      width: width ?? 1000,
       height: height ?? 400,
       layout: {
         backgroundColor: 'rgba(0,0,0,0)',

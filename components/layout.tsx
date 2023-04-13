@@ -1,6 +1,8 @@
 // components/layout.js
 import Head from "next/head";
 import Link from "next/link";
+import { Inter } from "next/font/google";
+  const inter = Inter({ subsets: ['latin'] })
 import { Layout, Menu, theme } from 'antd';
 import NavRight from './nav/navRight';
 import NavMenu from './nav/navMenu';
@@ -11,22 +13,25 @@ const MyLayout = ({ children }) =>  {
   const { token } = useToken();
   
   return (
-  <>
+  <div className={inter.className}>
     <Banner />
-    <Layout style={{ display: 'flex', alignItems: 'center', minHeight: '100vh', 
-      backgroundImage: `url("/images/gradientpink.png")`
+    <Layout style={{ display: 'flex', alignItems: 'center', minHeight: '100vh'
       }}>
         <Layout.Header 
           style={{ 
-            backgroundColor: token.colorBgBase, borderBottomWidth: 1, borderColor: 'red',
-            display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: 1500, alignItems: 'center'
+            backgroundColor: token.colorBgBase,
+            width: '100%', alignItems: 'center',
+            borderBottom: '1px solid #475569',
+            display: 'flex', justifyContent: 'center'
           }}>
-          <img src="/logo.svg" width={32} height={32} alt='Good Entry Logo' />
-          <NavMenu bgColor={ token.colorBgBase } />
-          <NavRight />
+          <div style={{width: 1400, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <img src="/Good Entry Logo.svg" height={30} alt='Good Entry Logo' />
+            <NavMenu bgColor={ token.colorBgBase } />
+            <NavRight />
+          </div>
         </Layout.Header>
 
-        <Layout.Content style={{ margin: '24px 16px 0', padding: '24px', maxWidth: 1200 }}>
+        <Layout.Content style={{ margin: '24px 0', width: 1400 }}>
           {children}
         </Layout.Content>
 
@@ -35,7 +40,7 @@ const MyLayout = ({ children }) =>  {
         </Layout.Footer>
 
     </Layout>
-  </>
+  </div>
   )
 }
 

@@ -6,6 +6,7 @@ import { injected } from "../../connectors";
 import useENSName from "../../hooks/useENSName";
 import useMetaMaskOnboarding from "../../hooks/useMetaMaskOnboarding";
 import { formatEtherscanLink, shortenHex } from "../../util";
+import { WalletOutlined } from "@ant-design/icons";
 
 type AccountProps = {
   triedToEagerConnect: boolean;
@@ -85,7 +86,7 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
               });
             }}
           >
-            {isMetaMaskInstalled ? "Connect to MetaMask" : "Connect to Wallet"}
+            <WalletOutlined /><span style={{ fontWeight: 600 }}>Connect Wallet</span>
           </Button>
         ) : (
           <Button onClick={startOnboarding}>Install Metamask</Button>

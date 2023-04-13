@@ -16,12 +16,12 @@ const NavRight = () => {
   const isConnected = typeof account === "string" && !!library;
 
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
+    <div style={{ display: "flex", alignItems: "center", fontWeight: 600 }}>
       <a
         href="https://goodentry.io/academy"
         target="_blank"
         rel="noreferrer"
-        style={{ marginRight: 24, color: "#bbbbbb" }}
+        style={{ marginRight: 24 }}
       >
         Academy
       </a>
@@ -29,7 +29,7 @@ const NavRight = () => {
         href="https://crew3.xyz/c/goodentrylabs/questboard"
         target="_blank"
         rel="noreferrer"
-        style={{ marginRight: 24, color: "#bbbbbb" }}
+        style={{ marginRight: 24 }}
       >
         Quests
       </a>
@@ -47,7 +47,7 @@ const NavRight = () => {
         rel="noreferrer"
         style={{ marginRight: 24 }}
       >
-        <TwitterOutlined style={{ fontSize: "larger", color: "#bbbbbb" }} />
+        <TwitterOutlined style={{ fontSize: "larger" }} />
       </a>
       <a
         href="https://goodentrylabs.medium.com/"
@@ -55,7 +55,7 @@ const NavRight = () => {
         rel="noreferrer"
         style={{ marginRight: 24 }}
       >
-        <MediumOutlined style={{ fontSize: "larger", color: "#bbbbbb" }} />
+        <MediumOutlined style={{ fontSize: "larger"}} />
       </a>
       <NavChain />
       <Account triedToEagerConnect={triedToEagerConnect} />

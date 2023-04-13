@@ -8,9 +8,12 @@ import Chart from "../components/perps/chart";
 import useAddresses from "../hooks/useAddresses";
 import useUniswapPrice from "../hooks/useUniswapPrice";
 import useCandles from "../hooks/useCandles";
+import useTheme from "../hooks/useTheme";
 
 // Display all user assets and positions in all ROE LPs
 const ProtectedPerps = () => {
+  const theme = useTheme()
+  console.log(theme)
   const [currentVault, selectVault] = useState(0);
   const [positions, setPositions] = useState([]);
   const [interval, setInterval] = useState("1h");
@@ -34,11 +37,12 @@ const ProtectedPerps = () => {
       if (p.name == newPos.name && p.price == newPos.price) return;
     setPositions([...positions, newPos]);
   };
+  const gap = 12;
 
   return (
-    <div style={{ minWidth: 1200, display: "flex", flexDirection: "row" }}>
-      <div style={{ width: 850 }}>
-        <Card style={{ marginBottom: 24 }} bodyStyle={{ padding: 8 }}>
+    <div style={{ minWidth: 1500, display: "flex", flexDirection: "row" }}>
+      <div style={{ width: 1043 }}>
+        <Card style={{ marginBottom: gap }} bodyStyle={{ padding: 8 }}>
           <Infobar
             vaults={vaults}
             current={currentVault}
@@ -54,15 +58,13 @@ const ProtectedPerps = () => {
         />
         <Positions vaults={vaults} addPosition={addPosition} price={price} />
       </div>
-      <div>
-        <Card style={{ marginLeft: 24, minWidth: 300 }}>
-          <VaultPerpsForm
-            vault={vaults[currentVault]}
-            price={price}
-            opmAddress={ADDRESSES["optionsPositionManager"]}
-          />
-        </Card>
-        <Card style={{ marginLeft: 24, marginTop: 24, minWidth: 300 }}>
+      <div style={{ width: 343, marginLeft: gap}}>
+        <VaultPerpsForm
+          vault={vaults[currentVault]}
+          price={price}
+          opmAddress={ADDRESSES["optionsPositionManager"]}
+        />
+        <Card style={{ marginLeft: gap, marginTop: gap, minWidth: 300 }}>
           Regardless if you long or short the asset, the max loss is always the
           activation price selected while the max gains are uncapped. The main
           risk is paying the hourly funding rate to maintain your position.

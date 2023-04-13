@@ -24,7 +24,7 @@ Chart.register(
 const TickChart = ({vault}) => {
   const theme = useTheme();
   const goodStats = useGoodStats();
-  console.log(goodStats, vault.geVault)
+
   const options = {
     responsive: true,
     plugins: {

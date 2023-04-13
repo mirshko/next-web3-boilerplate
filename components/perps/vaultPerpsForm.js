@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Button, Input, Divider, Spin, Slider } from "antd";
-import useAssetData from "../../hooks/useAssetData";
+import { Button, Input, Spin, Slider, Card } from "antd";
+import { RiseOutlined, FallOutlined } from "@ant-design/icons";import useAssetData from "../../hooks/useAssetData";
 import getUserLendingPoolData from "../../hooks/getUserLendingPoolData";
 import useUnderlyingAmount from "../../hooks/useUnderlyingAmount";
 import useOptionsPositionManager from "../../hooks/useOptionsPositionManager";
@@ -196,194 +196,213 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
   }
 
   return (
-    <div>
-      {contextHolder}
-      <Button
-        type={direction == "Long" ? "primary" : "default"}
-        style={{ width: "50%", textAlign: "center" }}
-        onClick={() => {
-          setDirection("Long");
-        }}
-      >
-        <strong>Long</strong>
-      </Button>
-      <Button
-        type={direction == "Short" ? "primary" : "default"}
-        style={{ width: "50%", textAlign: "center" }}
-        onClick={() => {
-          setDirection("Short");
-        }}
-      >
-        <strong>Short</strong>
-      </Button>
+  <>
+    <Card style={{ marginBottom: 8 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12}}>
+        <span style={{fontWeight: 600}}>Good Wallet</span>
+        <div>
+        <Button type="primary" style={{ marginRight:8}} size="small">Deposit</Button>
+        <Button size="small">Withdraw</Button>
+        </div>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'grey'}}>
+        <span>
+          Margin Available:{" "}
+        </span>
+        <span style={{ float: "right" }}>
+          ${parseFloat(10 * availableCollateral).toFixed(2)} / {parseFloat(10*availableCollateral/(quoteAsset.oraclePrice?quoteAsset.oraclePrice:1)).toFixed(3)} {quoteAsset.name}
+        </span>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'grey'}}>
+        <span>
+          Margin Usage:{" "}
+        </span>
+        <span style={{ float: "right" }}>
+          {parseFloat(marginUsage).toFixed(2)}%
+          {marginAfterUsage > marginUsage && parseFloat(inputValue) > 0 ? (
+            <> &rarr; {marginAfterUsage.toFixed(2)}%</>
+          ) : (
+            ""
+          )}
+        </span>
+      </div>
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          gap: 8,
-          marginTop: 24,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
-        <div>
-          Activation Price<span style={{ float: "right" }}>Hourly Funding</span>
-        </div>
-        <div>
-          {!account || price > 0 ? (
-            <>
-              {upperStrike.address && upperStrikeAsset.price > 0 ? (
-                <VaultPerpsStrikes
-                  key={upperStrike.address}
-                  asset={upperStrikeAsset}
-                  onClick={setStrike}
-                  isSelected={strike.price == upperStrike.price}
-                />
-              ) : null}
-              {lowerStrike.address && lowerStrikeAsset.price > 0 ? (
-                <VaultPerpsStrikes
-                  key={lowerStrike.address}
-                  asset={lowerStrikeAsset}
-                  onClick={setStrike}
-                  isSelected={strike.price == lowerStrike.price}
-                />
-              ) : null}
-            </>
-          ) : (
-            <Spin style={{ width: "100%", margin: "0 auto" }} />
-          )}
-        </div>
-        <div style={{ marginTop: 8 }}>
-          Max Borrowable:{" "}
-          <span
-            style={{
-              float: "right",
-              cursor: "pointer",
-              color: parseFloat(inputValue) > maxOI ? "#e57673" : undefined,
-            }}
-            onClick={() => {
-              setInputValue(maxOI);
-            }}
-          >
-            {parseFloat(maxOI).toFixed(5)} {tokenTraded}
-          </span>
-        </div>
-        <Input
-          placeholder="Amount"
-          suffix={tokenTraded}
-          onChange={(e) => setInputValue(e.target.value)}
-          key="inputamount"
-          value={inputValue}
-        />
-        <span>Leverage</span>
-        <Slider
-          min={0}
-          max={10}
-          step={0.1}
-          onChange={(newValue) => {
-            setLeverage(newValue);
-            setInputValue(
-              ((availableCollateral * newValue) / asset.oraclePrice).toFixed(6)
-            );
+        <Button
+          onClick={() => {
+            setVisibleMargin0(true);
           }}
-          value={typeof leverage === "number" ? leverage : 0}
-          style={{ marginBottom: -8, marginTop: -2 }}
-        />
-        <div>
-          <span>1x</span>
-          <span style={{ float: "right" }}>10x</span>
-        </div>
-        <div style={{ marginTop: 0 }}>
-          Expected Entry:
-          <span
-            style={{
-              float: "right",
-              cursor: "pointer",
-            }}
-          >
-            {expectedEntry.toFixed(2)}
-          </span>
-        </div>
-        {isSpinning ? (
-          <Button type="default" style={{ width: "100%" }}>
-            <Spin />
-          </Button>
-        ) : (
-          <Button
-            type="primary"
-            onClick={openPosition}
-            disabled={isOpenPositionButtonDisabled}
-          >
-            {isOpenPositionButtonDisabled
-              ? openPositionButtonErrorTitle
-              : "Open " + direction}
-          </Button>
-        )}
-
-        <PayoutChart
-          direction={direction}
-          strike={strike.price}
-          price={price}
-          step={upperStrike.price - lowerStrike.price}
-        />
-
-        <Divider />
-        <span>
-          Margin Available:{" "}
-          <span style={{ float: "right" }}>
-            ${parseFloat(10 * availableCollateral).toFixed(2)} / {parseFloat(10*availableCollateral/(quoteAsset.oraclePrice?quoteAsset.oraclePrice:1)).toFixed(3)} {quoteAsset.name}
-          </span>
-        </span>
-        <span>
-          Margin Usage:{" "}
-          <span style={{ float: "right" }}>
-            {parseFloat(marginUsage).toFixed(2)}%
-            {marginAfterUsage > marginUsage && parseFloat(inputValue) > 0 ? (
-              <> &rarr; {marginAfterUsage.toFixed(2)}%</>
-            ) : (
-              ""
-            )}
-          </span>
-        </span>
+          style={{ display: "flex", alignItems: "center" }}
+        >
+          Deposit {quoteAsset.name}&nbsp;
+          <img src={quoteAsset.icon} alt={quoteAsset.name} height={16} />
+        </Button>
+        <Button
+          onClick={() => {
+            setVisibleMargin1(true);
+          }}
+          style={{ display: "flex", alignItems: "center" }}
+        >
+          Deposit {baseAsset.name}&nbsp;
+          <img src={baseAsset.icon} alt={baseAsset.name} height={16} />
+        </Button>
+      </div>
+      <DepositWithdrawalModal
+        asset={quoteAsset}
+        vault={vault}
+        setVisible={setVisibleMargin0}
+        isVisible={isVisibleMargin0}
+      />
+      <DepositWithdrawalModal
+        asset={baseAsset}
+        vault={vault}
+        setVisible={setVisibleMargin1}
+        isVisible={isVisibleMargin1}
+      />
+    </Card>
+    <Card>
+      <div>
+        {contextHolder}
+        <Button
+          type={direction == "Long" ? "primary" : "default"}
+          style={{ width: "50%", textAlign: "center", borderRadius: "4px 0 0 4px" }}
+          icon={<RiseOutlined style={{marginRight: 8}}/>}
+          onClick={() => {
+            setDirection("Long");
+          }}
+        >
+          <strong>Long</strong>
+        </Button>
+        <Button
+          type={direction == "Short" ? "primary" : "default"}
+          style={{ width: "50%", textAlign: "center", borderRadius: "0 4px 4px 0" }}
+          icon={<FallOutlined style={{marginRight: 8}} />}
+          onClick={() => {
+            setDirection("Short");
+          }}
+          danger={direction == "Short"}
+        >
+          <strong>Short</strong>
+        </Button>
         <div
           style={{
             display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
+            flexDirection: "column",
+            gap: 8,
+            marginTop: 24,
           }}
         >
-          <Button
-            onClick={() => {
-              setVisibleMargin0(true);
+          <div>
+            Activation Price<span style={{ float: "right" }}>Funding / 1h</span>
+          </div>
+          <div>
+            {!account || price > 0 ? (
+              <>
+                {upperStrike.address && upperStrikeAsset.price > 0 ? (
+                  <VaultPerpsStrikes
+                    key={upperStrike.address}
+                    asset={upperStrikeAsset}
+                    onClick={setStrike}
+                    isSelected={strike.price == upperStrike.price}
+                  />
+                ) : null}
+                {lowerStrike.address && lowerStrikeAsset.price > 0 ? (
+                  <VaultPerpsStrikes
+                    key={lowerStrike.address}
+                    asset={lowerStrikeAsset}
+                    onClick={setStrike}
+                    isSelected={strike.price == lowerStrike.price}
+                  />
+                ) : null}
+              </>
+            ) : (
+              <Spin style={{ width: "100%", margin: "0 auto" }} />
+            )}
+          </div>
+          <div style={{ marginTop: 8 }}>
+            Max Borrowable:{" "}
+            <span
+              style={{
+                float: "right",
+                cursor: "pointer",
+                color: parseFloat(inputValue) > maxOI ? "#e57673" : undefined,
+              }}
+              onClick={() => {
+                setInputValue(maxOI);
+              }}
+            >
+              {parseFloat(maxOI).toFixed(5)} {tokenTraded}
+            </span>
+          </div>
+          <Input
+            placeholder="Amount"
+            suffix={tokenTraded}
+            onChange={(e) => setInputValue(e.target.value)}
+            key="inputamount"
+            value={inputValue}
+          />
+          <span>Leverage</span>
+          <Slider
+            min={0}
+            max={10}
+            step={0.1}
+            onChange={(newValue) => {
+              setLeverage(newValue);
+              setInputValue(
+                ((availableCollateral * newValue) / asset.oraclePrice).toFixed(6)
+              );
             }}
-            style={{ display: "flex", alignItems: "center" }}
-          >
-            Deposit {quoteAsset.name}&nbsp;
-            <img src={quoteAsset.icon} alt={quoteAsset.name} height={16} />
-          </Button>
-          <Button
-            onClick={() => {
-              setVisibleMargin1(true);
-            }}
-            style={{ display: "flex", alignItems: "center" }}
-          >
-            Deposit {baseAsset.name}&nbsp;
-            <img src={baseAsset.icon} alt={baseAsset.name} height={16} />
-          </Button>
+            value={typeof leverage === "number" ? leverage : 0}
+            style={{ marginBottom: -8, marginTop: -2 }}
+          />
+          <div>
+            <span>1x</span>
+            <span style={{ float: "right" }}>10x</span>
+          </div>
+          <div style={{ marginTop: 0 }}>
+            Expected Entry:
+            <span
+              style={{
+                float: "right",
+                cursor: "pointer",
+              }}
+            >
+              {expectedEntry.toFixed(2)}
+            </span>
+          </div>
+          {isSpinning ? (
+            <Button type="default" style={{ width: "100%" }}>
+              <Spin />
+            </Button>
+          ) : (
+            <Button
+              type="primary"
+              onClick={openPosition}
+              disabled={isOpenPositionButtonDisabled}
+              danger={direction == "Short"}
+            >
+              {isOpenPositionButtonDisabled
+                ? openPositionButtonErrorTitle
+                : "Open " + direction}
+            </Button>
+          )}
+
+          <PayoutChart
+            direction={direction}
+            strike={strike.price}
+            price={price}
+            step={upperStrike.price - lowerStrike.price}
+          />
         </div>
-        <DepositWithdrawalModal
-          asset={quoteAsset}
-          vault={vault}
-          setVisible={setVisibleMargin0}
-          isVisible={isVisibleMargin0}
-        />
-        <DepositWithdrawalModal
-          asset={baseAsset}
-          vault={vault}
-          setVisible={setVisibleMargin1}
-          isVisible={isVisibleMargin1}
-        />
       </div>
-    </div>
+    </Card>
+  </>
   );
 };
 

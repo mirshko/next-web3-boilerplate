@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Dropdown, Button, Card } from 'antd'
 import axios from 'axios'
-import VaultsDropdown from '../vaultsDropdown'
+import VaultsDropdown from './vaultsDropdown'
 import getUserLendingPoolData from '../../hooks/getUserLendingPoolData'
 import MyMargin from '../myMargin'
 import {ethers} from 'ethers'
@@ -49,28 +49,28 @@ const Infobar = ({vaults, current, selectVault, price }) => {
     
     <span style={{ fontSize: 'larger' }}>{price.toFixed(2)}</span>
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-      <span style={{ fontSize: 'x-small', color: 'grey' }}>24h Change</span>
-      <span style={{ fontSize: 'smaller', color: change > 0 ? green:red }}>{change.toFixed(2)} {changePercent.toFixed(2)}%</span>
+      <span style={{ fontSize: 'small', color: 'grey' }}>24h Change</span>
+      <span style={{ color: change > 0 ? green:red }}>{change.toFixed(2)} {changePercent.toFixed(2)}%</span>
     </div> 
     
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-      <span style={{ fontSize: 'x-small', color: 'grey' }}>24h High</span>
-      <span style={{ fontSize: 'smaller'}}>{parseFloat(dailyCandle[2]??0).toFixed(2)}</span>
+      <span style={{ fontSize: 'small', color: 'grey' }}>24h High</span>
+      <span style={{ }}>{parseFloat(dailyCandle[2]??0).toFixed(2)}</span>
     </div> 
     
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-      <span style={{ fontSize: 'x-small', color: 'grey' }}>24h Low</span>
-      <span style={{ fontSize: 'smaller'}}>{parseFloat(dailyCandle[3]??0).toFixed(2)}</span>
+      <span style={{ fontSize: 'small', color: 'grey' }}>24h Low</span>
+      <span style={{ }}>{parseFloat(dailyCandle[3]??0).toFixed(2)}</span>
     </div>
     
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-      <span style={{ fontSize: 'x-small', color: 'grey' }}>Avail. Margin</span>
-      <span style={{ fontSize: 'smaller'}}>$ {parseFloat(10*availableCollateral).toFixed(2)}</span>
+      <span style={{ fontSize: 'small', color: 'grey' }}>Avail. Margin</span>
+      <span style={{ }}>$ {parseFloat(10*availableCollateral).toFixed(2)}</span>
     </div>
     
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-      <span style={{ fontSize: 'x-small', color: 'grey' }}>Margin Usage</span>
-      <span style={{ fontSize: 'smaller'}}><MyMargin value={marginUsage} /></span>
+      <span style={{ fontSize: 'small', color: 'grey' }}>Margin Usage</span>
+      <span style={{ }}><MyMargin value={marginUsage} /></span>
     </div>
   </div>)
   
