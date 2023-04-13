@@ -64,18 +64,10 @@ const ProtectedPerps = () => {
           price={price}
           opmAddress={ADDRESSES["optionsPositionManager"]}
         />
-        <Card style={{ marginLeft: gap, marginTop: gap, minWidth: 300 }}>
-          Regardless if you long or short the asset, the max loss is always the
-          activation price selected while the max gains are uncapped. The main
-          risk is paying the hourly funding rate to maintain your position.
-          <br />
-          <Button
-            href="https://goodentry.io/academy"
-            target="_blank"
-            style={{ marginTop: "10px" }}
-          >
-            More Details &rarr;
-          </Button>
+        <Card style={{ minWidth: 343, marginTop: gap }}>
+          <span style={{fontWeight: 600}}>Useful Links</span><br />
+          <a href="#" >Video Guide</a><br />
+          <a href="#" >Trading Guide</a><br />
         </Card>
       </div>
     </div>

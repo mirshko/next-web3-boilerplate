@@ -25,8 +25,10 @@ const MyLayout = ({ children }) =>  {
             display: 'flex', justifyContent: 'center'
           }}>
           <div style={{width: 1400, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <img src="/Good Entry Logo.svg" height={30} alt='Good Entry Logo' />
-            <NavMenu bgColor={ token.colorBgBase } />
+            <div style={{ display: 'flex', alignItems: 'center'}}>
+              <img src="/Good Entry Logo.svg" height={30} alt='Good Entry Logo' style={{ marginRight: 24}} />
+              <NavMenu bgColor={ token.colorBgBase } />
+            </div>
             <NavRight />
           </div>
         </Layout.Header>
