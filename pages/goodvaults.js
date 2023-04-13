@@ -1,4 +1,5 @@
-import { Button, Card, Row } from "antd";
+import { Button, Card, Row, Col, Divider, Typography } from "antd";
+import { WarningOutlined } from "@ant-design/icons";
 import GeVaultBox from "../components/goodvaults/geVaultBox";
 import useAddresses from "../hooks/useAddresses";
 
@@ -8,18 +9,33 @@ const GoodVaults = ({}) => {
   let vaults = ADDRESSES["lendingPools"];
 
   return (
-    <div style={{ minWidth: 1200 }}>
-      <Card>
-        Good Vaults aggregate and automatically rebalance liquidity.
-        <br />
-        <Button
-          href="https://goodentry.io/academy"
-          target="_blank"
-          style={{ marginTop: "10px" }}
-        >
-          More Details &rarr;
-        </Button>
-      </Card>
+    <div style={{ minWidth: 1400 }}>
+      <Row gutter={24}>
+        <Col md={12}>
+          <Card>
+            <div style= {{ display: 'flex', justifyContent: 'space-between'}}>
+              <Col>
+                p
+              </Col>
+              <Col>
+                d
+              </Col>
+            </div>
+            <Divider />
+            Assets
+          </Card>
+        </Col>
+        <Col md={12}>
+          <Card>
+            <div style={{}}>
+              <WarningOutlined style={{ marginRight: 8 }} />
+              Risks
+            </div>
+            Good Vaults aggregate and automatically rebalance liquidity.
+          </Card>
+        </Col>
+      </Row>
+      <Typography.Title level={2}>Good Vaults</Typography.Title>
       <Row gutter={24} style={{ marginTop: 24 }}>
         {vaults.map((vault) => {
           return <GeVaultBox vault={vault} key={vault.name} />;

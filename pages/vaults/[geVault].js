@@ -16,7 +16,7 @@ const GeVaults = ({}) => {
   const gevault = useGeVault(vault);
 
   return (
-  <div style={{ width: 1200}}>
+  <div style={{ width: 1400}}>
     <Card style={{ padding: 18, borderTop: '5px solid', borderBottom: '5px solid',  borderImageSlice: 1, 
     borderImageSource: 'linear-gradient(to left, rgba(22,104,220,1) 0%, rgba(229,118,115,1)  100%)', marginBottom: 48, borderLeft: 0, borderRight: 0
 

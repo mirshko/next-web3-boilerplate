@@ -98,7 +98,7 @@ const GeVaultForm = ({vault}) => {
     <div>
       <Button
         type={direction == "Deposit" ? "primary" : "default"}
-        style={{ width: "50%", textAlign: "center" }}
+        style={{ width: "50%", textAlign: "center", borderRadius: "4px 0 0 4px" }}
         onClick={() => {
           setDirection("Deposit");
         }}
@@ -107,7 +107,7 @@ const GeVaultForm = ({vault}) => {
       </Button>
       <Button
         type={direction == "Withdraw" ? "primary" : "default"}
-        style={{ width: "50%", textAlign: "center" }}
+        style={{ width: "50%", textAlign: "center", borderRadius: "0 4px 4px 0" }}
         onClick={() => {
           setDirection("Withdraw");
         }}
@@ -117,24 +117,26 @@ const GeVaultForm = ({vault}) => {
     </div>
     <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <span style={{}}>{direction}</span>
-      <Button
-        type={token == vault.token0.name ? "primary" : "default"}
-        style={{ width: "30%", textAlign: "center" }}
-        onClick={() => {
-          setToken(vault.token0.name);
-        }}
-      >
-        <strong>{vault.token0.name}</strong>
-      </Button>
-      <Button
-        type={token == vault.token1.name ? "primary" : "default"}
-        style={{ width: "30%", textAlign: "center" }}
-        onClick={() => {
-          setToken(vault.token1.name);
-        }}
-      >
-        <strong>{vault.token1.name}</strong>
-      </Button>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Button
+          type={token == vault.token0.name ? "primary" : "default"}
+          style={{ width: 120, textAlign: "center", borderRadius: "4px 0 0 4px" }}
+          onClick={() => {
+            setToken(vault.token0.name);
+          }}
+        >
+          <strong>{vault.token0.name}</strong>
+        </Button>
+        <Button
+          type={token == vault.token1.name ? "primary" : "default"}
+          style={{ width: 120, textAlign: "center", borderRadius: "0 4px 4px 0"  }}
+          onClick={() => {
+            setToken(vault.token1.name);
+          }}
+        >
+          <strong>{vault.token1.name}</strong>
+        </Button>
+      </div>
     </div>
     <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <span>Wallet</span>
