@@ -13,7 +13,6 @@ import useTheme from "../hooks/useTheme";
 // Display all user assets and positions in all ROE LPs
 const ProtectedPerps = () => {
   const theme = useTheme()
-  console.log(theme)
   const [currentVault, selectVault] = useState(0);
   const [positions, setPositions] = useState([]);
   const [interval, setInterval] = useState("1h");

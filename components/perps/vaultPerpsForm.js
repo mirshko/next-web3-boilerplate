@@ -267,7 +267,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
         isVisible={isVisibleMargin1}
       />
     </Card>
-    <Card>
+    <Card style={{ marginBottom: 8 }}>
       <div>
         {contextHolder}
         <Button
@@ -393,15 +393,16 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
                 : "Open " + direction}
             </Button>
           )}
-
-          <PayoutChart
-            direction={direction}
-            strike={strike.price}
-            price={price}
-            step={upperStrike.price - lowerStrike.price}
-          />
         </div>
       </div>
+    </Card>
+    <Card>
+      <PayoutChart
+        direction={direction}
+        strike={strike.price}
+        price={price}
+        step={upperStrike.price - lowerStrike.price}
+      />
     </Card>
   </>
   );

@@ -66,7 +66,7 @@ const PositionsRow = ({ address, vault, price, addPosition }) => {
 
   return (
     <tr key={asset.address}>
-      <td style={tdStyle}>
+      <td style={{...tdStyle, paddingLeft: 0}}>
         <div style={{ display: "flex", alignItems: "center" }}>
           <img
             src={token0.icon}
@@ -74,7 +74,7 @@ const PositionsRow = ({ address, vault, price, addPosition }) => {
             height={20}
             style={{ marginRight: 8 }}
           />
-          Activation Price {asset.price}
+          {token0.name} {asset.price}
         </div>
       </td>
       <td style={tdStyle}>
@@ -88,39 +88,37 @@ const PositionsRow = ({ address, vault, price, addPosition }) => {
           {direction.toUpperCase()}
         </span>
       </td>
-      <td style={tdStyle}>{entry.toFixed(2)}</td>
       <td style={tdStyle}>
         {amount0EF > 0 && (
           <>
-            {amount0EF.toFixed(5)} {vault.token0.name}
+            <span style={{fontWeight: 500 }}>{amount0EF.toFixed(5)} {vault.token0.name}</span>
+            <br />
+            <span style={{ color: 'grey' }}>${(token0.oraclePrice * amount0EF).toFixed(2)}</span>
           </>
         )}
         {amount1EF > 0 && (
           <>
             {amount1EF.toFixed(2)} {vault.token1.name}
+            <br />
+            <span style={{ color: 'grey' }}>${(token0.oraclePrice * amount0EF).toFixed(2)}</span>
           </>
         )}
       </td>
-      <td align="right" style={tdStyle}>
+      <td style={tdStyle}>
         {(asset.debtApr / 365 / 24).toFixed(4)}%
       </td>
-      <td align="right" style={tdStyle}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            float: "right",
-          }}
-        >
+      <td style={tdStyle}>${entry.toFixed(2)}</td>
+      <td style={tdStyle}>
+
           <span style={{ color: pnl > 0 ? "#55d17c" : "#e57673" }}>
             {pnl > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
             {pnlPercent.toFixed(2)}%
           </span>
-          ${(isNaN(pnl) ? 0 : pnl).toFixed(3)}
-        </div>
+          <br />
+          {" "}${(isNaN(pnl) ? 0 : pnl).toFixed(3)}
+
       </td>
-      <td align="right" style={tdStyle}>
+      <td style={tdStyle}>
         <CloseTrPositionButton address={address} vault={vault} />
       </td>
     </tr>

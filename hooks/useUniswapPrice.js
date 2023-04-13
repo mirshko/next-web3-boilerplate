@@ -9,14 +9,17 @@ export default function useUniswapPrice(poolAddress, decimalsDiff) {
 
   useEffect(() => {
     const getPrice = async () => {
-      const slot0 = await poolContract.slot0();
-      const p =
-        slot0.sqrtPriceX96
-          .pow(2)
-          .mul(10 ** decimalsDiff)
-          .shr(187)
-          .toNumber() / 32; // shift 192 then div 32 = div 2**192, so we get some decimals
-      setPrice(p);
+      try {
+        const slot0 = await poolContract.slot0();
+        const p =
+          slot0.sqrtPriceX96
+            .pow(2)
+            .mul(10 ** decimalsDiff)
+            .shr(187)
+            .toNumber() / 32; // shift 192 then div 32 = div 2**192, so we get some decimals
+        setPrice(p);
+      }
+      catch(e) {console.log("Error fetching Uniswap price", e)}
     };
 
     const intervalId = setInterval(() => {
