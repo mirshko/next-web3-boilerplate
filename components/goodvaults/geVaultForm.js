@@ -36,8 +36,8 @@ const GeVaultForm = ({vault}) => {
     if( token == "ETH" ) balance = ethBalance
     else balance = assetData.wallet
   }
-  
- const isButtonDisabled = !inputValue || parseFloat(inputValue) > balance
+
+  const isButtonDisabled = !inputValue || parseFloat(inputValue) > balance
     
   const deposit = async () => {
     setSpinning(true);
@@ -172,12 +172,8 @@ const GeVaultForm = ({vault}) => {
     )}
     <Divider />
     <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <span>TVL</span>
-      <span>${parseFloat(geVault.tvl).toFixed(0)}</span>
-    </div>
-    <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <span>Max TVL Cap</span>
-      <span>${parseFloat(geVault.maxTvl).toFixed(0)}</span>
+      <span>My Share</span>
+      <span>${parseFloat(geVault.walletValue).toFixed(0)}</span>
     </div>
   </Card>);
 };
