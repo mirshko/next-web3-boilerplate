@@ -86,11 +86,6 @@ const GeVaults = ({}) => {
           <StatsChart vault={vault} />
         </Card>
         
-        <Typography.Title level={2}>Asset Repartition</Typography.Title>
-        <Card style={{ marginTop: 24 }}>
-          <TickChart vault={vault} />
-        </Card>
-        
         <Typography.Title level={2}>Fee Structure</Typography.Title>
         <Typography.Text>
           There is a one-time deposit and withdraw fee. The base fee is 0.2%.
