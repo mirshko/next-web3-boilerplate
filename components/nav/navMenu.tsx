@@ -36,7 +36,7 @@ const NavMenu = ({ bgColor }) => {
     //{ label: 'Vaults', key: '/', icon: <BankOutlined /> },
     //{ label: 'Ranger', key: '/ranger', icon: <BugOutlined /> },
     { label: "Protected Perps™", key: "/", icon: <SwapOutlined /> },
-    { label: "Good Vaults", key: "/goodvaults", icon: <BankOutlined /> },
+    { label: "EzVaults", key: "/ezvaults", icon: <BankOutlined /> },
     //{ label: 'Protected Farming™', key: '/protectedyield', icon: <DollarOutlined /> },
     {
       label: "Staking",

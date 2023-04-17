@@ -59,6 +59,9 @@ export default function useAssetData(address, vaultAddress) {
     asset.icon = "/icons/" + asset.name.toLowerCase() + ".svg";
   const goodStats = useGoodStats();
   const feeApr = goodStats && goodStats["7d"][address] ? goodStats["7d"][address].apr : 0;
+  const assetContract = useTokenContract(address);
+  const roeToken = useTokenContract(asset.roeAddress);
+  
   asset = {
     supplyApr: supplyRate,
     feeApr: feeApr,
@@ -72,6 +75,8 @@ export default function useAssetData(address, vaultAddress) {
     roeTotalSupply: roeTotalSupply,
     oraclePrice: price,
     deposited: deposited,
+    contract: assetContract,
+    roeContract: roeToken,
     ...asset,
   };
 
@@ -87,7 +92,6 @@ export default function useAssetData(address, vaultAddress) {
   };
   getPrice();
 
-  const assetContract = useTokenContract(address);
   const getAssetData = async () => {
     try {
       if (!assetContract) return;
@@ -100,7 +104,6 @@ export default function useAssetData(address, vaultAddress) {
   getAssetData();
 
   // get token supply = TVL
-  const roeToken = useTokenContract(asset.roeAddress);
   const getRoeSupply = async () => {
     try {
       var data = await roeToken.totalSupply();

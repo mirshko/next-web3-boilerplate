@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Card, Button, Input, Spin, Divider } from "antd";
+import { Card, Button, Input, Spin, Divider, Dropdown } from "antd";
+import {DownloadOutlined, UploadOutlined, DownOutlined} from "@ant-design/icons"
 import { useWeb3React } from "@web3-react/core";
 import useGeVault from "../../hooks/useGeVault";
 import useAssetData from "../../hooks/useAssetData";
@@ -92,10 +93,23 @@ const GeVaultForm = ({vault}) => {
     setSpinning(false);
   }
   
+  const items = [
+    {
+      key: '1',
+      label: vault.token0.name,
+      onClick: (e) => {setToken(vault.token0.name)}
+    },
+    {
+      key: '2',
+      label: vault.token1.name,
+      onClick: (e) => {setToken(vault.token1.name)}
+    }
+  ]
   
-  return(<Card>
+  
+  return(<Card style={{marginLeft: 64}}>
     {contextHolder}
-    <div>
+    <div style={{marginBottom: 24}}>
       <Button
         type={direction == "Deposit" ? "primary" : "default"}
         style={{ width: "50%", textAlign: "center", borderRadius: "4px 0 0 4px" }}
@@ -103,7 +117,7 @@ const GeVaultForm = ({vault}) => {
           setDirection("Deposit");
         }}
       >
-        <strong>Deposit</strong>
+        <strong><DownloadOutlined /> Deposit</strong>
       </Button>
       <Button
         type={direction == "Withdraw" ? "primary" : "default"}
@@ -112,43 +126,30 @@ const GeVaultForm = ({vault}) => {
           setDirection("Withdraw");
         }}
       >
-        <strong>Withdraw</strong>
+        <strong><UploadOutlined /> Withdraw</strong>
       </Button>      
     </div>
-    <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <span style={{}}>{direction}</span>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Button
-          type={token == vault.token0.name ? "primary" : "default"}
-          style={{ width: 120, textAlign: "center", borderRadius: "4px 0 0 4px" }}
-          onClick={() => {
-            setToken(vault.token0.name);
-          }}
-        >
-          <strong>{vault.token0.name}</strong>
-        </Button>
-        <Button
-          type={token == vault.token1.name ? "primary" : "default"}
-          style={{ width: 120, textAlign: "center", borderRadius: "0 4px 4px 0"  }}
-          onClick={() => {
-            setToken(vault.token1.name);
-          }}
-        >
-          <strong>{vault.token1.name}</strong>
-        </Button>
+    
+    <span>Asset</span>
+    <Dropdown menu={{items, selectable: true, defaultSelectedKeys: ['1'],}}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: "#1D2329", borderRadius: 4, padding: 8 }}>
+        <span>{token}</span>
+        <DownOutlined />
       </div>
-    </div>
+    </Dropdown>
     <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <span>Wallet</span>
-      <span>{parseFloat(balance).toFixed(3)} {direction == "Deposit" ? <>{token}</> : <>GEV</>}</span>
+      <span>Amount</span>
+      <span>Wallet: {parseFloat(balance).toFixed(3)} {direction == "Deposit" ? <>{token}</> : <>GEV</>}</span>
     </div>
     <div style={{ marginTop: 6, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <Input
         placeholder="Amount"
-        suffix={token}
+        suffix=<a href="#" onClick={()=>{setInputValue(balance)}}>Max</a>
+        bordered={false}
         onChange={(e) => setInputValue(e.target.value)}
         key="inputamount"
         value={inputValue}
+        style={{ backgroundColor: "#1D2329", padding: 8 }}
       />
     </div>
     <div style={{ marginTop: 24, marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

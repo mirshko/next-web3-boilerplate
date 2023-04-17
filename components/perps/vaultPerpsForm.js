@@ -6,7 +6,7 @@ import getUserLendingPoolData from "../../hooks/getUserLendingPoolData";
 import useUnderlyingAmount from "../../hooks/useUnderlyingAmount";
 import useOptionsPositionManager from "../../hooks/useOptionsPositionManager";
 import useLendingPoolContract from "../../hooks/useLendingPoolContract";
-import DepositWithdrawalModal from "../depositWithdrawalModal";
+import DepositWithdrawalModalMultiAssets from "../depositWithdrawalModalMultiAssets";
 import VaultPerpsStrikes from "./vaultPerpsStrikes";
 import PayoutChart from "./payoutChart";
 import MyMargin from "../myMargin";
@@ -15,9 +15,6 @@ import { useWeb3React } from "@web3-react/core";
 import { useTxNotification } from "../../hooks/useTxNotification";
 
 const VaultPerpsForm = ({ vault, price, opmAddress }) => {
-  const [isVisibleMargin0, setVisibleMargin0] = useState(false);
-  const [isVisibleMargin1, setVisibleMargin1] = useState(false);
-
   const [assetInfo, setAssetData] = useState();
   const [strike, setStrike] = useState({});
   const [lowerStrike, setLowerStrike] = useState({});
@@ -201,10 +198,10 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
     <Card style={{ marginBottom: 8 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12}}>
         <span style={{fontWeight: 600}}>Good Wallet</span>
-        <div>
-        <Button type="primary" style={{ marginRight:8}} size="small">Deposit</Button>
-        <Button size="small">Withdraw</Button>
-        </div>
+        <DepositWithdrawalModalMultiAssets vault={vault}
+          asset={quoteAsset}
+          vault={vault}
+        />
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'grey'}}>
         <span>
@@ -227,45 +224,6 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
           )}
         </span>
       </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Button
-          onClick={() => {
-            setVisibleMargin0(true);
-          }}
-          style={{ display: "flex", alignItems: "center" }}
-        >
-          Deposit {quoteAsset.name}&nbsp;
-          <img src={quoteAsset.icon} alt={quoteAsset.name} height={16} />
-        </Button>
-        <Button
-          onClick={() => {
-            setVisibleMargin1(true);
-          }}
-          style={{ display: "flex", alignItems: "center" }}
-        >
-          Deposit {baseAsset.name}&nbsp;
-          <img src={baseAsset.icon} alt={baseAsset.name} height={16} />
-        </Button>
-      </div>
-      <DepositWithdrawalModal
-        asset={quoteAsset}
-        vault={vault}
-        setVisible={setVisibleMargin0}
-        isVisible={isVisibleMargin0}
-      />
-      <DepositWithdrawalModal
-        asset={baseAsset}
-        vault={vault}
-        setVisible={setVisibleMargin1}
-        isVisible={isVisibleMargin1}
-      />
     </Card>
     <Card style={{ marginBottom: 8 }}>
       <div>
@@ -327,7 +285,8 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
             )}
           </div>
           <div style={{ marginTop: 8 }}>
-            Max Borrowable:{" "}
+            Size
+            Max Borrow.{" "}
             <span
               style={{
                 float: "right",

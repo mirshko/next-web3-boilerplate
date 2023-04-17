@@ -25,11 +25,11 @@ const GeVaultBox = ({ vault }) => {
   if (!vault.geVault) return <></>  
   
   const RewardsTag = () => {
-  return (<div style={{backgroundColor: "#0A371B", color: theme.colorPrimary, borderRadius: 4, padding: "6px 8px", display: 'flex', alignItems: 'center', fontWeight: 600 }}>
-    <img src="/logo.svg" height={18} alt='Good Entry Logo' style={{ marginRight:4 }} />
-    Rewards
-  </div>)
-}
+    return (<div style={{backgroundColor: "#0A371B", color: theme.colorPrimary, borderRadius: 4, padding: "6px 8px", display: 'flex', alignItems: 'center', fontWeight: 600 }}>
+      <img src="/logo.svg" height={18} alt='Good Entry Logo' style={{ marginRight:4 }} />
+      Rewards
+    </div>)
+  }
 
   
   return (
