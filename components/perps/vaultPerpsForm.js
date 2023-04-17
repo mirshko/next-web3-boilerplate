@@ -198,10 +198,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
     <Card style={{ marginBottom: 8 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12}}>
         <span style={{fontWeight: 600}}>Good Wallet</span>
-        <DepositWithdrawalModalMultiAssets vault={vault}
-          asset={quoteAsset}
-          vault={vault}
-        />
+        <DepositWithdrawalModalMultiAssets vault={vault} />
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'grey'}}>
         <span>
