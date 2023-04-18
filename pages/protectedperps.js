@@ -39,7 +39,7 @@ const ProtectedPerps = () => {
   const gap = 12;
 
   return (
-    <div style={{ minWidth: 1500, display: "flex", flexDirection: "row" }}>
+    <div style={{ minWidth: 1400, display: "flex", flexDirection: "row" }}>
       <div style={{ width: 1043 }}>
         <Card style={{ marginBottom: gap }} bodyStyle={{ padding: 8 }}>
           <Infobar

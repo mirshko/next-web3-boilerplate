@@ -10,7 +10,7 @@ const GoodVaults = ({}) => {
 
   return (
     <div style={{ width: 1400 }}>
-      <Typography.Title>EzVaults</Typography.Title>
+      <Typography.Title>ezVaults</Typography.Title>
       <Row gutter={24} style={{ marginTop: 24 }}>
         {vaults.map((vault) => {
           return <GeVaultBox vault={vault} key={vault.name} />;

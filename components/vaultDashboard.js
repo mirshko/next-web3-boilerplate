@@ -61,7 +61,9 @@ const VaultPositions = ({ vault }) => {
     vault.token1.address,
     //vault.lpToken.address,
   ];
+
   if (vault.geVault) assetsList.push(vault.geVault)
+
   //for (let r of vault.ranges) assetsList.push(r['address'])
   for (let r of vault.ticks) {
     // TODO: better definition
@@ -77,10 +79,6 @@ const VaultPositions = ({ vault }) => {
       <Typography.Text>
         Price: 1 {vault.name.split("-")[0]} = {price.toFixed(2)}{" "}
         {vault.name.split("-")[1]}
-        <br />
-        {/* Margin Available: ${parseFloat(totalCollateral).toFixed(2)} - Debt: ${parseFloat(totalDebt).toFixed(2)} - 
-      Margin Ratio: <MyMargin value={(100 * parseFloat(totalDebt).toFixed(2) / parseFloat(totalCollateral) / 0.94).toFixed(2)} /> - 
-      Health Factor: {healthFactor > 100 ? <>&infin;</> : parseFloat(healthFactor).toFixed(3)} */}
         <Checkbox
           style={{ float: "right", marginBottom: 4, marginRight: 24 }}
           defaultChecked={hideEmpty}
@@ -89,7 +87,7 @@ const VaultPositions = ({ vault }) => {
           Hide empty positions
         </Checkbox>
       </Typography.Text>
-      <Card style={{ borderWidth: 0 }} bodyStyle={{ padding: 0 }}>
+      <Card style={{ borderWidth: 0, padding: 0 }} bodyStyle={{ padding: 0 }}>
         <table>
           <thead>
             <tr>

@@ -173,7 +173,7 @@ const GeVaultForm = ({vault}) => {
     <Divider />
     <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <span>My Share</span>
-      <span>${parseFloat(geVault.walletValue).toFixed(0)}</span>
+      <span>{parseFloat(geVault.wallet).toFixed(2)} GEV (${parseFloat(geVault.walletValue).toFixed(0)})</span>
     </div>
   </Card>);
 };

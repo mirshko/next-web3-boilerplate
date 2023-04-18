@@ -77,6 +77,9 @@ const VaultPositionsRow = ({ assetAddress, vault, hideEmpty }) => {
       </>
     );
   }
+  else if (asset.type == "geVault") {
+    asset.depositedAction = <Button size="small" href={"/vaults/"+asset.name.split(" ")[1]}>{asset.name}</Button>
+  }
 
   return (<>
     <tr>

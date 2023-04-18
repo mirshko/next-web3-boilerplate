@@ -36,7 +36,7 @@ const NavMenu = ({ bgColor }) => {
     //{ label: 'Vaults', key: '/', icon: <BankOutlined /> },
     //{ label: 'Ranger', key: '/ranger', icon: <BugOutlined /> },
     { label: "Protected Perps™", key: "/", icon: <SwapOutlined /> },
-    { label: "EzVaults", key: "/ezvaults", icon: <BankOutlined /> },
+    { label: "ezVaults", key: "/ezvaults", icon: <BankOutlined /> },
     //{ label: 'Protected Farming™', key: '/protectedyield', icon: <DollarOutlined /> },
     {
       label: "Staking",
@@ -49,7 +49,7 @@ const NavMenu = ({ bgColor }) => {
   return (
     <Menu
       onClick={onClick}
-      style={{ backgroundColor: bgColor, borderWidth: 1, minWidth: 380 }}
+      style={{ backgroundColor: bgColor, borderWidth: 1, minWidth: 500 }}
       defaultSelectedKeys={["1"]}
       selectedKeys={[current]}
       defaultOpenKeys={["sub1"]}

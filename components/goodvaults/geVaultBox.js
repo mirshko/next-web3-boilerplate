@@ -56,16 +56,6 @@ const GeVaultBox = ({ vault }) => {
           border: (highlightBox ? "1px solid #0FFD6A" : "")
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            width: "100%",
-          }}
-        >
-          <RewardsTag />
-        </div>
         <img src={mainAsset.icon} height={164} alt={asset.name.toLowerCase()} />
         <span
           style={{ fontSize: "x-large", marginLeft: 8 }}
@@ -93,7 +83,7 @@ const GeVaultBox = ({ vault }) => {
                 title="APR"
                 content={
                   <div style={{ width: 250 }}>
-                    Trading Fees:{" "}
+                    Supply Interest:{" "}
                     <span style={{ float: "right" }}>{parseFloat(asset.supplyApr).toFixed(2)} %</span>
                     <br />
                     V3 Fees (7d annualized):{" "}

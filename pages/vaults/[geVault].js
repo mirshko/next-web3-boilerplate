@@ -43,8 +43,6 @@ const GeVaults = ({}) => {
       <Row style={{ width: 1200}}>
         <Col md={12}>
           <div style={{display: 'flex', gap: 12}}>
-            <VaultTag />
-            <RewardsTag />
           </div>
           <Typography.Title style={{ marginTop: 12 }}>
             {vault.name}

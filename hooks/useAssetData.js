@@ -34,7 +34,7 @@ export default function useAssetData(address, vaultAddress) {
     else if (address == lp["lpToken"].address)
       asset = { type: "lpv2", ...lp.lpToken };
     else if (address == lp["geVault"])
-      asset = { type: "geVault", name: "GoodVault "+lp.name, address: address,
+      asset = { type: "geVault", name: "ezVault "+lp.name, address: address,
         icon: "/icons/" + lp.name.toLowerCase() + ".svg",
       }
     else {
@@ -66,7 +66,7 @@ export default function useAssetData(address, vaultAddress) {
     supplyApr: supplyRate,
     feeApr: feeApr,
     debtApr: variableRate,
-    totalApr: supplyRate + feeApr + variableRate,
+    totalApr: parseFloat(supplyRate) + parseFloat(feeApr || 0) + parseFloat(variableRate),
     wallet: 0,
     deposited: 0,
     debt: debt,
