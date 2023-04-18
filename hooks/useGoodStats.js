@@ -14,7 +14,6 @@ const useGoodStats = () => {
         var dataraw7 = await axios.get(url7)
         var dataraw = await axios.get(url)
 
-        var stats = dataraw.data
         setdata({ "24h": dataraw.data, "7d": dataraw7.data})
       }
       catch(e) {

@@ -64,7 +64,7 @@ const DepositWithdrawalModalMultiAssets = ({ vault }) => {
             setRunningTx(1);
             result = await asset.contract.approve(
               vault.address,
-              ethers.constants.MaxUint256
+              ethers.utils.parseUnits(inputValue, asset.decimals)
             );
             for (let k = 0; k< 20; k++){
               let allowance = await asset.contract.allowance(account, vault.address);

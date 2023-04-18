@@ -16,7 +16,7 @@ const GeVaults = ({}) => {
   const ADDRESSES = useAddresses(geVault);
   let vault = ADDRESSES["lendingPools"][0];
   const gevault = useGeVault(vault);
-  
+
   const RewardsTag = () => {
     return (<div style={{backgroundColor: "#0A371B", color: "#0FFD6A", borderRadius: 4, padding: "6px 8px", display: 'flex', alignItems: 'center', fontWeight: 600 }}>
       <img src="/logo.svg" height={15} alt='Good Entry Logo' style={{ marginRight:4 }} />
