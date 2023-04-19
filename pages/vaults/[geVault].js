@@ -95,7 +95,7 @@ const GeVaults = ({}) => {
         <Typography.Text>
           The primary risk for running this strategy are similar to a lending market. Good Entry uses a conservative liquidation threshold and a higher reserve factor to manage this risk. 
           <br/><br/>
-          The Good Entry Metavault smart contracts have been audited by Peckshield. Despite of this, users are advised to exercise caution and only risk funds that they can afford to lose. 
+          The Good Entry ezVault smart contracts have been audited by Peckshield. Despite of this, users are advised to exercise caution and only risk funds that they can afford to lose. 
         </Typography.Text>
       </Col>
       <Col
