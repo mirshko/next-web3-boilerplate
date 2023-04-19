@@ -73,7 +73,11 @@ const DepositWithdrawalModal = ({
               vault.address,
               ethers.constants.MaxUint256
             );
-            await delay(5000);
+            for (let k = 0; k< 20; k++){
+              let allowance = await tokenContract.allowance(account, vault.address);
+              if ( allowance.gte(ethers.utils.parseUnits(inputValue, asset.decimals)) ) break;
+              await delay(2000);
+            }
           }
           setRunningTx(2);
           result = await lendingPoolContract.deposit(
@@ -104,10 +108,13 @@ const DepositWithdrawalModal = ({
             setRunningTx(1);
             result = await roeTokenContract.approve(
               wethGateway.address,
-              ethers.constants.MaxUint256,
-              { confirms: 1 }
+              ethers.constants.MaxUint256
             );
-            await delay(5000);
+            for (let k = 0; k< 20; k++){
+              let allowance = await tokenContract.allowance(account, wethGateway.address);
+              if ( allowance.gte(ethers.utils.parseUnits(inputValue, asset.decimals)) ) break;
+              await delay(2000);
+            }
           }
           setRunningTx(2);
           wethGateway.withdrawETH(

@@ -1,9 +1,15 @@
 import React from "react";
-import { useWeb3React } from "@web3-react/core";
 import { Button } from "antd";
+import { useSetChain } from "@web3-onboard/react";
 
 const NavChain = () => {
-  const { chainId } = useWeb3React();
+  const [
+    {
+      connectedChain
+    },
+  ] = useSetChain() ?? {};
+
+  const chainId = Number(connectedChain?.id);
 
   const onClick = async ({ key }) => {
     try {
