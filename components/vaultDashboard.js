@@ -75,7 +75,7 @@ const VaultPositions = ({ vault }) => {
 
   return (
     <div style={{ width: "100%" }}>
-      <Typography.Title level={2}>geVault {vault.name}</Typography.Title>
+      <Typography.Title level={2}>{vault.name}</Typography.Title>
       <Typography.Text>
         Price: 1 {vault.name.split("-")[0]} = {price.toFixed(2)}{" "}
         {vault.name.split("-")[1]}

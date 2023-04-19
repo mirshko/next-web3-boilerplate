@@ -22,6 +22,7 @@ export default function useAssetData(address, vaultAddress) {
   const ADDRESSES = useAddresses(vaultAddress);
   let lp = ADDRESSES["lendingPools"][0] || {};
   var asset = {
+    address: address,
     icon: "/favicon.ico",
   };
 
@@ -94,7 +95,7 @@ export default function useAssetData(address, vaultAddress) {
 
   const getAssetData = async () => {
     try {
-      if (!assetContract) return;
+      if (!assetContract || !asset.roeAddress) return;
       var data = await assetContract.balanceOf(asset.roeAddress);
       setTotalSupply(ethers.utils.formatUnits(data, asset.decimals));
     } catch (e) {

@@ -32,7 +32,6 @@ const VaultPositionsRow = ({ assetAddress, vault, hideEmpty }) => {
   const ADDRESSES = useAddresses();
   const asset = useAssetData(assetAddress, vault.address);
 
-  if (hideEmpty && asset.deposited == 0 && asset.debt == 0) return <></>;
   const columns = [
     { key: "asset", title: "Position", dataIndex: "name" },
     { key: "deposited", title: "Balance", dataIndex: "deposited" },
@@ -78,8 +77,10 @@ const VaultPositionsRow = ({ assetAddress, vault, hideEmpty }) => {
     );
   }
   else if (asset.type == "geVault") {
+    asset.deposited = asset.wallet; 
     asset.depositedAction = <Button size="small" href={"/vaults/"+asset.name.split(" ")[1]}>{asset.name}</Button>
   }
+  if (hideEmpty && asset.deposited == 0 && asset.debt == 0) return <></>;
 
   return (<>
     <tr>
