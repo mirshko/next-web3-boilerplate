@@ -14,7 +14,7 @@ import { ethers } from "ethers";
 import { useWeb3React } from "@web3-react/core";
 import { useTxNotification } from "../../hooks/useTxNotification";
 
-const VaultPerpsForm = ({ vault, price, opmAddress }) => {
+const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
   const [assetInfo, setAssetData] = useState();
   const [strike, setStrike] = useState({});
   const [lowerStrike, setLowerStrike] = useState({});
@@ -61,14 +61,14 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
       : 0;
 
   // const strikeAsset = useAssetData(strike.address);
-  const quoteAsset = useAssetData(
+  const baseAsset = useAssetData(
     vault.name.split("-")[0] == vault.token0.name
       ? vault.token0.address
       : vault.token1.address,
     vault.address
   );
 
-  const baseAsset = useAssetData(
+  const quoteAsset = useAssetData(
     vault.name.split("-")[1] == vault.token0.name
       ? vault.token0.address
       : vault.token1.address,
@@ -80,7 +80,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
   const lowerStrikeAsset = useAssetData(lowerStrike.address, vault.address);
   const upperStrikeAsset = useAssetData(upperStrike.address, vault.address);
 
-  let asset = tokenAmountsExcludingFees.amount0 == 0 ? baseAsset : quoteAsset;
+  let asset = tokenAmountsExcludingFees.amount0 == 0 ? quoteAsset: baseAsset;
   let tokenTraded =
     tokenAmountsExcludingFees.amount0 == 0
       ? vault.token1.name
@@ -90,11 +90,10 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
       ? tokenAmounts.amount1
       : tokenAmounts.amount0;
 
-  const expectedEntry =
-    (direction == "Long" && strike.price < price) ||
-    (direction == "Short" && strike.price > price)
-      ? price * 0.9965
-      : price;
+  let expectedEntry = price;
+  if (direction == "Long" && strike.price < price) expectedEntry = price / 0.9965
+  if (direction == "Short" && strike.price > price) expectedEntry = price * 0.9965
+
   const belowMin = parseFloat(inputValue) * asset.oraclePrice < 5;
 
   const openPosition = async () => {
@@ -110,11 +109,13 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
 
       const abi = ethers.utils.defaultAbiCoder;
       let swapSource = ethers.constants.AddressZero;
+      let hasSwapped = false;
       // if buying ITM, need to swap
       if (
         (direction == "Long" && strike.price < price) ||
         (direction == "Short" && strike.price > price)
       ) {
+        hasSwapped = true;
         swapSource =
           tokenAmountsExcludingFees.amount0 == 0
             ? vault.token1.address
@@ -144,6 +145,27 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
         params,
         0
       );
+      let positionsData = JSON.parse(localStorage.getItem("GEpositions") ?? '{}' );
+      if (!positionsData.hasOwnProperty(account)) positionsData[account] = {
+        opened: {},
+        closed: []
+      }
+      if (positionsData[account]["opened"][strike.address]){
+        // TODO: merge several positions opened at the same strike
+      }
+      else {
+        positionsData[account]["opened"][strike.address] = {
+          ticker: strike.address,
+          strike: strike.price, 
+          amount: tickerAmount,
+          amountBase: tokenTraded ==  baseAsset.name ? parseFloat(inputValue) : parseFloat(inputValue) / baseAsset.oraclePrice,
+          vault: vault.address,
+          direction: direction,
+          entry: expectedEntry,
+        }
+      }
+      localStorage.setItem("GEpositions", JSON.stringify(positionsData) );
+      checkPositions();
 
       showSuccessNotification(
         "Position opened",
@@ -205,7 +227,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
           Margin Available:{" "}
         </span>
         <span style={{ float: "right" }}>
-          ${parseFloat(10 * availableCollateral).toFixed(2)} / {parseFloat(10*availableCollateral/(quoteAsset.oraclePrice?quoteAsset.oraclePrice:1)).toFixed(3)} {quoteAsset.name}
+          ${parseFloat(10 * availableCollateral).toFixed(2)} / {parseFloat(10*availableCollateral/(baseAsset.oraclePrice?baseAsset.oraclePrice:1)).toFixed(3)} {baseAsset.name}
         </span>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'grey'}}>
@@ -283,7 +305,6 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
           </div>
           <div style={{ marginTop: 8 }}>
             Size
-            Max Borrow.{" "}
             <span
               style={{
                 float: "right",
@@ -294,7 +315,8 @@ const VaultPerpsForm = ({ vault, price, opmAddress }) => {
                 setInputValue(maxOI);
               }}
             >
-              {parseFloat(maxOI).toFixed(5)} {tokenTraded}
+            Max Borrow:{" "}
+              {parseFloat(maxOI).toFixed(4)} {tokenTraded}
             </span>
           </div>
           <Input

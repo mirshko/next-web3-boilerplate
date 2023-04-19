@@ -9,14 +9,17 @@ import useAddresses from "../hooks/useAddresses";
 import useUniswapPrice from "../hooks/useUniswapPrice";
 import useCandles from "../hooks/useCandles";
 import useTheme from "../hooks/useTheme";
+import { useWeb3React } from "@web3-react/core";
 
 // Display all user assets and positions in all ROE LPs
 const ProtectedPerps = () => {
+  const { account} = useWeb3React();
   const theme = useTheme()
   const [currentVault, selectVault] = useState(0);
   const [positions, setPositions] = useState([]);
   const [interval, setInterval] = useState("1h");
   const ADDRESSES = useAddresses();
+  const gap = 12;
   let vaults = ADDRESSES["lendingPools"];
 
   let intervalBybit = interval;
@@ -31,12 +34,20 @@ const ProtectedPerps = () => {
     vaults[currentVault].token0.decimals - vaults[currentVault].token1.decimals
   );
 
-  const addPosition = (newPos) => {
-    for (let p of positions)
-      if (p.name == newPos.name && p.price == newPos.price) return;
-    setPositions([...positions, newPos]);
-  };
-  const gap = 12;
+  const checkPositions = () => {
+    const positionsData = JSON.parse( localStorage.getItem("GEpositions") ?? '{}' );
+    if ( positionsData && positionsData[account] ) {
+      let pos = [];
+      for(let k of Object.keys(positionsData[account]['opened']) )
+        pos.push(positionsData[account]['opened'][k])
+      setPositions(pos)
+    }
+  }
+
+  useEffect( () => {
+    checkPositions()
+  }, [account])
+  
 
   return (
     <div style={{ minWidth: 1400, display: "flex", flexDirection: "row" }}>
@@ -55,13 +66,14 @@ const ProtectedPerps = () => {
           candles={candles}
           positions={positions}
         />
-        <Positions vaults={vaults} addPosition={addPosition} price={price} />
+        <Positions vaults={vaults} positions={positions} checkPositions={checkPositions} price={price} />
       </div>
       <div style={{ width: 343, marginLeft: gap}}>
         <VaultPerpsForm
           vault={vaults[currentVault]}
           price={price}
           opmAddress={ADDRESSES["optionsPositionManager"]}
+          checkPositions={checkPositions}
         />
         <Card style={{ minWidth: 343, marginTop: gap }}>
           <span style={{fontWeight: 600}}>Useful Links</span><br />

@@ -64,7 +64,7 @@ export default function useAssetData(address, vaultAddress) {
   
   asset = {
     supplyApr: supplyRate,
-    feeApr: feeApr,
+    feeApr: feeApr || 0,
     debtApr: variableRate,
     totalApr: parseFloat(supplyRate) + parseFloat(feeApr || 0) + parseFloat(variableRate),
     wallet: 0,
