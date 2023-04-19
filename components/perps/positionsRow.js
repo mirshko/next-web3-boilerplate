@@ -83,20 +83,9 @@ const PositionsRow = ({ position, price, checkPositions }) => {
         </span>
       </td>
       <td style={tdStyle}>
-        {amount0EF > 0 && (
-          <>
-            <span style={{fontWeight: 500 }}>{amount0EF.toFixed(5)} {vault.token0.name}</span>
-            <br />
-            <span style={{ color: 'grey' }}>${(token0.oraclePrice * amount0EF).toFixed(2)}</span>
-          </>
-        )}
-        {amount1EF > 0 && (
-          <>
-            {amount1EF.toFixed(2)} {vault.token1.name}
-            <br />
-            <span style={{ color: 'grey' }}>${(token0.oraclePrice * amount0EF).toFixed(2)}</span>
-          </>
-        )}
+        <span style={{fontWeight: 500 }}>{position.amountBase.toFixed(5)} {vault.token0.name}</span>
+        <br />
+        <span style={{ color: 'grey' }}>${(token0.oraclePrice * position.amountBase).toFixed(2)}</span>
       </td>
       <td style={tdStyle}>
         {(asset.debtApr / 365 / 24).toFixed(4)}%
