@@ -11,20 +11,6 @@ const PositionsRow = ({ position, price, checkPositions }) => {
   const asset = useAssetData(position.ticker, position.vault);
   const vault = useAddresses(position.vault)['lendingPools'][0];
   const token0 = useAssetData(vault.token0.address, position.vault);
-  const token1 = useAssetData(vault.token1.address, position.vault);
-  const { tokenAmounts, tokenAmountsExcludingFees, totalSupply } =
-    useUnderlyingAmount(position.ticker, vault);
-
-  // avoid spamming arbiscan by providing a valid address only when the debt is non null, rate limit is 5 req/s
-  //const posEvent = usePerpsEventLogs(position.ticker, position.vault, asset.debt);
-
-
-  let amount0 = (tokenAmounts.amount0 * asset.debt * 1e18) / totalSupply;
-  let amount1 = (tokenAmounts.amount1 * asset.debt * 1e18) / totalSupply;
-  let amount0EF =
-    (tokenAmountsExcludingFees.amount0 * asset.debt * 1e18) / totalSupply;
-  let amount1EF =
-    (tokenAmountsExcludingFees.amount1 * asset.debt * 1e18) / totalSupply;
 
   let upnl = 0
   // if opened ITM position, pnl is based on diff between entry and current price
