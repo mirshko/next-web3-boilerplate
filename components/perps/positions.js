@@ -8,7 +8,6 @@ import PositionsRow from "./positionsRow";
 // unlike the rest, it should show positions from other pools as well
 const Positions = ({ positions, checkPositions, price }) => {
   const { account} = useWeb3React();
-  
   const thStyle = {
     color: "#94A3B8",
     fontWeight: 500,
@@ -44,6 +43,7 @@ const Positions = ({ positions, checkPositions, price }) => {
               <PositionsRow
                   key={pos.ticker}
                   position={pos}
+                  price={price}
                   checkPositions={checkPositions}
                 />)
             })}

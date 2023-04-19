@@ -26,7 +26,6 @@ const PositionsRow = ({ position, price, checkPositions }) => {
   let amount1EF =
     (tokenAmountsExcludingFees.amount1 * asset.debt * 1e18) / totalSupply;
 
-  // 
   let upnl = 0
   // if opened ITM position, pnl is based on diff between entry and current price
   // else, based on diff between strike and current price
@@ -48,6 +47,7 @@ const PositionsRow = ({ position, price, checkPositions }) => {
       if (price < position.strike) upnl = position.strike - price;
     }
   }
+
   upnl = upnl * (position.amountBase || 0)
   
   let fees = (asset.debt - position.amount / 10**18) * asset.oraclePrice // fees are the debt accumulated
@@ -86,13 +86,6 @@ const PositionsRow = ({ position, price, checkPositions }) => {
         {amount0EF > 0 && (
           <>
             <span style={{fontWeight: 500 }}>{amount0EF.toFixed(5)} {vault.token0.name}</span>
-            <br />
-            <span style={{ color: 'grey' }}>${(token0.oraclePrice * amount0EF).toFixed(2)}</span>
-          </>
-        )}
-        {amount1EF > 0 && (
-          <>
-            {amount1EF.toFixed(2)} {vault.token1.name}
             <br />
             <span style={{ color: 'grey' }}>${(token0.oraclePrice * amount0EF).toFixed(2)}</span>
           </>
