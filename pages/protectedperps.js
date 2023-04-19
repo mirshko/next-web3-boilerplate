@@ -8,13 +8,18 @@ import Chart from "../components/perps/chart";
 import useAddresses from "../hooks/useAddresses";
 import useUniswapPrice from "../hooks/useUniswapPrice";
 import useCandles from "../hooks/useCandles";
+import useTheme from "../hooks/useTheme";
+import { useWeb3React } from "@web3-react/core";
 
 // Display all user assets and positions in all ROE LPs
 const ProtectedPerps = () => {
+  const { account} = useWeb3React();
+  const theme = useTheme()
   const [currentVault, selectVault] = useState(0);
   const [positions, setPositions] = useState([]);
   const [interval, setInterval] = useState("1h");
   const ADDRESSES = useAddresses();
+  const gap = 12;
   let vaults = ADDRESSES["lendingPools"];
 
   let intervalBybit = interval;
@@ -29,16 +34,25 @@ const ProtectedPerps = () => {
     vaults[currentVault].token0.decimals - vaults[currentVault].token1.decimals
   );
 
-  const addPosition = (newPos) => {
-    for (let p of positions)
-      if (p.name == newPos.name && p.price == newPos.price) return;
-    setPositions([...positions, newPos]);
-  };
+  const checkPositions = () => {
+    const positionsData = JSON.parse( localStorage.getItem("GEpositions") ?? '{}' );
+    if ( positionsData && positionsData[account] ) {
+      let pos = [];
+      for(let k of Object.keys(positionsData[account]['opened']) )
+        pos.push(positionsData[account]['opened'][k])
+      setPositions(pos)
+    }
+  }
+
+  useEffect( () => {
+    checkPositions()
+  }, [account])
+  
 
   return (
-    <div style={{ minWidth: 1200, display: "flex", flexDirection: "row" }}>
-      <div style={{ width: 850 }}>
-        <Card style={{ marginBottom: 24 }} bodyStyle={{ padding: 8 }}>
+    <div style={{ minWidth: 1400, display: "flex", flexDirection: "row" }}>
+      <div style={{ width: 1043 }}>
+        <Card style={{ marginBottom: gap }} bodyStyle={{ padding: 8 }}>
           <Infobar
             vaults={vaults}
             current={currentVault}
@@ -52,28 +66,19 @@ const ProtectedPerps = () => {
           candles={candles}
           positions={positions}
         />
-        <Positions vaults={vaults} addPosition={addPosition} price={price} />
+        <Positions vaults={vaults} positions={positions} checkPositions={checkPositions} price={price} />
       </div>
-      <div>
-        <Card style={{ marginLeft: 24, minWidth: 300 }}>
-          <VaultPerpsForm
-            vault={vaults[currentVault]}
-            price={price}
-            opmAddress={ADDRESSES["optionsPositionManager"]}
-          />
-        </Card>
-        <Card style={{ marginLeft: 24, marginTop: 24, minWidth: 300 }}>
-          Regardless if you long or short the asset, the max loss is always the
-          activation price selected while the max gains are uncapped. The main
-          risk is paying the hourly funding rate to maintain your position.
-          <br />
-          <Button
-            href="https://goodentry.io/academy"
-            target="_blank"
-            style={{ marginTop: "10px" }}
-          >
-            More Details &rarr;
-          </Button>
+      <div style={{ width: 343, marginLeft: gap}}>
+        <VaultPerpsForm
+          vault={vaults[currentVault]}
+          price={price}
+          opmAddress={ADDRESSES["optionsPositionManager"]}
+          checkPositions={checkPositions}
+        />
+        <Card style={{ minWidth: 343, marginTop: gap }}>
+          <span style={{fontWeight: 600}}>Useful Links</span><br />
+          <a href="#" >Video Guide</a><br />
+          <a href="#" >Trading Guide</a><br />
         </Card>
       </div>
     </div>

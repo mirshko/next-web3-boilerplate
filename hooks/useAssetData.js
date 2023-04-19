@@ -4,7 +4,7 @@ import useAddresses from "./useAddresses";
 import useTokenBalance from "./useTokenBalance";
 import useTokenContract from "./useTokenContract";
 import usePriceOracle from "./usePriceOracle";
-import useRangeStats from "./useRangeStats";
+import useGoodStats from "./useGoodStats";
 import useLendingPoolContract from "./useLendingPoolContract";
 import { ethers } from "ethers";
 
@@ -18,9 +18,11 @@ export default function useAssetData(address, vaultAddress) {
   const [price, setPrice] = useState(0);
   const [variableRate, setVariableRate] = useState(0);
   const [supplyRate, setSupplyRate] = useState(0);
+  const [deposited, setDeposited] = useState(0);
   const ADDRESSES = useAddresses(vaultAddress);
   let lp = ADDRESSES["lendingPools"][0] || {};
   var asset = {
+    address: address,
     icon: "/favicon.ico",
   };
 
@@ -32,6 +34,10 @@ export default function useAssetData(address, vaultAddress) {
       asset = { type: "single", ...lp.token1 };
     else if (address == lp["lpToken"].address)
       asset = { type: "lpv2", ...lp.lpToken };
+    else if (address == lp["geVault"])
+      asset = { type: "geVault", name: "ezVault "+lp.name, address: address,
+        icon: "/icons/" + lp.name.toLowerCase() + ".svg",
+      }
     else {
       // loop on ranges
       for (let k of lp.ranges)
@@ -43,24 +49,25 @@ export default function useAssetData(address, vaultAddress) {
         if (address == k.address) {
           asset = {
             type: "ticker",
-            name: "geVault-" + k.price,
+            name: "Ticker-" + k.price,
             icon: "/icons/" + lp.name.toLowerCase() + ".svg",
             ...k,
           };
         }
     }
   }
-  if (asset.name && asset.type != "ticker")
+  if (asset.name && asset.type != "ticker" && asset.type != "geVault")
     asset.icon = "/icons/" + asset.name.toLowerCase() + ".svg";
-  const rangeData = useRangeStats(asset && asset.tokenId);
-  // aprReported = (24hApr * 1day + (positionAgeInDays - 1) * previousAprReported )/ positionAgeInDays
-  // -> 24hrApr = aprReported * positionAge - (positionAge-1) * previousAprReported
-  // but here we dont havea  full day, just the last 23h, that will do (=0.958d)
-  const feeApr = rangeData.apr;
+  const goodStats = useGoodStats();
+  const feeApr = goodStats && goodStats["7d"][address] ? goodStats["7d"][address].apr : 0;
+  const assetContract = useTokenContract(address);
+  const roeToken = useTokenContract(asset.roeAddress);
+  
   asset = {
     supplyApr: supplyRate,
-    feeApr: feeApr,
+    feeApr: feeApr || 0,
     debtApr: variableRate,
+    totalApr: parseFloat(supplyRate) + parseFloat(feeApr || 0) + parseFloat(variableRate),
     wallet: 0,
     deposited: 0,
     debt: debt,
@@ -68,7 +75,9 @@ export default function useAssetData(address, vaultAddress) {
     totalSupply: totalSupply,
     roeTotalSupply: roeTotalSupply,
     oraclePrice: price,
-    rangeData: rangeData,
+    deposited: deposited,
+    contract: assetContract,
+    roeContract: roeToken,
     ...asset,
   };
 
@@ -84,10 +93,9 @@ export default function useAssetData(address, vaultAddress) {
   };
   getPrice();
 
-  const assetContract = useTokenContract(address);
   const getAssetData = async () => {
     try {
-      if (!assetContract) return;
+      if (!assetContract || !asset.roeAddress) return;
       var data = await assetContract.balanceOf(asset.roeAddress);
       setTotalSupply(ethers.utils.formatUnits(data, asset.decimals));
     } catch (e) {
@@ -97,11 +105,12 @@ export default function useAssetData(address, vaultAddress) {
   getAssetData();
 
   // get token supply = TVL
-  const roeToken = useTokenContract(asset.roeAddress);
   const getRoeSupply = async () => {
     try {
       var data = await roeToken.totalSupply();
       setRoeTotalSupply(ethers.utils.formatUnits(data, asset.decimals));
+      data = await roeToken.balanceOf(account);
+      setDeposited(ethers.utils.formatUnits(data, asset.decimals));
     } catch (e) {
       //console.error
     }
@@ -133,11 +142,6 @@ export default function useAssetData(address, vaultAddress) {
     }
   };
   getVariableRate();
-
-  {
-    const { data } = useTokenBalance(account, asset.roeAddress);
-    asset.deposited = ethers.utils.formatUnits(data ?? 0, asset.decimals) ?? 0;
-  }
 
   {
     const { data } = useTokenBalance(account, asset.address);

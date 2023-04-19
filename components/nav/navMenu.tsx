@@ -7,7 +7,7 @@ import {
   DollarOutlined,
   DashboardOutlined,
   SwapOutlined,
-  BugOutlined,
+  FundOutlined,
 } from "@ant-design/icons";
 import { useRouter } from "next/router";
 
@@ -36,14 +36,14 @@ const NavMenu = ({ bgColor }) => {
     //{ label: 'Vaults', key: '/', icon: <BankOutlined /> },
     //{ label: 'Ranger', key: '/ranger', icon: <BugOutlined /> },
     { label: "Protected Perps™", key: "/", icon: <SwapOutlined /> },
-    { label: "geVault", key: "/gevaults", icon: <BankOutlined /> },
-    { label: "Dashboard", key: "/dashboard", icon: <DashboardOutlined /> },
+    { label: "ezVaults", key: "/ezvaults", icon: <BankOutlined /> },
     //{ label: 'Protected Farming™', key: '/protectedyield', icon: <DollarOutlined /> },
     {
       label: "Staking",
       key: "https://goodentry.io/staking",
-      icon: <BankOutlined />,
+      icon: <FundOutlined />,
     },
+    { label: "Dashboard", key: "/dashboard", icon: <DashboardOutlined /> },
   ];
 
   return (

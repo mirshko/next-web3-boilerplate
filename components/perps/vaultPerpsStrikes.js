@@ -5,11 +5,14 @@ const VaultPerpsStrikes = ({ asset, onClick, isSelected }) => {
 
   var style = {
     cursor: "pointer",
+    borderRadius: 4,
+    backgroundColor: "#1D2329",
+    padding: 8,
+    marginBottom: 4
   };
   if (isSelected)
     style = {
       //backgroundColor: 'rgba(255,255,255,0.2',
-      padding: 4,
       border: "1px solid " + theme.colorPrimary,
       ...style,
     };

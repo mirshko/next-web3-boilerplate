@@ -8,8 +8,13 @@ export default function useRoeRouter(poolId) {
   const roeRouter = useContract(ADDRESSES["roeRouter"], ROE_ROUTER_ABI);
   
   useEffect( () => async {
-    const result = await roeRouter.pools(poolId)
-    setPoolAddresses(result)
+    try {
+      const result = await roeRouter.pools(poolId)
+      setPoolAddresses(result)
+    }
+    catch(e){
+      console.log("Fetch Router", e);
+    }
   }, [poolId])
   
   return poolAddresses ?? {}

@@ -5,7 +5,7 @@ import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 import { useTxNotification } from "../hooks/useTxNotification";
 
-const CloseTrPositionButton = ({ address, vault, opmAddress }) => {
+const CloseTrPositionButton = ({ address, vault, opmAddress, checkPositions }) => {
   const { account } = useWeb3React();
   const [isSpinning, setSpinning] = useState(false);
   const [showSuccessNotification, showErrorNotification, contextHolder] =
@@ -37,7 +37,17 @@ const CloseTrPositionButton = ({ address, vault, opmAddress }) => {
         0,
         ethers.constants.AddressZero
       );
-
+      
+      let positionsData = JSON.parse(localStorage.getItem("GEpositions") ?? '{}' );
+      if (positionsData[account]["opened"][address]) {
+        let p = positionsData[account]["opened"][address]
+        delete positionsData[account]["opened"][address]
+        p.close = new Date();
+        positionsData[account]["closed"].push(p)
+      }
+      localStorage.setItem("GEpositions", JSON.stringify(positionsData) );
+      checkPositions();
+      
       showSuccessNotification(
         "Position closed",
         "Position closed successful",

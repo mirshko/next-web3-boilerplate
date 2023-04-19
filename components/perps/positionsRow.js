@@ -7,23 +7,17 @@ import usePerpsEventLogs from "../../hooks/usePerpsEventLogs";
 import { Space } from "antd";
 import { CaretUpOutlined, CaretDownOutlined } from "@ant-design/icons";
 
-const PositionsRow = ({ address, vault, price, addPosition }) => {
-  const asset = useAssetData(address, vault.address);
-  const token0 = useAssetData(vault.token0.address, vault.address);
-  const token1 = useAssetData(vault.token1.address, vault.address);
+const PositionsRow = ({ position, price, checkPositions }) => {
+  const asset = useAssetData(position.ticker, position.vault);
+  const vault = useAddresses(position.vault)['lendingPools'][0];
+  const token0 = useAssetData(vault.token0.address, position.vault);
+  const token1 = useAssetData(vault.token1.address, position.vault);
   const { tokenAmounts, tokenAmountsExcludingFees, totalSupply } =
-    useUnderlyingAmount(address, vault);
+    useUnderlyingAmount(position.ticker, vault);
 
   // avoid spamming arbiscan by providing a valid address only when the debt is non null, rate limit is 5 req/s
-  const posEvent = usePerpsEventLogs(address, vault.address, asset.debt);
+  //const posEvent = usePerpsEventLogs(position.ticker, position.vault, asset.debt);
 
-  useEffect(() => {
-    if (asset.debt != 0) {
-      addPosition({ name: vault.name, price: asset.price });
-    }
-  }, [addPosition, asset.debt, vault.name, asset.price]);
-
-  if (asset.debt == 0) return <></>;
 
   let amount0 = (tokenAmounts.amount0 * asset.debt * 1e18) / totalSupply;
   let amount1 = (tokenAmounts.amount1 * asset.debt * 1e18) / totalSupply;
@@ -32,41 +26,41 @@ const PositionsRow = ({ address, vault, price, addPosition }) => {
   let amount1EF =
     (tokenAmountsExcludingFees.amount1 * asset.debt * 1e18) / totalSupply;
 
-  // PnL is value of the tokens withdrawn when opening the position (whether swapped or not) minus the value of debt now
-  let pnl = 0;
-  let pnlPercent = 0;
-  let direction = "-";
-  let entry = 0;
-
-  if (posEvent) {
-    let costDebt = amount0 * token0.oraclePrice + amount1 * token1.oraclePrice;
-    pnl =
-      (posEvent.token0Amount * token0.oraclePrice) / 10 ** token0.decimals +
-      (posEvent.token1Amount * token1.oraclePrice) / 10 ** token1.decimals -
-      costDebt;
-    pnlPercent = (100 * pnl) / costDebt;
-    //position direction: if token0 value > token1 on open, then we're exposed to it, its long
-    if (
-      (posEvent.token0Amount * token0.oraclePrice) / 10 ** token0.decimals <
-      (posEvent.token1Amount * token1.oraclePrice) / 10 ** token1.decimals
-    ) {
-      direction = "Short";
-    } else {
-      direction = "Long";
+  // 
+  let upnl = 0
+  // if opened ITM position, pnl is based on diff between entry and current price
+  // else, based on diff between strike and current price
+  if (position.direction == "Long") {
+    if ( position.strike < position.entry ){ // ITM long
+      if (price < position.strike ) upnl = position.strike - position.entry
+      else upnl = price - position.entry
     }
-    // from the event we have received X usdc + Y weth = assetValue => entry = ( assetValue -  X ) / Y
-    if (posEvent.token0Amount > 0)
-      entry =
-        ((posEvent.assetValue - posEvent.token1Amount / 10 ** token1.decimals) /
-          posEvent.token0Amount) *
-        10 ** token0.decimals;
+    else { // OTM long
+      if (price > position.strike) upnl = price - position.strike
+    }
   }
+  else { // Short
+    if ( position.strike > position.entry ){ // ITM short
+      if (price > position.strike ) upnl = position.entry - position.strike;
+      else upnl = position.entry - price;
+    }
+    else { // OTM short
+      if (price < position.strike) upnl = position.strike - price;
+    }
+  }
+  upnl = upnl * (position.amountBase || 0)
+  
+  let fees = (asset.debt - position.amount / 10**18) * asset.oraclePrice // fees are the debt accumulated
+  let pnl = upnl - fees;
+  let pnlPercent = pnl / (asset.debt * asset.oraclePrice);
+  let direction = position.direction;
+  let entry = position.entry;
 
   const tdStyle = { paddingTop: 4, paddingBottom: 4 };
 
   return (
     <tr key={asset.address}>
-      <td style={tdStyle}>
+      <td style={{...tdStyle, paddingLeft: 0}}>
         <div style={{ display: "flex", alignItems: "center" }}>
           <img
             src={token0.icon}
@@ -74,7 +68,7 @@ const PositionsRow = ({ address, vault, price, addPosition }) => {
             height={20}
             style={{ marginRight: 8 }}
           />
-          Activation Price {asset.price}
+          {token0.name} {asset.price}
         </div>
       </td>
       <td style={tdStyle}>
@@ -88,40 +82,38 @@ const PositionsRow = ({ address, vault, price, addPosition }) => {
           {direction.toUpperCase()}
         </span>
       </td>
-      <td style={tdStyle}>{entry.toFixed(2)}</td>
       <td style={tdStyle}>
         {amount0EF > 0 && (
           <>
-            {amount0EF.toFixed(5)} {vault.token0.name}
+            <span style={{fontWeight: 500 }}>{amount0EF.toFixed(5)} {vault.token0.name}</span>
+            <br />
+            <span style={{ color: 'grey' }}>${(token0.oraclePrice * amount0EF).toFixed(2)}</span>
           </>
         )}
         {amount1EF > 0 && (
           <>
             {amount1EF.toFixed(2)} {vault.token1.name}
+            <br />
+            <span style={{ color: 'grey' }}>${(token0.oraclePrice * amount0EF).toFixed(2)}</span>
           </>
         )}
       </td>
-      <td align="right" style={tdStyle}>
+      <td style={tdStyle}>
         {(asset.debtApr / 365 / 24).toFixed(4)}%
       </td>
-      <td align="right" style={tdStyle}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            float: "right",
-          }}
-        >
+      <td style={tdStyle}>${entry.toFixed(2)}</td>
+      <td style={tdStyle}>
+
           <span style={{ color: pnl > 0 ? "#55d17c" : "#e57673" }}>
             {pnl > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
             {pnlPercent.toFixed(2)}%
           </span>
-          ${(isNaN(pnl) ? 0 : pnl).toFixed(3)}
-        </div>
+          <br />
+          {" "}${(isNaN(pnl) ? 0 : pnl).toFixed(3)}
+
       </td>
-      <td align="right" style={tdStyle}>
-        <CloseTrPositionButton address={address} vault={vault} />
+      <td style={tdStyle}>
+        <CloseTrPositionButton address={asset.address} vault={vault} checkPositions={checkPositions} />
       </td>
     </tr>
   );

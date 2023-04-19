@@ -63,8 +63,8 @@ const NavChain = () => {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        gap: 8,
-        marginRight: -1,
+        marginRight: 8,
+        gap: 8
       }}
       icon={label.icon}
       onClick={()=>{onClick({key: "42161"})}}

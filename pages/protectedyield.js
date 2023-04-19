@@ -26,7 +26,7 @@ import { useRouter } from "next/router";
 import Range from "../components/range";
 import LendingPoolTable from "../components/lendingPoolTable";
 import DepositNoLevModal from "../components/depositNoLevModal";
-import VaultsDropdown from "../components/vaultsDropdown";
+import VaultsDropdown from "../components/perps/vaultsDropdown";
 
 import useUnderlyingAmount from "../hooks/useUnderlyingAmount";
 import useAddresses from "../hooks/useAddresses";
