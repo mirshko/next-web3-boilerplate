@@ -6,7 +6,7 @@ import useContract from "./useContract";
 import { ethers } from "ethers";
 import useGoodStats from "./useGoodStats";
 
-var statsPeriod = "7d";
+var statsPeriod = "24h";
 
 export default function useGeVault(vault) {
   const [tvl, setTvl] = useState(0);
@@ -19,8 +19,7 @@ export default function useGeVault(vault) {
   const { account } = useWeb3React();
   const gevaultContract = useContract(vault.geVault, GEVAULT_ABI);
   const goodStats = useGoodStats();
-  if (vault.name == "ARB-USDC") statsPeriod = "24h"
-  else statsPeriod = "7d"
+
   const feesRate = goodStats && goodStats[statsPeriod][vault.geVault] ? parseFloat(goodStats[statsPeriod][vault.geVault].feesRate) : 0;
   const supplyRate = goodStats && goodStats[statsPeriod][vault.geVault] ? parseFloat(goodStats[statsPeriod][vault.geVault].supplyRate) : 0;
   
