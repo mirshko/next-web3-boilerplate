@@ -5,8 +5,10 @@ import { Card, Typography, Row, Col } from "antd";
 import TickChart from "../../components/goodvaults/tickChart";
 import StatsChart from "../../components/goodvaults/statsChart";
 import GeVaultForm from "../../components/goodvaults/geVaultForm";
+import DesignIcon from "../../components/goodvaults/designIcon";
 import useGeVault from "../../hooks/useGeVault";
 import useAddresses from "../../hooks/useAddresses";
+import useAssetData from "../../hooks/useAssetData";
 
 const GeVaults = ({}) => {
   const { account } = useWeb3React();
@@ -16,6 +18,7 @@ const GeVaults = ({}) => {
   const ADDRESSES = useAddresses(geVault);
   let vault = ADDRESSES["lendingPools"][0];
   const gevault = useGeVault(vault);
+  const mainAsset = useAssetData(vault.token0.address, vault.address)
 
   const RewardsTag = () => {
     return (<div style={{backgroundColor: "#0A371B", color: "#0FFD6A", borderRadius: 4, padding: "6px 8px", display: 'flex', alignItems: 'center', fontWeight: 600 }}>
@@ -63,7 +66,7 @@ const GeVaults = ({}) => {
           </div>
         </Col>
         <Col md={12}>
-          <img src={gevault.icon} height={64} style={{ float: 'right'}}/>
+          <DesignIcon icon={mainAsset.icon} alt={vault.name.toLowerCase()} height={196} style={{float: 'right'}} />
         </Col>
       </Row>
     </Card>
