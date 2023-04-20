@@ -66,7 +66,7 @@ const ProtectedPerps = () => {
           candles={candles}
           positions={positions}
         />
-        <Positions vaults={vaults} positions={positions} checkPositions={checkPositions} price={price} />
+        <Positions vault={vaults[currentVault]} positions={positions} checkPositions={checkPositions} price={price} />
       </div>
       <div style={{ width: 343, marginLeft: gap}}>
         <VaultPerpsForm

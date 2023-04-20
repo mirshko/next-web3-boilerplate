@@ -6,7 +6,7 @@ import PositionsRow from "./positionsRow";
 
 // show all positions
 // unlike the rest, it should show positions from other pools as well
-const Positions = ({ positions, checkPositions, price }) => {
+const Positions = ({ vault, positions, checkPositions, price }) => {
   const { account} = useWeb3React();
   const thStyle = {
     color: "#94A3B8",
@@ -39,13 +39,15 @@ const Positions = ({ positions, checkPositions, price }) => {
           </thead>
           <tbody>
             {positions.map((pos)=>{
-              return (
-              <PositionsRow
-                  key={pos.ticker}
-                  position={pos}
-                  price={price}
-                  checkPositions={checkPositions}
-                />)
+              if (pos.vault == vault.address)
+                return (
+                  <PositionsRow
+                      key={pos.ticker}
+                      position={pos}
+                      price={price}
+                      checkPositions={checkPositions}
+                    />)
+              else return (<></>)
             })}
           </tbody>
         </table>
