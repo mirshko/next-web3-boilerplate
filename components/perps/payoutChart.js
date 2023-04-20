@@ -27,7 +27,7 @@ const PayoutChart = ({direction, price, strike, step}) => {
   var steps = []
   
   for (let k=-3+(strike<price?1:0); k<3+(strike<price?1:0); k++){
-    steps.push(parseFloat(strike) + k * step)
+    steps.push( (parseFloat(strike) + k * step).toFixed(1))
   }
   var shift = 0;
   if (direction == 'Long' && strike < price) shift = strike - price

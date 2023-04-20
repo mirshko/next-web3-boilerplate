@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Modal, Button, Tabs, Input, Spin, Checkbox, Divider, Tag, Dropdown } from "antd";
 import { UploadOutlined, DownloadOutlined, DownOutlined } from "@ant-design/icons";
@@ -33,7 +33,6 @@ const DepositWithdrawalModalMultiAssets = ({ vault }) => {
   if (token0.name == "WETH") token0.name = "ETH"
   const token1 = useAssetData(vault ? vault.token1.address : null, vault.address)
   const [asset, setAsset1] = useState(token0)
-  
   const setAction = (a) => {
     setRunningTx(0);
     setAction1(a);
@@ -42,6 +41,10 @@ const DepositWithdrawalModalMultiAssets = ({ vault }) => {
     setRunningTx(0);
     setAsset1(a);
   }
+  
+  useEffect(()=>{
+    setAsset1(token0)
+  }, [vault.name])
 
   const lendingPoolContract = useLendingPoolContract(vault.address);
   const wethGateway = useWethGateway();
