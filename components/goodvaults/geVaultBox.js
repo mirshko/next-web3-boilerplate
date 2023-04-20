@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import useGeVault from "../../hooks/useGeVault";
 import useAssetData from "../../hooks/useAssetData";
 import useTheme from "../../hooks/useTheme";
-
+import DesignIcon from "./designIcon";
 
 const GeVaultBox = ({ vault }) => {
   const [highlightBox, setHighlightBox] = useState(false);
@@ -53,15 +53,15 @@ const GeVaultBox = ({ vault }) => {
           alignItems: "center",
           justifyContent: "space-between", height: '100%', gap: 12, 
           boxShadow: (highlightBox ? "0px 0px 30px rgba(15, 253, 106, 0.4)" : "" ) ,
-          border: (highlightBox ? "1px solid #0FFD6A" : "")
+          border: (highlightBox ? "1px solid #0FFD6A" : ""),
         }}
       >
-        <img src={mainAsset.icon} height={164} alt={asset.name.toLowerCase()} />
         <span
           style={{ fontSize: "x-large", marginLeft: 8 }}
         >
           {asset.name == "WETH-USDC" ? "ETH-USDC" : asset.name}
         </span>
+        <DesignIcon icon={mainAsset.icon} alt={vault.name.toLowerCase()} height={196} />
         
         <div
           style={{

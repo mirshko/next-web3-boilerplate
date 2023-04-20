@@ -10,7 +10,7 @@ export const appColorScheme = {
         colorBorder: "#475569",
         colorBorderSecondary: "#475569",
         borderRadius: 4,
-        colorLink: "#94A3B8",
+        colorLink: "#8C8C8C",
         colorTextBase: "#E2E8F0",
         fontSizeHeading1: 30,
         fontSizeHeading2: 20,
