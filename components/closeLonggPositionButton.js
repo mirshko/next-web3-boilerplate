@@ -45,7 +45,7 @@ const CloseLonggPositionButton = ({ address, vault }) => {
       );
     } catch (e) {
       console.log("Error closing position", e.message);
-      showErrorNotification(e.code, e.message);
+      showErrorNotification(e.code, e.reason);
     }
     setSpinning(false);
   };

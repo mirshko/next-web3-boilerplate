@@ -43,7 +43,7 @@ const CloseDebt = ({ asset, type, vault }) => {
       );
     } catch (e) {
       console.log(e);
-      showErrorNotification(e.code, e.message);
+      showErrorNotification(e.code, e.reason);
     }
     setSpinning(false);
   };

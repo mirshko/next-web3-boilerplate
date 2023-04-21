@@ -55,7 +55,7 @@ const CloseTrPositionButton = ({ address, vault, opmAddress, checkPositions }) =
       );
     } catch (e) {
       console.log("Error closing position", e);
-      showErrorNotification(e.code, e.message);
+      showErrorNotification(e.code, e.reason);
     }
     setSpinning(false);
   };

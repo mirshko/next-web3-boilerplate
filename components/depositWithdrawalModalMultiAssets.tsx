@@ -140,7 +140,7 @@ const DepositWithdrawalModalMultiAssets = ({ vault }) => {
     } catch (e) {
       setErrorTx(true);
       console.log(e.message);
-      showErrorNotification(e.code, e.message);
+      showErrorNotification(e.code, e.reason);
     }
     setSpinning(false);
   };

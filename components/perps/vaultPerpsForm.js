@@ -95,6 +95,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
   if (direction == "Short" && strike.price > price) expectedEntry = price * 0.9965
 
   const belowMin = parseFloat(inputValue) * asset.oraclePrice < 5;
+  const aboveMargin = parseFloat(inputValue) * asset.oraclePrice > availableCollateral * 10;
 
   const openPosition = async () => {
     if (inputValue == 0) return;
@@ -173,8 +174,9 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
         hash
       );
     } catch (e) {
-      console.log("Error opening position", e.message);
-      showErrorNotification(e.code, e.message);
+      console.log(e);
+      console.log(tokenTraded, tokenTraded.oraclePrice, parseFloat(inputValue) * tokenTraded.oraclePrice , availableCollateral * 10)
+      showErrorNotification(e.code, e.reason);
     }
     setSpinning(false);
   };
@@ -198,7 +200,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
     isSpinning ||
     parseFloat(inputValue) == 0 ||
     parseFloat(inputValue) > maxOI ||
-    parseFloat(inputValue) > availableCollateral * 10 ||
+    aboveMargin ||
     belowMin;
 
   let openPositionButtonErrorTitle = "...";
@@ -209,7 +211,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
     openPositionButtonErrorTitle = "Enter an Amount";
   } else if (parseFloat(inputValue) > maxOI) {
     openPositionButtonErrorTitle = "Max Borrowable Reached";
-  } else if (parseFloat(inputValue) > availableCollateral * 10) {
+  } else if (aboveMargin) {
     openPositionButtonErrorTitle = "Not Enough Margin";
   } else if (belowMin) {
     openPositionButtonErrorTitle = "Amount too Low";

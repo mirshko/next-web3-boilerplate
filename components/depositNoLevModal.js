@@ -153,7 +153,7 @@ const DepositWithdrawalModal = ({
       } catch (e) {
         setErrorTx(true);
         console.log(e.message);
-        showErrorNotification(e.code, e.message);
+        showErrorNotification(e.code, e.reason);
       }
     };
     if (runningTx >= 0) process();

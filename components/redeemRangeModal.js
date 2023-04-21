@@ -49,8 +49,7 @@ const RedeemRangeModal = ({ listId, asset, target }) => {
         hash
       );
     } catch (e) {
-      console.log(e);
-      showErrorNotification(e.code, e.message);
+      showErrorNotification(e.code, e.reason);
     }
     setSpinning(false);
   };

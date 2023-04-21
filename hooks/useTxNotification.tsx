@@ -22,6 +22,7 @@ export const useTxNotification = () => {
 
   const showErrorNotification = useCallback(
     (message: string, description: string) => {
+      if ( message == "UNPREDICTABLE_GAS_LIMIT") message = "Tx Error";
       api.error({ message, description });
     },
     [api]

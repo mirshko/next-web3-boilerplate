@@ -70,7 +70,7 @@ const GeVaultForm = ({vault}) => {
     }
     catch(e){
       console.log("Error withdrawing", e.message);
-      showErrorNotification(e.code, e.message);
+      showErrorNotification(e.code, e.reason);
     }
     setSpinning(false);
   }
@@ -88,7 +88,7 @@ const GeVaultForm = ({vault}) => {
     }
     catch(e){
       console.log("Error withdrawing", e.message);
-      showErrorNotification(e.code, e.message);
+      showErrorNotification(e.code, e.reason);
     }
     setSpinning(false);
   }
