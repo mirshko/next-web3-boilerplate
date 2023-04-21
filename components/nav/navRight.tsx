@@ -18,12 +18,12 @@ const NavRight = () => {
   return (
     <div style={{ display: "flex", alignItems: "center", fontWeight: 600 }}>
       <a
-        href="https://goodentry.io/academy"
+        href="https://gitbook.goodentry.io/"
         target="_blank"
         rel="noreferrer"
         style={{ marginRight: 24 }}
       >
-        Academy
+        Docs
       </a>
       <a
         href="https://crew3.xyz/c/goodentrylabs/questboard"
