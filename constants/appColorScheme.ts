@@ -9,6 +9,7 @@ export const appColorScheme = {
         colorBgElevated: "#13161A",
         colorBorder: "#475569",
         colorBorderSecondary: "#475569",
+        colorLinkHover: "#009D3C",
         borderRadius: 4,
         colorLink: "#8C8C8C",
         colorTextBase: "#E2E8F0",
