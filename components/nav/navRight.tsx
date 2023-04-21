@@ -1,6 +1,6 @@
 // components/layout.js
 import { useWeb3React } from "@web3-react/core";
-import { TwitterOutlined, MediumOutlined } from "@ant-design/icons";
+import { TwitterOutlined, MediumOutlined, GithubOutlined } from "@ant-design/icons";
 import Account from "./Account";
 
 import NavChain from "./navChain";
@@ -56,6 +56,14 @@ const NavRight = () => {
         style={{ marginRight: 24 }}
       >
         <MediumOutlined style={{ fontSize: "larger"}} />
+      </a>
+      <a
+        href="https://github.com/GoodEntry-io/GoodEntryMarkets"
+        target="_blank"
+        rel="noreferrer"
+        style={{ marginRight: 24 }}
+      >
+        <GithubOutlined style={{ fontSize: "larger"}} />
       </a>
       <NavChain />
       <Account triedToEagerConnect={triedToEagerConnect} />
