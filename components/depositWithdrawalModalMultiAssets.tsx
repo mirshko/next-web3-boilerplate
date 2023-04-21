@@ -252,7 +252,7 @@ const DepositWithdrawalModalMultiAssets = ({ vault }) => {
             disabled={
               !inputValue ||
               parseFloat(inputValue) == 0 ||
-              parseFloat(inputValue) > parseFloat(asset.name == "ETH" ? ethBalance : assetBal)
+              parseFloat(inputValue) > parseFloat(assetBal)
             }
           >
             {isSpinning ? <Spin /> : <>{actionComponent}</>}

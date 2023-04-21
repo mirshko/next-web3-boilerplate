@@ -6,7 +6,7 @@ import useContract from "./useContract";
 import { ethers } from "ethers";
 import useGoodStats from "./useGoodStats";
 
-var statsPeriod = "24h";
+var statsPeriod = "7d";
 
 export default function useGeVault(vault) {
   const [tvl, setTvl] = useState(0);

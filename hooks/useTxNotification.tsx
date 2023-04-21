@@ -1,4 +1,5 @@
 import { Button, notification } from "antd";
+import { ExclamationCircleOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import { useCallback } from "react";
 
 export const useTxNotification = () => {
@@ -22,8 +23,15 @@ export const useTxNotification = () => {
 
   const showErrorNotification = useCallback(
     (message: string, description: string) => {
-      if ( message == "UNPREDICTABLE_GAS_LIMIT") message = "Tx Error";
-      api.error({ message, description });
+      if (description == "execution reverted: 6") description = "Health factor would become lower than liquidation threshold";
+      if ( message == "UNPREDICTABLE_GAS_LIMIT") message = "Error";
+      api.error({ message, description,
+        icon: <ExclamationCircleOutlined style={{ color: 'white', marginTop: 4, marginRight: 8 }}/>,
+        style: {
+          backgroundColor: '#B53D3D',
+          color: 'white'
+        }
+      });
     },
     [api]
   );
