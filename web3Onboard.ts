@@ -93,6 +93,10 @@ export default init({
                 name: 'MetaMask',
                 url: 'https://metamask.io'
             },
+            {
+                name: 'Rabby',
+                url: 'https://rabby.io/'
+            },
         ],
     }
 });
