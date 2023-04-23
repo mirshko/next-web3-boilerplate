@@ -10,6 +10,7 @@ import DepositWithdrawalModalMultiAssets from "../depositWithdrawalModalMultiAss
 import VaultPerpsStrikes from "./vaultPerpsStrikes";
 import PayoutChart from "./payoutChart";
 import MyMargin from "../myMargin";
+import axios from "axios";
 import { ethers } from "ethers";
 import { useWeb3React } from "@web3-react/core";
 import { useTxNotification } from "../../hooks/useTxNotification";
@@ -146,6 +147,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
         params,
         0
       );
+      const dataTS = axios.get("https://roe.nicodeva.xyz/stats/arbitrum/tradingstats.json?user="+account);
       let positionsData = JSON.parse(localStorage.getItem("GEpositions") ?? '{}' );
       if (!positionsData.hasOwnProperty(account)) positionsData[account] = {
         opened: {},
