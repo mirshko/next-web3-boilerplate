@@ -38,7 +38,7 @@ const PositionsRow = ({ position, price, checkPositions }) => {
   
   let fees = (asset.debt - position.amount / 10**18) * asset.oraclePrice // fees are the debt accumulated
   let pnl = upnl - fees;
-  let pnlPercent = pnl / (asset.debt * asset.oraclePrice);
+  let pnlPercent = pnl / (asset.debt * asset.oraclePrice) * 100;
   let direction = position.direction;
   let entry = position.entry;
 
