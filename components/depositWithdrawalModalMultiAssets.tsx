@@ -233,7 +233,7 @@ const DepositWithdrawalModalMultiAssets = ({ vault }) => {
               <>
                 <Tag
                   onClick={() => {
-                    setInputValue(asset.name == "ETH" ? ethBalance : assetBal);
+                    setInputValue(asset.name == "ETH" && action == "Deposit" ? ethBalance : assetBal);
                   }}
                   style={{ cursor: "pointer" }}
                 >
