@@ -1550,6 +1550,11 @@ bignumber.js@^9.0.0, bignumber.js@^9.1.0:
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.1.1.tgz#c4df7dc496bd849d4c9464344c1aa74228b4dac6"
   integrity sha512-pHm4LsMJ6lzgNGVfZHjMoO8sdoRhOzOH4MLmY65Jg70bpxCKu5iOHNJyfF6OyvYw7t8Fpf35RuzUyqnQsj8Vig==
 
+black-scholes@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npmmirror.com/black-scholes/-/black-scholes-1.1.0.tgz#2db77cfaf48ff9dae0d5d03693aeb02ef22f9b09"
+  integrity sha512-23iaI490ai4pRclxWTM7BJyD8GzDibJCltLSX3xg86D3t8fzx67cqYSfL8WQLHnza1BhEeeA898XqpfRuQyQ2w==
+
 bn.js@^4.11.9, bn.js@^4.4.0:
   version "4.12.0"
   resolved "https://registry.npmjs.org/bn.js/-/bn.js-4.12.0.tgz"

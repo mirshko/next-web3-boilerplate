@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button, Input, Spin, Slider, Card } from "antd";
-import { RiseOutlined, FallOutlined } from "@ant-design/icons";
+import { RiseOutlined, FallOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import useAssetData from "../../hooks/useAssetData";
 import getUserLendingPoolData from "../../hooks/getUserLendingPoolData";
 import useUnderlyingAmount from "../../hooks/useUnderlyingAmount";
@@ -14,6 +14,7 @@ import axios from "axios";
 import { ethers } from "ethers";
 import { useWeb3React } from "@web3-react/core";
 import { useTxNotification } from "../../hooks/useTxNotification";
+var bs = require("black-scholes");
 
 const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
   const [assetInfo, setAssetData] = useState();
@@ -102,12 +103,12 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
     if (inputValue == 0) return;
     setSpinning(true);
     try {
-      let tickerAmount = (
-        (inputValue /
+      let tickerAmount = parseFloat(inputValue /
           (parseFloat(tokenAmountsExcludingFees.amount0) ||
             parseFloat(tokenAmountsExcludingFees.amount1))) *
-        totalSupply
-      ).toFixed(0); // whichever is non null
+            totalSupply; // whichever of unerlying is non null 
+      tickerAmount = parseInt(tickerAmount / 1e8).toString() + "00000000";
+      let v = ethers.BigNumber.from(tickerAmount)
 
       const abi = ethers.utils.defaultAbiCoder;
       let swapSource = ethers.constants.AddressZero;
@@ -129,15 +130,6 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
         [0, vault.poolId, account, [swapSource]]
       );
       // flashloan( receiver, tokens, amounts, modes[2 for open debt], onBehalfOf, calldata params, refcode)
-      console.log(
-        opmAddress,
-        [strike.address],
-        [tickerAmount],
-        [2],
-        account,
-        params,
-        0
-      );
       const { hash } = await lpContract.flashLoan(
         opmAddress,
         [strike.address],
@@ -177,7 +169,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
       );
     } catch (e) {
       console.log(e);
-      console.log(tokenTraded, tokenTraded.oraclePrice, parseFloat(inputValue) * tokenTraded.oraclePrice , availableCollateral * 10)
+      console.log(tokenTraded, tokenTraded.oraclePrice, parseFloat(inputValue) * baseAsset.oraclePrice , availableCollateral * 10)
       showErrorNotification(e.code, e.reason);
     }
     setSpinning(false);
@@ -218,6 +210,17 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
   } else if (belowMin) {
     openPositionButtonErrorTitle = "Amount too Low";
   }
+  
+  
+  // BlackScholes
+  // on the daily options deribit volatility sells for half the weekly HVOL ?
+  var hvol = 0.55;
+  var rfr = 0.04;
+  if (baseAsset.name == "GMX") hvol = 0.7;
+  if (baseAsset.name == "ARB") hvol = 1.2;
+  const bsUpperStrike = bs.blackScholes(price, upperStrikeAsset.price, 1/365, hvol, rfr, "call");
+  const bsLowerStrike = bs.blackScholes(price, lowerStrikeAsset.price, 1/365, hvol, rfr, "put");
+  
 
   return (
   <>
@@ -385,6 +388,14 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
         price={price}
         step={upperStrike.price - lowerStrike.price}
       />
+    </Card>
+    <Card style={{ minWidth: 343, marginTop: 12 }}>
+      <span style={{fontWeight: 600}}>Volatility Price</span> <QuestionCircleOutlined /><br />
+        {baseAsset.name} HVOL: {(hvol * 100).toFixed(0)}%<br />
+      Theoretical 1DTE price:<span style={{float: 'right'}}>Current</span><br/>
+      Call-{upperStrikeAsset.price}: ${(bsUpperStrike).toFixed(2)}<span style={{float: 'right'}}>${(upperStrikeAsset.debtApr/100/365*price).toFixed(2)}</span><br />
+      Put-{lowerStrikeAsset.price}: ${(bsLowerStrike).toFixed(2)}<span style={{float: 'right'}}>${(lowerStrikeAsset.debtApr/100/365*price).toFixed(2)}</span><br />
+      
     </Card>
   </>
   );
