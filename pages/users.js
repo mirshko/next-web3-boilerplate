@@ -18,7 +18,6 @@ const Users = ({}) => {
       const url = "https://roe.nicodeva.xyz/stats/arbitrum/users.json";
       var dataraw = (await axios.get(url)).data;
       setUserStats(dataraw)
-      console.log(vaults)
     }
     getData();
   },[])
@@ -30,36 +29,41 @@ const Users = ({}) => {
         <Checkbox onChange={()=>{setHideHighHF(!hideHighHF)}}>Hide High HF</Checkbox>
         {
           vaults.map((vault) => {
+            console.log(vaults)
             return (
           <>
             Users
             <Card title={<>{vault.name}<span style={{float:'right'}}>{userStats && userStats[vault.address] ? Object.keys(userStats[vault.address]).length : 0} Users</span></>}>
             <table>
-              <tr>
-                <th align="left">User Address</th>
-                <th align="left">Health Factor</th>
-                <th align="left">Total Collateral</th>
-                <th align="left">Total Debt</th>
-              </tr>
-              {
-                userStats[vault.address] ? 
-                  Object.keys(userStats[vault.address]).map(userAddress => {
-                    if (
-                      userAddress.substring(0,2) != "0x" 
-                      || (hideHighHF && userStats[vault.address][userAddress].healthFactor > 1.05)
-                      || userStats[vault.address][userAddress].totalCollateral == 0
-                    ) return <></>;
-                    return (
-                      <tr style={{cursor: 'pointer'}} onClick={()=>{setLiquidation(userStats[vault.address][userAddress])}}>
-                        <td>{userAddress}</td>
-                        <td>{userStats[vault.address][userAddress].healthFactor < 10 ? (userStats[vault.address][userAddress].healthFactor).toFixed(3) : <>&infin;</>}</td>
-                        <td>$ {(userStats[vault.address][userAddress].totalCollateral / 1e8).toFixed(3)}</td>
-                        <td>$ {(userStats[vault.address][userAddress].totalDebt / 1e8).toFixed(3)}</td>
-                      </tr>
-                    )
-                  })
-                  : ""
-              }
+              <thead>
+                <tr>
+                  <th align="left">User Address</th>
+                  <th align="left">Health Factor</th>
+                  <th align="left">Total Collateral</th>
+                  <th align="left">Total Debt</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  userStats[vault.address] ? 
+                    Object.keys(userStats[vault.address]).map(userAddress => {
+                      if (
+                        userAddress.substring(0,2) != "0x" 
+                        || (hideHighHF && userStats[vault.address][userAddress].healthFactor > 1.05)
+                        || userStats[vault.address][userAddress].totalCollateral == 0
+                      ) return <></>;
+                      return (
+                        <tr key={vault.address+userAddress}  style={{cursor: 'pointer'}} onClick={()=>{setLiquidation(userStats[vault.address][userAddress])}}>
+                          <td>{userAddress}</td>
+                          <td>{userStats[vault.address][userAddress].healthFactor < 10 ? (userStats[vault.address][userAddress].healthFactor).toFixed(3) : <>&infin;</>}</td>
+                          <td>$ {(userStats[vault.address][userAddress].totalCollateral / 1e8).toFixed(3)}</td>
+                          <td>$ {(userStats[vault.address][userAddress].totalDebt / 1e8).toFixed(3)}</td>
+                        </tr>
+                      )
+                    })
+                    : <></>
+                }
+              </tbody>
             </table>
             </Card>
           </>
