@@ -1,11 +1,10 @@
-import { useEffect } from "react";
 import useAssetData from "../../hooks/useAssetData";
 import useUnderlyingAmount from "../../hooks/useUnderlyingAmount";
 import CloseTrPositionButton from "../closeTrPositionButton";
 import useAddresses from "../../hooks/useAddresses";
 import usePerpsEventLogs from "../../hooks/usePerpsEventLogs";
-import { Space } from "antd";
-import { CaretUpOutlined, CaretDownOutlined } from "@ant-design/icons";
+import PnlPopup from  "./pnlPopup.js";
+import { CaretUpOutlined, CaretDownOutlined, ExportOutlined } from "@ant-design/icons";
 
 const PositionsRow = ({ position, price, checkPositions }) => {
   const asset = useAssetData(position.ticker, position.vault);
@@ -78,14 +77,20 @@ const PositionsRow = ({ position, price, checkPositions }) => {
       </td>
       <td style={tdStyle}>${entry.toFixed(2)}</td>
       <td style={tdStyle}>
-
-          <span style={{ color: pnl > 0 ? "#55d17c" : "#e57673" }}>
-            {pnl > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
-            {pnlPercent.toFixed(2)}%
-          </span>
-          <br />
-          {" "}${(isNaN(pnl) ? 0 : pnl).toFixed(3)}
-
+        <div style={{ display: 'flex', alignItems: 'center'}}>
+          <div style={{ marginRight: 8}}>
+            <span style={{ color: pnl > 0 ? "#55d17c" : "#e57673" }}>
+              {pnl > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
+              {pnlPercent.toFixed(2)}%
+            </span>
+            <br />
+            {" "}${(isNaN(pnl) ? 0 : pnl).toFixed(3)}
+          </div>
+          
+          <PnlPopup token0={token0} direction={direction} pnl={pnl} pnlPercent={pnlPercent} entry={entry} price={price} >
+            <ExportOutlined />
+          </PnlPopup>
+        </div>
       </td>
       <td style={tdStyle}>
         <CloseTrPositionButton address={asset.address} vault={vault} checkPositions={checkPositions} />
