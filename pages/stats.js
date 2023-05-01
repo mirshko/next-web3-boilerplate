@@ -22,7 +22,7 @@ const Stats = ({}) => {
           vaults.map( vault => {
             
             return (
-              <PriceChart vault={vault} showPriceNotFees={true} />
+              <PriceChart key={vault.geVault} vault={vault} showPriceNotFees={true} />
             )
             
           })
