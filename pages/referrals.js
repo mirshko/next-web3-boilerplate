@@ -109,7 +109,7 @@ const Referrals = ({}) => {
         <Card title="Affiliates">
         {
           refCode && refCode.affiliates ? refCode.affiliates.map( affiliate => {
-            return (<h3>{affiliate}</h3>)
+            return (<h3 key={affiliate}>{affiliate}</h3>)
           })
           : <>You don&quot;t have any affiliates. Share your referral link and start earning rewards!</>
         }
