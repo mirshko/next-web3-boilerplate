@@ -33,7 +33,7 @@ const MyLayout = ({ children }) =>  {
           </div>
         </Layout.Header>
 
-        <Layout.Content style={{ margin: '24px 0' }}>
+        <Layout.Content style={{ margin: '24px 0', minWidth: 1200 }}>
           {children}
         </Layout.Content>
 
