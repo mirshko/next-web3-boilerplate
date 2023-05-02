@@ -23,8 +23,8 @@ export default function useGeVault(vault) {
   const feesRate = goodStats && goodStats[statsPeriod][vault.geVault] ? parseFloat(goodStats[statsPeriod][vault.geVault].feesRate) : 0;
   const supplyRate = goodStats && goodStats[statsPeriod][vault.geVault] ? parseFloat(goodStats[statsPeriod][vault.geVault].supplyRate) : 0;
   
-  const tvl2 = goodStats && goodStats["24h"][vault.geVault] ? parseFloat(goodStats["24h"][vault.geVault].tvl) / 1e8 : 0;
-  const maxTvl2 = goodStats && goodStats["24h"][vault.geVault] ? parseFloat(goodStats["24h"][vault.geVault].maxTvl || 0) / 1e8 : 0;
+  const tvl2 = goodStats && goodStats[statsPeriod][vault.geVault] ? parseFloat(goodStats[statsPeriod][vault.geVault].tvl) / 1e8 : 0;
+  const maxTvl2 = goodStats && goodStats[statsPeriod][vault.geVault] ? parseFloat(goodStats[statsPeriod][vault.geVault].maxTvl || 0) / 1e8 : 0;
   const totalRate = feesRate + supplyRate
 
   var data = {
