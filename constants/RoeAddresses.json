@@ -396,15 +396,15 @@
         "token0": {
           "name": "GMX",
           "address": "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a",
-          "roeAddress": "0x566A1F87164Db0524aAD0a0D5968b8755E80B8F3",
-          "debtAddress": "0xEC67D0F6e33a8d5738550da3115F078678a2881D",
+          "roeAddress": "0x621b66224bb6165c6809C6f515d3acaD197D6C6d",
+          "debtAddress": "0x572eFa32e32c4D0f81FBF0F7e5FED30d3BD0e7a5",
           "decimals": 18
         },
         "token1": {
           "name": "USDC",
           "address": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
-          "roeAddress": "0x9D323FF60cDb26aaa6589F5EfB7F3c42E4078D18",
-          "debtAddress": "0xa7201F84fdf260614685a9eced397d4cC7B4e79c",
+          "roeAddress": "0x908194859F95BFc2384f23e541f73fE68Cd615f2",
+          "debtAddress": "0xEb0aefC0bbfa27eE85256d534bCF3AbDc972648C",
           "decimals": 6
         },
         "lpToken": {
