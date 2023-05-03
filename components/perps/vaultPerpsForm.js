@@ -348,7 +348,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
             style={{ marginBottom: -8, marginTop: -2 }}
           />
           <div>
-            <span>1x</span>
+            <span>0x</span>
             <span style={{ float: "right" }}>10x</span>
           </div>
           <div style={{ marginTop: 0 }}>
