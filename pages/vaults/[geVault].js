@@ -18,6 +18,7 @@ const GeVaults = ({}) => {
   const ADDRESSES = useAddresses(geVault);
   let vault = ADDRESSES["lendingPools"][0];
   const gevault = useGeVault(vault);
+
   const mainAsset = useAssetData(vault.token0.address, vault.address)
 
   const RewardsTag = () => {
@@ -56,7 +57,7 @@ const GeVaults = ({}) => {
               <span>${parseFloat(gevault.tvl).toFixed(0)}</span>
             </div>
             <div style={{ backgroundColor: '#aaa', marginTop: 8, marginBottom: 8}}>
-              <div style={{ backgroundColor: '#4bb56c', height: 10, width: Math.round(100 * gevault.tvl / gevault.maxTvl)}}>
+              <div style={{ backgroundColor: '#4bb56c', height: 10, width: Math.round(3.5 * 100 * gevault.tvl / gevault.maxTvl)}}>
               </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between'}}>
@@ -100,6 +101,10 @@ const GeVaults = ({}) => {
           <br/><br/>
           The Good Entry ezVault smart contracts are being audited by Peckshield. Users are advised to exercise caution and only risk funds that they can afford to lose. 
         </Typography.Text>
+        
+        <Card style={{ marginTop: 24 }}>
+          <TickChart vault={vault} />
+        </Card>
       </Col>
       <Col
         md={9}
