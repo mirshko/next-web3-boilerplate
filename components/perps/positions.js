@@ -21,12 +21,15 @@ const Positions = ({ vaults, vault, positions, checkPositions, price }) => {
   return (
     <Card style={{ marginTop: 8 }}>
       <strong>Positions</strong>
-      <span style={{ float: 'right' }}>
-        Onchain Data{" "}
-        <Checkbox 
-          onChange={()=>{setServerSidePnl(!isServerSidePnl)}}
-          /> 
-      </span>
+      {!account || price > 0 ? 
+        <span style={{ float: 'right' }}>
+          Onchain Data{" "}
+          <Checkbox 
+            onChange={()=>{setServerSidePnl(!isServerSidePnl)}}
+            /> 
+        </span>
+        : <></>
+      }
       { !account || price > 0 ? (
         <table border={0}>
           <thead>
