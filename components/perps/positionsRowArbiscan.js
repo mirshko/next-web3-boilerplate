@@ -7,7 +7,7 @@ import usePerpsEventLogs from "../../hooks/usePerpsEventLogs";
 import { Space } from "antd";
 import { CaretUpOutlined, CaretDownOutlined } from "@ant-design/icons";
 
-const PositionsRowArbiscan = ({ address, vault, price }) => {
+const PositionsRowArbiscan = ({ address, vault, price, checkPositions }) => {
   const asset = useAssetData(address, vault.address);
   const token0 = useAssetData(vault.token0.address, vault.address);
   const token1 = useAssetData(vault.token1.address, vault.address);
@@ -113,7 +113,7 @@ const PositionsRowArbiscan = ({ address, vault, price }) => {
 
       </td>
       <td style={tdStyle}>
-        <CloseTrPositionButton address={address} vault={vault} />
+        <CloseTrPositionButton address={address} vault={vault} checkPositions={checkPositions} />
       </td>
     </tr>
   );

@@ -61,6 +61,7 @@ const Positions = ({ vaults, vault, positions, checkPositions, price }) => {
                               vault={vault}
                               key={tick.address}
                               price={price}
+                              checkPositions={checkPositions}
                             />
                         );
                       })}
