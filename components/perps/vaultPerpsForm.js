@@ -87,25 +87,28 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
     tokenAmountsExcludingFees.amount0 == 0
       ? vault.token1.name
       : vault.token0.name;
+  // we want size and maxOI to be always displayed as USDC
   let maxOI =
     tokenAmountsExcludingFees.amount0 == 0
       ? tokenAmounts.amount1
-      : tokenAmounts.amount0;
+      : tokenAmounts.amount0 * baseAsset.oraclePrice;
 
   let expectedEntry = price;
   if (direction == "Long" && strike.price < price) expectedEntry = price / 0.9965
   if (direction == "Short" && strike.price > price) expectedEntry = price * 0.9965
 
   const belowMin = parseFloat(inputValue) * asset.oraclePrice < 5;
-  const aboveMargin = parseFloat(inputValue) * asset.oraclePrice > availableCollateral * 10;
+  const aboveMargin = parseFloat(inputValue) > availableCollateral * 10;
 
   const openPosition = async () => {
     if (inputValue == 0) return;
     setSpinning(true);
     try {
-      let tickerAmount = parseFloat(inputValue /
+      let tickerAmount = parseFloat(inputValue)
+      if (tokenTraded != 'USDC') tickerAmount = tickerAmount / baseAsset.oraclePrice;
+      tickerAmount = tickerAmount /
           (parseFloat(tokenAmountsExcludingFees.amount0) ||
-            parseFloat(tokenAmountsExcludingFees.amount1))) *
+            parseFloat(tokenAmountsExcludingFees.amount1)) *
             totalSupply; // whichever of unerlying is non null 
       tickerAmount = parseInt(tickerAmount / 1e8).toString() + "00000000";
       let v = ethers.BigNumber.from(tickerAmount)
@@ -153,7 +156,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
           ticker: strike.address,
           strike: strike.price, 
           amount: tickerAmount,
-          amountBase: tokenTraded ==  baseAsset.name ? parseFloat(inputValue) : parseFloat(inputValue) / baseAsset.oraclePrice,
+          amountBase: parseFloat(inputValue) / baseAsset.oraclePrice,
           vault: vault.address,
           direction: direction,
           entry: expectedEntry,
@@ -323,12 +326,12 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
               }}
             >
             Max Borrow:{" "}
-              {parseFloat(maxOI).toFixed(4)} {tokenTraded}
+              {parseFloat(maxOI).toFixed(4)} USDC
             </span>
           </div>
           <Input
             placeholder="Amount"
-            suffix={tokenTraded}
+            suffix="USDC"
             onChange={(e) => setInputValue(e.target.value)}
             key="inputamount"
             value={inputValue}
