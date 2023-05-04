@@ -3,13 +3,18 @@ import useUnderlyingAmount from "../../hooks/useUnderlyingAmount";
 import CloseTrPositionButton from "../closeTrPositionButton";
 import useAddresses from "../../hooks/useAddresses";
 import usePerpsEventLogs from "../../hooks/usePerpsEventLogs";
+import useUniswapPrice from "../../hooks/useUniswapPrice";
 import PnlPopup from  "./pnlPopup.js";
 import { CaretUpOutlined, CaretDownOutlined, ExportOutlined } from "@ant-design/icons";
 
-const PositionsRow = ({ position, price, checkPositions }) => {
+const PositionsRow = ({ position, checkPositions }) => {
   const asset = useAssetData(position.ticker, position.vault);
   const vault = useAddresses(position.vault)['lendingPools'][0];
   const token0 = useAssetData(vault.token0.address, position.vault);
+  const price = useUniswapPrice(
+    vault.uniswapPool,
+    vault.token0.decimals - vault.token1.decimals
+  );
 
   let upnl = 0
   // if opened ITM position, pnl is based on diff between entry and current price

@@ -39,15 +39,12 @@ const Positions = ({ vault, positions, checkPositions, price }) => {
           </thead>
           <tbody>
             {positions.map((pos)=>{
-              if (pos.vault == vault.address)
-                return (
-                  <PositionsRow
-                      key={pos.ticker}
-                      position={pos}
-                      price={price}
-                      checkPositions={checkPositions}
-                    />)
-              else return (<></>)
+              return (
+                <PositionsRow
+                    key={pos.ticker}
+                    position={pos}
+                    checkPositions={checkPositions}
+                  />)
             })}
           </tbody>
         </table>
