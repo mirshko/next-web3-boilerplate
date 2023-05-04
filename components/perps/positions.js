@@ -1,13 +1,15 @@
-import React from "react"
-import { Card, Tooltip, Spin } from "antd";
+import React, { useState } from "react"
+import { Card, Tooltip, Spin, Checkbox } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useWeb3React } from "@web3-react/core";
 import PositionsRow from "./positionsRow";
+import PositionsRowArbiscan from "./positionsRowArbiscan";
 
 // show all positions
 // unlike the rest, it should show positions from other pools as well
-const Positions = ({ vault, positions, checkPositions, price }) => {
+const Positions = ({ vaults, vault, positions, checkPositions, price }) => {
   const { account} = useWeb3React();
+  const [isServerSidePnl, setServerSidePnl] = useState(false)
   const thStyle = {
     color: "#94A3B8",
     fontWeight: 500,
@@ -19,6 +21,12 @@ const Positions = ({ vault, positions, checkPositions, price }) => {
   return (
     <Card style={{ marginTop: 8 }}>
       <strong>Positions</strong>
+      <span style={{ float: 'right' }}>
+        Onchain Data{" "}
+        <Checkbox 
+          onChange={()=>{setServerSidePnl(!isServerSidePnl)}}
+          /> 
+      </span>
       { !account || price > 0 ? (
         <table border={0}>
           <thead>
@@ -38,14 +46,34 @@ const Positions = ({ vault, positions, checkPositions, price }) => {
             </tr>
           </thead>
           <tbody>
-            {positions.map((pos)=>{
-              return (
-                <PositionsRow
-                    key={pos.ticker}
-                    position={pos}
-                    checkPositions={checkPositions}
-                  />)
-            })}
+            {
+              isServerSidePnl ?
+                vaults.map((vault) => {
+                  return (
+                    <React.Fragment key={vault.address}>
+                      {vault.ticks.map((tick) => {
+                        return (
+                          <PositionsRowArbiscan
+                              address={tick.address}
+                              vault={vault}
+                              key={tick.address}
+                              price={price}
+                            />
+                        );
+                      })}
+                    </React.Fragment>
+                  );
+                })
+              : positions.map((pos)=>{
+                  return (
+                    <PositionsRow
+                      key={pos.ticker}
+                      position={pos}
+                      price={price}
+                      checkPositions={checkPositions}
+                    />)
+                })
+            }
           </tbody>
         </table>
       ) : (
