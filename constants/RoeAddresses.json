@@ -420,7 +420,7 @@
         "ohlcUrl": "https://api.bybit.com/v5/market/index-price-kline?category=linear&symbol=ARBUSDT&interval=",
         "address": "0x06e81a9d8b9BDF50A48666a90c03Dd1Ed0e12eeb",
         "uniswapPool": "0xcda53b1f66614552f834ceef361a8d12a0b8dad8",
-        "poolId": 3,
+        "poolId": 15,
         "tvl": "45k",
         "rangeManager": "0xA9227643f940d412ebC019D99219677EbbE5Aa2f",
         "geVault": "0x31C3871B369bE1B2C3A26f963bcc407ee208099E",
