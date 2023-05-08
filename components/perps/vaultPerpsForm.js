@@ -149,7 +149,11 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
         closed: []
       }
       if (positionsData[account]["opened"][strike.address]){
-        // TODO: merge several positions opened at the same strike
+        // merge several positions opened at the same strike. assume no shenanigans: add to a pos in the same ticker same direction (eg, no add ITM to OTM)
+        let p = positionsData[account]["opened"][strike.address];
+        p.entry = ( parseInt(p.amount) * parseFloat(p.entry) + parseInt(tickerAmount) * expectedEntry ) / ( parseInt(p.amount) + parseInt(tickerAmount) )
+        p.amount = parseInt(p.amount) + parseInt(tickerAmount)
+        p.amountBase = parseFloat(p.amountBase) + parseFloat(inputValue) / baseAsset.oraclePrice;
       }
       else {
         positionsData[account]["opened"][strike.address] = {
