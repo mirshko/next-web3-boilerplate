@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Card, Col, Popover, Divider } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
+import Slider from "../design/slider";
 import { useRouter } from 'next/router';
 import useGeVault from "../../hooks/useGeVault";
 import useAssetData from "../../hooks/useAssetData";
 import useTheme from "../../hooks/useTheme";
-import DesignIcon from "./designIcon";
 
 const GeVaultBox = ({ vault }) => {
   const [highlightBox, setHighlightBox] = useState(false);
   const theme = useTheme();
   const router = useRouter();
-  const asset = useGeVault(vault);
+  const gevault = useGeVault(vault);
   const mainAsset = useAssetData(vault ? vault.token0.address: null, vault.address)
   
   const toReadable = (value) => {
@@ -30,6 +30,8 @@ const GeVaultBox = ({ vault }) => {
       Rewards
     </div>)
   }
+  
+  const filled = Math.round(100 * gevault.tvl / gevault.maxTvl);
 
   
   return (
@@ -59,9 +61,9 @@ const GeVaultBox = ({ vault }) => {
         <span
           style={{ fontSize: "x-large", marginLeft: 8 }}
         >
-          {asset.name == "WETH-USDC" ? "ETH-USDC" : asset.name}
+          {gevault.name == "WETH-USDC" ? "ETH-USDC" : gevault.name}
         </span>
-        <DesignIcon icon={mainAsset.icon} alt={vault.name.toLowerCase()} height={196} />
+        <img src={gevault.icon} alt={vault.name.toLowerCase()} height={164} />
         
         <div
           style={{
@@ -84,10 +86,10 @@ const GeVaultBox = ({ vault }) => {
                 content={
                   <div style={{ width: 250 }}>
                     Supply Interest:{" "}
-                    <span style={{ float: "right" }}>{parseFloat(asset.supplyApr).toFixed(2)} %</span>
+                    <span style={{ float: "right" }}>{parseFloat(gevault.supplyApr).toFixed(2)} %</span>
                     <br />
                     V3 Fees (7d annualized):{" "}
-                    <span style={{ float: "right" }}>{parseFloat(asset.feeApr).toFixed(2)} %</span>
+                    <span style={{ float: "right" }}>{parseFloat(gevault.feeApr).toFixed(2)} %</span>
                     <br />
                     Token Incentives: <span style={{ float: "right" }}>0.00 %</span>
                   </div>
@@ -96,10 +98,30 @@ const GeVaultBox = ({ vault }) => {
                 <QuestionCircleOutlined />
               </Popover>
             </span>
-            <span style={{ fontSize: "large" }}>
-              {(parseFloat(asset.totalApr)).toFixed(2)} %
+            <span style={{ fontSize: "large", fontWeight: 600 }}>
+              {(parseFloat(gevault.totalApr)).toFixed(2)} %
             </span>
         </div>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between"
+          }}
+        >
+            <span
+              style={{
+                fontWeight: "bold",
+                color: "grey",
+              }}
+            >
+              TVL
+            </span>
+            <span style={{ fontSize: "large", fontWeight: 600 }}>
+              ${gevault.tvl == 0 ? <>0</> : toReadable(gevault.tvl)}
+            </span>
+        </div>
+        <Slider value={filled} disabled={true} style={{marginTop: -12, marginBottom: -8}} />
         <div
           style={{
             width: "100%",
@@ -113,14 +135,12 @@ const GeVaultBox = ({ vault }) => {
                 color: "grey",
               }}
             >
-              TVL
+              Max. Capacity
             </span>
-            <span style={{ fontSize: "large" }}>
-              ${asset.tvl == 0 ? <>0</> : toReadable(asset.tvl)}
+            <span style={{ fontSize: "large", fontWeight: 600 }}>
+              ${gevault.tvl == 0 ? <>0</> : toReadable(gevault.maxTvl)}
             </span>
         </div>
-
-
         <Divider style={{margin: "12px 0"}} />
         <div
           style={{
@@ -145,8 +165,8 @@ const GeVaultBox = ({ vault }) => {
               gap: 6,
             }}
           >
-            <span style={{ fontSize: "large" }}>
-              ${toReadable(asset.walletValue)}
+            <span style={{ fontSize: "large", fontWeight: 600 }}>
+              ${toReadable(gevault.walletValue)}
             </span>
           </div>
         </div>

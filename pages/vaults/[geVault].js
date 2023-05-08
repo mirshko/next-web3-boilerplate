@@ -2,10 +2,10 @@ import { useRouter } from "next/router";
 import { useWeb3React } from "@web3-react/core";
 import { ThunderboltOutlined } from "@ant-design/icons";
 import { Card, Typography, Row, Col } from "antd";
+import Slider from "../../components/design/slider";
 import TickChart from "../../components/goodvaults/tickChart";
 import StatsChart from "../../components/goodvaults/statsChart";
 import GeVaultForm from "../../components/goodvaults/geVaultForm";
-import DesignIcon from "../../components/goodvaults/designIcon";
 import useGeVault from "../../hooks/useGeVault";
 import useAddresses from "../../hooks/useAddresses";
 import useAssetData from "../../hooks/useAssetData";
@@ -28,11 +28,13 @@ const GeVaults = ({}) => {
     </div>)
   }
   const VaultTag = () => {
-    return (<div style={{backgroundColor: "#0A371B", color: "#0FFD6A", borderRadius: 4, padding: "6px 8px", display: 'flex', alignItems: 'center', fontWeight: 600 }}>
+    return (<div style={{backgroundColor: "#0A371B", color: "#0FFD6A", borderRadius: 4, padding: "6px 8px", display: 'flex', alignItems: 'center', fontWeight: 600, fontSize: 11 }}>
       <ThunderboltOutlined style={{marginRight: 4}}/>
-      Rewards
+      ezVault
     </div>)
   }
+
+  const filled = Math.round(100 * gevault.tvl / gevault.maxTvl);
 
   return (
   <div style={{ marginTop: -25, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100vw'}}>
@@ -46,7 +48,7 @@ const GeVaults = ({}) => {
     >
       <Row style={{ width: 1200}}>
         <Col md={12}>
-          <div style={{display: 'flex', gap: 12}}>
+          <div style={{display: 'flex', gap: 12}}><VaultTag />
           </div>
           <Typography.Title style={{ marginTop: 12 }}>
             {vault.name}
@@ -56,10 +58,7 @@ const GeVaults = ({}) => {
               <span>Current Deposits</span>
               <span>${parseFloat(gevault.tvl).toFixed(0)}</span>
             </div>
-            <div style={{ backgroundColor: '#aaa', marginTop: 8, marginBottom: 8}}>
-              <div style={{ backgroundColor: '#4bb56c', height: 10, width: Math.round(3.5 * 100 * gevault.tvl / gevault.maxTvl)}}>
-              </div>
-            </div>
+            <Slider value={filled} disabled={true} />
             <div style={{ display: 'flex', justifyContent: 'space-between'}}>
               <span>Max. Capacity</span>
               <span>${gevault.maxTvl}</span>
@@ -67,7 +66,7 @@ const GeVaults = ({}) => {
           </div>
         </Col>
         <Col md={12}>
-          <DesignIcon icon={mainAsset.icon} alt={vault.name.toLowerCase()} height={196} style={{float: 'right'}} />
+          <img src={gevault.icon}  alt={vault.name.toLowerCase()} height={196} style={{float: 'right'}} />
         </Col>
       </Row>
     </Card>

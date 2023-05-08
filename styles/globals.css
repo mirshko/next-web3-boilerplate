@@ -39,3 +39,15 @@ tr {
   z-index: 2;
   position: relative;
 }
+
+.ant-slider.ant-slider-disabled .ant-slider-track  {
+  background-color: #0FFD6A !important;
+}
+.ant-slider.ant-slider-disabled .ant-slider-handle::after {
+  background-color: #0FFD6A;
+  box-shadow: 0 0 0 2px #0FFD6A;
+  width: 6px;
+  height: 6px;
+  inset-inline-start: 2px;
+  inset-block-start: 2px;
+}
