@@ -13,6 +13,8 @@ const Referrals = ({}) => {
   const [refCode, setRefCode] = useState();
   const [inputValue, setInputValue] = useState();
   const [validationStatus, setStatus] = useState();
+  const [inputRef, setInputRef] = useState(ref);
+  const [refValidationStatus, setRefStatus] = useState();
   const [error, setError] = useState();
   const [isProcessing, setProcessing] = useState(false);
   
@@ -23,31 +25,42 @@ const Referrals = ({}) => {
     setRefCode(newRefCode);
   }
   
+  
   useEffect(() => {
     const checkRef = async () => {
-      
       const rc = JSON.parse(localStorage.getItem("refCode") || '{}')
       if( rc && account in rc ) setRefCode(rc[account]);
-      if (!(rc && account in rc) || ref) {
-        // if no data in local storage, or if there is  aref code, need to process anyway
-        const refnames = (await axios.get("https://roe.nicodeva.xyz/stats/arbitrum/referrals.json?account="+account+(ref ? "&ref="+ref : ""))).data;
-        // server will pick up the referer name in logs and save it, for now
-        // TODO: security? need to sign to accept being referee
-
-        var newRefCode;
-        for (const i in refnames){
-          if (i == account) {
-            newRefCode = refnames[i]
-            if (!refnames[i].ref) newRefCode.ref = ref; // set new referee if not existing
-            break;
-          }
-        }
-        if (newRefCode) setRef(newRefCode);
-        else setRefCode()
-      }
     }
     if (account) checkRef();
   }, [account])
+  
+  
+  const setReferee = async () => {
+    if (!inputRef || !account) return;
+    setProcessing(true);
+    // sign message to validate ref as account ref (to prevent spoofing)
+    try {
+      const signer = library.getSigner(account);
+      const sig = await signer.signMessage("SetReferee:"+inputRef)
+console.log(sig)
+      const refnames = (await axios.get("https://roe.nicodeva.xyz/stats/arbitrum/referrals.json?account="+account+"&ref="+inputRef+"&sig="+sig)).data;
+      console.log(refnames)
+      // server will pick up the referer name in logs and save it, for now
+
+      var newRefCode;
+      for (const i in refnames){
+        if (i == account) {
+          newRefCode = refnames[i]
+          if (!refnames[i].ref) newRefCode.ref = inputRef; // set new referee if not existing
+          break;
+        }
+      }
+      if (newRefCode) setRef(newRefCode);
+      else setRefCode()
+    }
+    catch(e) {console.log('set ref', e)}
+    setProcessing(false);
+  }
   
   
   const search = async () => {
@@ -82,7 +95,23 @@ const Referrals = ({}) => {
     <Typography.Text>Earn rewards with the GoodEntry <a href='#'>Referral Program</a>.</Typography.Text>
     <Row gutter={48} style={{marginTop: 24}}>
       <Col md={12}>
-        <Card title="Referral Code">
+        <Card title="Referee">
+        {refCode && refCode.ref ?
+          <div>You referee is <strong>{refCode.ref}</strong>
+          </div>
+          :
+          <div>
+            <Input.Search 
+              style={{ marginTop: 24}}
+              enterButton={isProcessing ? <LoadingOutlined /> : <>Set Referee</>}
+              onSearch={setReferee}
+              onChange={(e)=>{setRefStatus(null); setInputRef(e.target.value)}}
+            />
+            {refValidationStatus ? <span style={{ color: '#dc4446'}}>Invalid Referee</span> : <></>}
+          </div>
+        }
+        </Card>
+        <Card title="Referral Code" style={{ marginTop: 24 }}>
         {
           refCode && refCode.name ? 
             <p>
@@ -90,7 +119,7 @@ const Referrals = ({}) => {
               Share GoodEntry with your friends and earn rewards!
             </p>
             : <div>
-                You don&quot;t have a referral code yet.<br />Create a new one to and start earning rewards!<br />
+                You don&apos;t have a referral code yet.<br />Create a new one to and start earning rewards!<br />
                 <div style={{display: 'flex', alignItems: 'center'}}>
                   <Input.Search
                     style={{ marginTop: 24}}
@@ -111,7 +140,7 @@ const Referrals = ({}) => {
           refCode && refCode.affiliates ? refCode.affiliates.map( affiliate => {
             return (<h3 key={affiliate}>{affiliate}</h3>)
           })
-          : <>You don&quot;t have any affiliates. Share your referral link and start earning rewards!</>
+          : <>You don&apos;t have any affiliates. Share your referral link and start earning rewards!</>
         }
         </Card>
       </Col>
