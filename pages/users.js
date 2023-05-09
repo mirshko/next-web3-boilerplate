@@ -29,7 +29,6 @@ const Users = ({}) => {
         <Checkbox onChange={()=>{setHideHighHF(!hideHighHF)}}>Hide High HF</Checkbox>
         {
           vaults.map((vault) => {
-            console.log(vaults)
             return (
           <>
             Users
