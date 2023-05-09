@@ -3,14 +3,20 @@ import { Dropdown, Button, Card } from 'antd'
 import axios from 'axios'
 import VaultsDropdown from './vaultsDropdown'
 import getUserLendingPoolData from '../../hooks/getUserLendingPoolData'
+import useUniswapPrice from "../../hooks/useUniswapPrice";
 import MyMargin from '../myMargin'
 import {ethers} from 'ethers'
 
-const Infobar = ({vaults, current, selectVault, price }) => {
+const Infobar = ({vaults, current, selectVault }) => {
   let [dailyCandle, setDailyCandle] = useState({})
   let [isDropdownVisible, setDropdownvisible ] = useState(false)
   let currentVault = vaults[current];
   let ohlcUrl = currentVault.ohlcUrl
+  
+  const price = useUniswapPrice(
+    vaults[current].uniswapPool,
+    vaults[current].token0.decimals - vaults[current].token1.decimals
+  );
   
   const userAccountData = getUserLendingPoolData(currentVault.address) 
   var healthFactor = ethers.utils.formatUnits(userAccountData.healthFactor ?? 0, 18)

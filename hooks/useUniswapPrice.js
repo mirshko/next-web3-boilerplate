@@ -15,8 +15,9 @@ export default function useUniswapPrice(poolAddress, decimalsDiff) {
           slot0.sqrtPriceX96
             .pow(2)
             .mul(10 ** decimalsDiff)
-            .shr(187)
-            .toNumber() / 32; // shift 192 then div 32 = div 2**192, so we get some decimals
+            .shr(182)
+            .toNumber() / 1024; // shift 182 then div 1024 = div 2**192, so we get some decimals at 1/1024 ~= 1e-3 precision
+
         setPrice(p);
       }
       catch(e) {console.log("Error fetching Uniswap price", e)}
