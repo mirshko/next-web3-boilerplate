@@ -59,7 +59,7 @@ export default function useAssetData(address, vaultAddress) {
   if (asset.name && asset.type != "ticker" && asset.type != "geVault")
     asset.icon = "/icons/" + asset.name.toLowerCase() + ".svg";
   const goodStats = useGoodStats();
-  const feeApr = goodStats && goodStats["7d"][address] ? goodStats["7d"][address].apr : 0;
+  const feeApr = goodStats && goodStats["7d"][address] ? goodStats["7d"][address].feesRate + goodStats["7d"][address].supplyRate : 0;
   const assetContract = useTokenContract(address);
   const roeToken = useTokenContract(asset.roeAddress);
   
