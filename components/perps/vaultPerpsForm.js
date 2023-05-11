@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Input, Spin, Slider, Card } from "antd";
+import { Button, Input, Spin, Slider, Card, Modal } from "antd";
 import { RiseOutlined, FallOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import useAssetData from "../../hooks/useAssetData";
 import getUserLendingPoolData from "../../hooks/getUserLendingPoolData";
@@ -9,6 +9,7 @@ import useLendingPoolContract from "../../hooks/useLendingPoolContract";
 import DepositWithdrawalModalMultiAssets from "../depositWithdrawalModalMultiAssets";
 import VaultPerpsStrikes from "./vaultPerpsStrikes";
 import PayoutChart from "./payoutChart";
+import OpenPositionModal from "./openPositionModal";
 import MyMargin from "../myMargin";
 import axios from "axios";
 import { ethers } from "ethers";
@@ -26,6 +27,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
   const [isSpinning, setSpinning] = useState(false);
   const [inputValue, setInputValue] = useState("0");
   const [leverage, setLeverage] = useState(0);
+  const [isVisibleConfirmModal, setVisibleConfirmModal] = useState()
   const [showSuccessNotification, showErrorNotification, contextHolder] =
     useTxNotification();
 
@@ -69,6 +71,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
       : vault.token1.address,
     vault.address
   );
+  if (baseAsset.name == "WETH") baseAsset.name = "ETH"
 
   const quoteAsset = useAssetData(
     vault.name.split("-")[1] == vault.token0.name
@@ -93,7 +96,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
       ? tokenAmounts.amount1
       : tokenAmounts.amount0 * baseAsset.oraclePrice;
 
-  let expectedEntry = price;
+  let expectedEntry = strike ? parseFloat(strike.price) : price;
   if (direction == "Long" && strike.price < price) expectedEntry = price / 0.9965
   if (direction == "Short" && strike.price > price) expectedEntry = price * 0.9965
 
@@ -102,6 +105,10 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
 
   const openPosition = async () => {
     if (inputValue == 0) return;
+    if (!isVisibleConfirmModal){
+      setVisibleConfirmModal(true);
+      return;
+    }
     setSpinning(true);
     try {
       let tickerAmount = parseFloat(inputValue)
@@ -179,6 +186,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
       console.log(tokenTraded, tokenTraded.oraclePrice, parseFloat(inputValue) * baseAsset.oraclePrice , availableCollateral * 10)
       showErrorNotification(e.code, e.reason);
     }
+    setVisibleConfirmModal(false);
     setSpinning(false);
   };
 
@@ -186,11 +194,11 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
     if (price == 0) return;
     for (let k of vault.ticks) {
       if (k.price < price) {
-        setLowerStrike({ price: k.price, address: k.address });
+        setLowerStrike({ price: k.price, address: k.address, fundingRate: (k.debtApr / 365 / 24).toFixed(4) });
       }
       if (k.price > price) {
         setUpperStrike({ price: k.price, address: k.address });
-        if (!strike.price) setStrike({ price: k.price, address: k.address });
+        if (!strike.price) setStrike({ price: k.price, address: k.address, fundingRate: (k.debtApr / 365 / 24).toFixed(4) });
         break;
       }
     }
@@ -228,9 +236,42 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
   const bsUpperStrike = bs.blackScholes(price, upperStrikeAsset.price, 1/365, hvol, rfr, "call");
   const bsLowerStrike = bs.blackScholes(price, lowerStrikeAsset.price, 1/365, hvol, rfr, "put");
   
-
+  const OpenButton = ({}) => {
+    return (
+    <>
+      {isSpinning ? (
+          <Button type="default" style={{ width: "100%" }}>
+            <Spin />
+          </Button>
+        ) : (
+          <Button
+            type="primary"
+            onClick={openPosition}
+            disabled={isOpenPositionButtonDisabled}
+            danger={direction == "Short"}
+            style={{ width: "100%" }}
+          >
+            {isOpenPositionButtonDisabled
+              ? openPositionButtonErrorTitle
+              : "Open " + direction}
+          </Button>
+        )}
+    </>)
+  }
+  
   return (
   <>
+    <OpenPositionModal 
+      isVisible={isVisibleConfirmModal} 
+      setVisible={setVisibleConfirmModal} 
+      title={"Open " + direction}
+      button=<OpenButton />
+      market={baseAsset.name + " " +strike.price}
+      side={direction}
+      size={parseFloat(inputValue)}
+      fundinRate={strike.fundingRate}
+      activationPrice={expectedEntry}
+    />
     <Card style={{ marginBottom: 8 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12}}>
         <span style={{fontWeight: 600}}>Good Wallet</span>
@@ -369,22 +410,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
               {expectedEntry.toFixed(2)}
             </span>
           </div>
-          {isSpinning ? (
-            <Button type="default" style={{ width: "100%" }}>
-              <Spin />
-            </Button>
-          ) : (
-            <Button
-              type="primary"
-              onClick={openPosition}
-              disabled={isOpenPositionButtonDisabled}
-              danger={direction == "Short"}
-            >
-              {isOpenPositionButtonDisabled
-                ? openPositionButtonErrorTitle
-                : "Open " + direction}
-            </Button>
-          )}
+          <OpenButton />
         </div>
       </div>
     </Card>
@@ -400,8 +426,8 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
       <span style={{fontWeight: 600}}>Volatility Price</span> <QuestionCircleOutlined /><br />
         {baseAsset.name} HVOL: {(hvol * 100).toFixed(0)}%<br />
       Theoretical 1DTE price:<span style={{float: 'right'}}>Current</span><br/>
-      Call-{upperStrikeAsset.price}: ${(bsUpperStrike).toFixed(2)}<span style={{float: 'right'}}>${(upperStrikeAsset.debtApr/100/365*price).toFixed(2)}</span><br />
-      Put-{lowerStrikeAsset.price}: ${(bsLowerStrike).toFixed(2)}<span style={{float: 'right'}}>${(lowerStrikeAsset.debtApr/100/365*price).toFixed(2)}</span><br />
+      Call-{upperStrikeAsset.price}: ${(bsUpperStrike).toFixed(3)}<span style={{float: 'right'}}>${(upperStrikeAsset.debtApr/100/365*price).toFixed(3)}</span><br />
+      Put-{lowerStrikeAsset.price}: ${(bsLowerStrike).toFixed(3)}<span style={{float: 'right'}}>${(lowerStrikeAsset.debtApr/100/365*price).toFixed(3)}</span><br />
       
     </Card>
   </>

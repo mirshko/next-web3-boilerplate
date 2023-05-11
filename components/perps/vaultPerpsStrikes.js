@@ -20,7 +20,7 @@ const VaultPerpsStrikes = ({ asset, onClick, isSelected }) => {
   return (
     <div
       onClick={() => {
-        onClick({ price: asset.price, address: asset.address });
+        onClick({ price: asset.price, address: asset.address, fundingRate: (asset.debtApr / 365 / 24).toFixed(4) });
       }}
       style={style}
     >
