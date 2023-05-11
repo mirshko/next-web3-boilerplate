@@ -51,3 +51,7 @@ tr {
   inset-inline-start: 2px;
   inset-block-start: 2px;
 }
+
+.ant-menu-horizontal {
+  border-bottom: 0;
+}
