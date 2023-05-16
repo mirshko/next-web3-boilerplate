@@ -183,6 +183,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
           direction: direction,
           entry: parseFloat(expectedEntry),
           timestamp: new Date().getTime(),
+          opentimestamp: new Date().getTime(),
         }
       }
       localStorage.setItem("GEpositions", JSON.stringify(positionsData) );
