@@ -27,6 +27,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
   const [isSpinning, setSpinning] = useState(false);
   const [inputValue, setInputValue] = useState("0");
   const [leverage, setLeverage] = useState(0);
+  const [hasReverseStrike, setReverseStrike] = useState();
   const [isVisibleConfirmModal, setVisibleConfirmModal] = useState()
   const [showSuccessNotification, showErrorNotification, contextHolder] =
     useTxNotification();
@@ -103,11 +104,14 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
   const belowMin = parseFloat(inputValue) * asset.oraclePrice < 5;
   const aboveMargin = parseFloat(inputValue) > availableCollateral * 10;
   
-  let hasReverseStrike = false;
-  let positionsData = JSON.parse(localStorage.getItem("GEpositions") ?? '{}' );
-  if (positionsData.hasOwnProperty(account) && positionsData[account]["opened"][strike.address]){
-    if ( positionsData[account]["opened"][strike.address].direction != direction ) hasReverseStrike = true;
-  }
+  useEffect(()=>{
+    let hasRS = false;
+    let positionsData = JSON.parse(localStorage.getItem("GEpositions") ?? '{}' );
+    if (positionsData.hasOwnProperty(account) && positionsData[account]["opened"][strike.address]){
+      if ( positionsData[account]["opened"][strike.address].direction != direction ) hasRS = true;
+    }
+    setReverseStrike(true);
+  }, [strike])
 
   const openPosition = async () => {
     if (inputValue == 0) return;
