@@ -171,9 +171,17 @@ const GeVaultForm = ({vault}) => {
       </Button>
     )}
     <Divider />
-    <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <span>My Share</span>
+    <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <span>My Liquidity</span>
       <span>{parseFloat(geVault.wallet).toFixed(2)} GEV (${parseFloat(geVault.walletValue).toFixed(0)})</span>
+    </div>
+    <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <span>My Share</span>
+      <span>{(100*parseFloat(geVault.walletValue)/parseFloat(geVault.tvl)).toFixed(2)}%</span>
+    </div>
+    <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <span>Vault Utilization Rate</span>
+      <span>{(100*parseFloat(geVault.tvl)/parseFloat(geVault.maxTvl)).toFixed(2)}%</span>
     </div>
   </Card>);
 };
