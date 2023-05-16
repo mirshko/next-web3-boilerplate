@@ -103,6 +103,7 @@ const GeVaults = ({}) => {
         
         <Card style={{ marginTop: 24 }}>
           <TickChart vault={vault} />
+          <span style={{ fontSize: 'smaller', color: 'grey'}}>*Tick chart isn’t real time but the tick composition changes in real time from every deposit/withdrawal</span>
         </Card>
       </Col>
       <Col

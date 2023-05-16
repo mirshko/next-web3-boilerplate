@@ -26,10 +26,12 @@ const TickChart = ({vault}) => {
   const goodStats = useGoodStats();
 
   const options = {
+    maintainAspectRatio: false,
     responsive: true,
     plugins: {
       legend: {
-        display: false
+        display: false,
+        position: 'left'
       },
       title: {
         display: true,
@@ -41,7 +43,7 @@ const TickChart = ({vault}) => {
   const labels = vault.ticks ? vault.ticks.map(i => i.price) : [];
   const values = vault.ticks ? vault.ticks.map(i => {
     try {
-      return Math.round(goodStats["24h"][vault.geVault]["underlyingRepartition"][i.address].value / 1e8)
+      return Math.round(goodStats["7d"][vault.geVault]["underlyingRepartition"][i.address].value / 1e8)
     }
     catch
     {
@@ -53,7 +55,7 @@ const TickChart = ({vault}) => {
   labels,
   datasets: [
     {
-      label: 'Dataset 1',
+      label: 'Tick TVL',
       data: values,
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
     },
@@ -61,7 +63,11 @@ const TickChart = ({vault}) => {
 };
 
   
-  return <Bar options={options} data={data} />;
+  return (
+    <div style={{ position: 'relative', height: 150 }}>
+      <Bar options={options} data={data} height={130} />
+    </div>
+  )
 }
 
 export default TickChart;
