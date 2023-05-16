@@ -28,14 +28,14 @@ const CloseTrPositionButton = ({ address, vault, opmAddress, checkPositions }) =
         account,
         address,
         0,
-        ethers.constants.AddressZero
+        vault.token0.address
       );
       const { hash } = await opm.close(
         vault.poolId,
         account,
         address,
         0,
-        ethers.constants.AddressZero
+        vault.token0.address
       );
       
       let positionsData = JSON.parse(localStorage.getItem("GEpositions") ?? '{}' );
