@@ -110,8 +110,8 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
     if (positionsData.hasOwnProperty(account) && positionsData[account]["opened"][strike.address]){
       if ( positionsData[account]["opened"][strike.address].direction != direction ) hasRS = true;
     }
-    setReverseStrike(true);
-  }, [strike])
+    setReverseStrike(hasRS);
+  }, [strike.address])
 
   const openPosition = async () => {
     if (inputValue == 0) return;
