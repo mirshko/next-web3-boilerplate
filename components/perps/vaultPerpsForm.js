@@ -274,7 +274,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
         )}
     </>)
   }
-  
+
   return (
   <>
     <OpenPositionModal 
@@ -285,7 +285,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
       market={baseAsset.name + " " +strike.price}
       side={direction}
       size={parseFloat(inputValue)}
-      fundinRate={strike.fundingRate}
+      fundinRate={strike.price == lowerStrike.price ? lowerStrikeAsset.debtApr : upperStrikeAsset.debtApr}
       activationPrice={expectedEntry}
     />
     <Card style={{ marginBottom: 8 }}>
