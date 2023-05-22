@@ -8,7 +8,9 @@ import useGoodStats from "./useGoodStats";
 
 var statsPeriod = "7d";
 
-export default function useGeVault(vault) {
+export default function useGeVault(vault, gevault) {
+  if (!vault) vault = {name: ""}
+  if (!gevault) gevault = {}
   const [tvl, setTvl] = useState(0);
   const [maxTvl, setMaxTvl] = useState(0);
   const [fee0, setFee0] = useState(0);
@@ -17,19 +19,20 @@ export default function useGeVault(vault) {
   const [userValue, setUserValue] = useState(0);
   const [totalSupply, setTotalSupply] = useState(0);
   const { account } = useWeb3React();
-  const gevaultContract = useContract(vault.geVault, GEVAULT_ABI);
+  const address = gevault.address;
+  const gevaultContract = useContract(address, GEVAULT_ABI);
   const goodStats = useGoodStats();
 
-  const feesRate = goodStats && goodStats[statsPeriod][vault.geVault] ? parseFloat(goodStats[statsPeriod][vault.geVault].feesRate) : 0;
-  const supplyRate = goodStats && goodStats[statsPeriod][vault.geVault] ? parseFloat(goodStats[statsPeriod][vault.geVault].supplyRate) : 0;
+  const feesRate = goodStats && goodStats[statsPeriod][address] ? parseFloat(goodStats[statsPeriod][address].feesRate) : 0;
+  const supplyRate = goodStats && goodStats[statsPeriod][address] ? parseFloat(goodStats[statsPeriod][address].supplyRate) : 0;
   
-  const tvl2 = goodStats && goodStats[statsPeriod][vault.geVault] ? parseFloat(goodStats[statsPeriod][vault.geVault].tvl) / 1e8 : 0;
-  const maxTvl2 = goodStats && goodStats[statsPeriod][vault.geVault] ? parseFloat(goodStats[statsPeriod][vault.geVault].maxTvl || 0) / 1e8 : 0;
+  const tvl2 = goodStats && goodStats[statsPeriod][address] ? parseFloat(goodStats[statsPeriod][address].tvl) / 1e8 : 0;
+  const maxTvl2 = goodStats && goodStats[statsPeriod][address] ? parseFloat(goodStats[statsPeriod][address].maxTvl || 0) / 1e8 : 0;
   const totalRate = feesRate + supplyRate
 
   var data = {
-    address: vault.geVault,
-    name: vault.name,
+    address: address,
+    name: gevault.name,
     tvl: tvl2,
     maxTvl: maxTvl2,
     totalSupply: totalSupply,
@@ -63,7 +66,7 @@ export default function useGeVault(vault) {
       }
     }
     
-    if (vault.geVault && gevaultContract) getData()
+    if (address && gevaultContract) getData()
   }, [vault.address, gevaultContract])
 
   return data;

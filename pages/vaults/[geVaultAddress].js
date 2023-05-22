@@ -13,13 +13,21 @@ import useAssetData from "../../hooks/useAssetData";
 const GeVaults = ({}) => {
   const { account } = useWeb3React();
   const router = useRouter()
-  let { geVault } = router.query
+  let { geVaultAddress } = router.query
 
-  const ADDRESSES = useAddresses(geVault);
-  let vault = ADDRESSES["lendingPools"][0];
-  const gevault = useGeVault(vault);
-
-  const mainAsset = useAssetData(vault.token0.address, vault.address)
+  const ADDRESSES = useAddresses();
+  var gev = {}
+  var vault = ADDRESSES['lendingPools'][0];
+  for (let lp of ADDRESSES["lendingPools"]){
+    for (let gv of lp["geVault"]){
+      if(gv.name == geVaultAddress) {
+        vault = lp;
+        gev = gv;
+        break;
+      }
+    }
+  }
+  const gevault = useGeVault(vault, gev);
 
   const RewardsTag = () => {
     return (<div style={{backgroundColor: "#0A371B", color: "#0FFD6A", borderRadius: 4, padding: "6px 8px", display: 'flex', alignItems: 'center', fontWeight: 600 }}>
@@ -51,7 +59,7 @@ const GeVaults = ({}) => {
           <div style={{display: 'flex', gap: 12}}><VaultTag />
           </div>
           <Typography.Title style={{ marginTop: 12 }}>
-            {vault.name}
+            {gevault.name}
           </Typography.Title>
           <div style={{ width: '350px', marginTop: 12}}>
             <div style={{ display: 'flex', justifyContent: 'space-between'}}>
@@ -84,7 +92,7 @@ const GeVaults = ({}) => {
         
         <Typography.Title level={2}>Performance</Typography.Title>
         <Card style={{ marginTop: 24, height: 300 }}>
-          <StatsChart vault={vault} />
+          <StatsChart vault={vault} gevault={gevault} />
         </Card>
         
         <Typography.Title level={2}>Fee Structure</Typography.Title>
@@ -102,7 +110,7 @@ const GeVaults = ({}) => {
         </Typography.Text>
         
         <Card style={{ marginTop: 24 }}>
-          <TickChart vault={vault} />
+          <TickChart vault={vault} gevault={gevault} />
           <span style={{ fontSize: 'smaller', color: 'grey'}}>*Tick chart isn’t real time but the tick composition changes in real time from every deposit/withdrawal</span>
         </Card>
       </Col>
@@ -110,7 +118,7 @@ const GeVaults = ({}) => {
         md={9}
         xs={24}
       >
-        <GeVaultForm vault={vault} />
+        <GeVaultForm vault={vault} gevault={gevault} />
       </Col>
     </Row>
   </div>)

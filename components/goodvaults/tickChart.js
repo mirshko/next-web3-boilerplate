@@ -21,7 +21,7 @@ Chart.register(
   Legend,
 );
 
-const TickChart = ({vault}) => {
+const TickChart = ({vault, gevault}) => {
   const theme = useTheme();
   const goodStats = useGoodStats();
 
@@ -43,7 +43,7 @@ const TickChart = ({vault}) => {
   const labels = vault.ticks ? vault.ticks.map(i => i.price) : [];
   const values = vault.ticks ? vault.ticks.map(i => {
     try {
-      return Math.round(goodStats["7d"][vault.geVault]["underlyingRepartition"][i.address].value / 1e8)
+      return Math.round(goodStats["7d"][gevault.address]["underlyingRepartition"][i.address].value / 1e8)
     }
     catch
     {

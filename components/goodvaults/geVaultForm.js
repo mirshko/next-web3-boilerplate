@@ -11,7 +11,7 @@ import { ethers } from "ethers";
 
 
 /// Asserts that ETH is always token0 (as per arbitrum)
-const GeVaultForm = ({vault}) => {
+const GeVaultForm = ({vault, gevault}) => {
   if (vault.token0.name == "WETH") vault.token0.name = "ETH";
   const { account } = useWeb3React();
   const [direction, setDirection] = useState("Deposit");
@@ -20,7 +20,7 @@ const GeVaultForm = ({vault}) => {
   const [isSpinning, setSpinning] = useState(false);
   const [showSuccessNotification, showErrorNotification, contextHolder] =
     useTxNotification();
-  const geVault = useGeVault(vault);
+  const geVault = useGeVault(vault, gevault);
 
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
   
