@@ -107,11 +107,23 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
   useEffect(()=>{
     let hasRS = false;
     let positionsData = JSON.parse(localStorage.getItem("GEpositions") ?? '{}' );
-    if (positionsData.hasOwnProperty(account) && positionsData[account]["opened"][strike.address]){
-      if ( positionsData[account]["opened"][strike.address].direction != direction ) hasRS = true;
+    if (positionsData.hasOwnProperty(account) && positionsData[account]["opened"]){
+      var pos = positionsData[account]["opened"];
+      for(let k in pos){
+        // can open unless (position in the same vault which is different ticker or same ticker diff direction)
+        // check all positions: if diff vault ignore, if same vault + same ticker + same direction then ignore
+        // all else: cant open, return false
+        if (
+          pos[k].vault != vault.address
+          || (k == strike.address && pos[k].direction == direction)
+        ) continue;
+        hasRS = true;
+        break;
+      }
+      //if ( positionsData[account]["opened"][strike.address].direction != direction ) hasRS = true;
     }
     setReverseStrike(hasRS);
-  }, [strike.address])
+  }, [strike.address, direction])
 
   const openPosition = async () => {
     if (inputValue == 0) return;
@@ -239,7 +251,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
   } else if (belowMin) {
     openPositionButtonErrorTitle = "Amount too Low";
   } else if (hasReverseStrike) {
-    openPositionButtonErrorTitle = "Existing Opposite Position";
+    openPositionButtonErrorTitle = "Conflicting Position";
   }
   
   
