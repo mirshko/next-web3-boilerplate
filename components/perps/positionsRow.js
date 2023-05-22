@@ -73,7 +73,12 @@ const PositionsRow = ({ position, checkPositions }) => {
         </span>
       </td>
       <td style={tdStyle}>
-        <span style={{fontWeight: 500 }}>{position.amountBase.toFixed(5)} {vault.token0.name}</span>
+        <span style={{fontWeight: 500 }}>
+          { position.amountQuote ? 
+            <>{position.amountQuote.toFixed(2)} {vault.token1.name}</>
+            : <>{position.amountBase.toFixed(5)} {vault.token0.name}</>
+          }
+        </span>
         <br />
         <span style={{ color: 'grey' }}>${(token0.oraclePrice * position.amountBase).toFixed(2)}</span>
       </td>
