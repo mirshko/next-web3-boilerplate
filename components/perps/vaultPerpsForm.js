@@ -101,7 +101,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
   if (direction == "Long" && strike.price < price) expectedEntry = price / 0.9965
   if (direction == "Short" && strike.price > price) expectedEntry = price * 0.9965
 
-  const belowMin = parseFloat(inputValue) * asset.oraclePrice < 5;
+  const belowMin = parseFloat(inputValue) < 20;
   const aboveMargin = parseFloat(inputValue) > availableCollateral * 10;
   
   useEffect(()=>{
