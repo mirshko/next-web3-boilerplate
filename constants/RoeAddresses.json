@@ -19,7 +19,9 @@
         "poolId": 16,
         "tvl": "95k",
         "rangeManager": "0x172EE56600B2Df3fDBFCC3e2F968E60a333dc3C4",
-        "geVault": "0x59fA26382De900F29B581553F31C6Da103884ffA",
+        "geVault": [
+          {"name": "ETH-USDC", "address": "0x59fA26382De900F29B581553F31C6Da103884ffA", "status": "Withdraw Only"}
+        ],
         "ranges": [
           {
             "address": "0xd8B3Da7aCd88494248C728850dA1CC29Ec671A9A",
@@ -205,7 +207,9 @@
         "poolId": 14,
         "tvl": "45k",
         "rangeManager": "0x8a5b3e5aC3bd5c5c80d875C2b89Ec5980F326FA6",
-        "geVault": "0x10ca4492b9A4b74964C9b4763B87eFD0689aB0bE",
+        "geVault": [
+          {"name": "GMX-USDC", "address": "0x10ca4492b9A4b74964C9b4763B87eFD0689aB0bE", "status": "Withdraw Only"}
+        ],
         "ranges": [
           {
             "address": "0xc8d9fBc9907D1E1c808e26BF38a05A4d88683A46",
@@ -426,7 +430,9 @@
         "poolId": 18,
         "tvl": "45k",
         "rangeManager": "0xA9227643f940d412ebC019D99219677EbbE5Aa2f",
-        "geVault": "0x31C3871B369bE1B2C3A26f963bcc407ee208099E",
+        "geVault": [
+          {"name": "ARB-USDC", "address": "0x31C3871B369bE1B2C3A26f963bcc407ee208099E", "status": "Withdraw Only"}
+        ],
         "ranges": [
           {
             "address": "0x7337Da74fEb7AfB20C3F49596B7870D2F32Df9f7",
