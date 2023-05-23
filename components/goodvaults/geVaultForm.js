@@ -179,10 +179,6 @@ const GeVaultForm = ({vault, gevault}) => {
       <span>My Share</span>
       <span>{(100*parseFloat(geVault.walletValue)/parseFloat(geVault.tvl)).toFixed(2)}%</span>
     </div>
-    <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <span>Vault Utilization Rate</span>
-      <span>{(100*parseFloat(geVault.tvl)/parseFloat(geVault.maxTvl)).toFixed(2)}%</span>
-    </div>
   </Card>);
 };
 

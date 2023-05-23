@@ -183,6 +183,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
         p.entry = ( parseInt(p.amount) * parseFloat(p.entry) + parseInt(tickerAmount) * parseFloat(expectedEntry) ) / ( parseInt(p.amount) + parseInt(tickerAmount) )
         p.amount = parseInt(p.amount) + parseInt(tickerAmount)
         p.amountBase = parseFloat(p.amountBase) + parseFloat(inputValue) / baseAsset.oraclePrice;
+        p.amountQuote = parseFloat(p.amountQuote) + parseFloat(inputValue);
         p.timestamp = new Date().getTime();
       }
       else {
@@ -191,6 +192,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
           strike: strike.price, 
           amount: tickerAmount,
           amountBase: parseFloat(inputValue) / baseAsset.oraclePrice,
+          amountQuote: parseFloat(inputValue),
           vault: vault.address,
           direction: direction,
           entry: parseFloat(expectedEntry),
@@ -417,7 +419,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
             onChange={(newValue) => {
               setLeverage(newValue);
               setInputValue(
-                ((availableCollateral * newValue) / asset.oraclePrice).toFixed(6)
+                (availableCollateral * newValue).toFixed(6)
               );
             }}
             value={typeof leverage === "number" ? leverage : 0}

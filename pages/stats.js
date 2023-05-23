@@ -20,11 +20,11 @@ const Stats = ({}) => {
       <Col md={12}>
         {
           vaults.map( vault => {
-            
-            return (
-              <PriceChart key={vault.geVault} vault={vault} showPriceNotFees={true} />
-            )
-            
+            return vault.geVault.map( gev => {
+              return (
+                <PriceChart key={gev.address} vault={vault} gevault={gev} showPriceNotFees={true} />
+              )
+            })
           })
           
         }
