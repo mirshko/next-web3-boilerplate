@@ -259,10 +259,10 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
   
   // BlackScholes
   // on the daily options deribit volatility sells for half the weekly HVOL ?
-  var hvol = 0.55;
+  var hvol = 0.28;
   var rfr = 0.04;
-  if (baseAsset.name == "GMX") hvol = 0.7;
-  if (baseAsset.name == "ARB") hvol = 1.2;
+  if (baseAsset.name == "GMX") hvol = 0.62;
+  if (baseAsset.name == "ARB") hvol = 0.55;
   const bsUpperStrike = bs.blackScholes(price, upperStrikeAsset.price, 1/365, hvol, rfr, "call");
   const bsLowerStrike = bs.blackScholes(price, lowerStrikeAsset.price, 1/365, hvol, rfr, "put");
   
