@@ -19,14 +19,13 @@ const PositionsRowV2 = ({ position, checkPositions, debtAddress }) => {
 
   // direction: position is de facto long whatever asset it mainly holds
   position.direction = (position.amount0 / 1e18 * price > position.amount1 / 1e6) ? "Long" : "Short"
-  console.log(position)
   const { tokenAmounts, tokenAmountsExcludingFees, totalSupply } = useUnderlyingAmount(debtAddress, vault);
   
   // pnl = assets value - debt value , debt value = debt amount / total Supply * underlying value
   let pnl = (position.amount0 / 1e18 * price + position.amount1 / 1e6) 
-            - position.debt / totalSupply * (tokenAmounts.amount0 * price + parseFloat(tokenAmounts.amount1))
+            - asset.debt * 1e18 / totalSupply * (tokenAmounts.amount0 * price + parseFloat(tokenAmounts.amount1))
   
-  let pnlPercent = pnl / (position.debt * asset.oraclePrice) * 100;
+  let pnlPercent = pnl / (position.entryUsd / 1e8) * 100;
   let direction = position.direction;
   let entry = position.avgEntry;
 

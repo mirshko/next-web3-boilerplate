@@ -41,12 +41,12 @@ export default function useAssetData(address, vaultAddress) {
     else {
       // loop on ranges
       for (let k of lp.ranges)
-        if (address == k.address)
+        if (address.toLowerCase() == k.address.toLowerCase())
           asset = { type: "ranger", name: "Range-" + k.price, ...k };
       // loop on ticks
 
       for (let k of lp.ticks)
-        if (address == k.address) {
+        if (address.toLowerCase() == k.address.toLowerCase()) {
           asset = {
             type: "ticker",
             name: "Ticker-" + k.price,

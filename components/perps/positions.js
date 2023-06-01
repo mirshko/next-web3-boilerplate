@@ -21,7 +21,7 @@ const Positions = ({ vaults, vault, positions, checkPositions, price, refresh })
     textDecorationColor: 'grey',
     textDecorationLine: 'underline'
   }
-  console.log('refresh',refresh)
+
   const history = usePositionsHistory(account, refresh);
   const serverPos = history.status ?? {};
   
