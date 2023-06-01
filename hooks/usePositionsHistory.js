@@ -13,7 +13,7 @@ const usePositionsHistory = (account, refresh) => {
         const url = "https://roe.nicodeva.xyz/stats/arbitrum/getx.json"
         var dataraw = (await axios.get(url)).data;
 
-        setdata(dataraw[account])
+        if (dataraw[account]) setdata(dataraw[account])
       }
       catch(e) {
         console.log("PositionsHistory data", e)
