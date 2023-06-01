@@ -40,13 +40,13 @@ export default function useAssetData(address, vaultAddress) {
       }
     else {
       // loop on ranges
-      for (let k of lp.ranges)
-        if (address && k.address && address.toLowerCase() == k.address.toLowerCase())
+      for (let k of lp.ranges){
+        if (typeof address == "string" && address && k.address && address.toLowerCase() == k.address.toLowerCase())
           asset = { type: "ranger", name: "Range-" + k.price, ...k };
       // loop on ticks
-
+      }
       for (let k of lp.ticks)
-        if (address && k.address && address.toLowerCase() == k.address.toLowerCase()) {
+        if (typeof address == "string" && address && k.address && address.toLowerCase() == k.address.toLowerCase()) {
           asset = {
             type: "ticker",
             name: "Ticker-" + k.price,

@@ -61,8 +61,8 @@ const VaultPositions = ({ vault }) => {
     vault.token1.address,
     //vault.lpToken.address,
   ];
-
-  if (vault.geVault) assetsList.push(vault.geVault)
+  for(let k of vault.geVault)
+    assetsList.push(k.address)
 
   //for (let r of vault.ranges) assetsList.push(r['address'])
   for (let r of vault.ticks) {
