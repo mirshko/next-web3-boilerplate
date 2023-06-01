@@ -34,17 +34,12 @@ export default function useAssetData(address, vaultAddress) {
       asset = { type: "single", ...lp.token1 };
     else if (address == lp["lpToken"].address)
       asset = { type: "lpv2", ...lp.lpToken };
-    else if (address == lp["geVault"])
-      asset = { type: "geVault", name: "ezVault "+lp.name, address: address,
-        icon: "/icons/" + lp.name.toLowerCase() + ".svg",
-      }
     else {
       // loop on ranges
-      for (let k of lp.ranges){
+      for (let k of lp.ranges)
         if (typeof address == "string" && address && k.address && address.toLowerCase() == k.address.toLowerCase())
           asset = { type: "ranger", name: "Range-" + k.price, ...k };
       // loop on ticks
-      }
       for (let k of lp.ticks)
         if (typeof address == "string" && address && k.address && address.toLowerCase() == k.address.toLowerCase()) {
           asset = {
@@ -53,6 +48,14 @@ export default function useAssetData(address, vaultAddress) {
             icon: "/icons/" + lp.name.toLowerCase() + ".svg",
             ...k,
           };
+        }
+      // loop on gevaults
+      for (let k of lp.geVault)
+        if (typeof address == "string" && address && k.address && address.toLowerCase() == k.address.toLowerCase()) {
+          asset = k;
+          asset.type = "geVault"
+          asset.name = "ezVault " + asset.name
+          asset.icon = "/logo.svg";
         }
     }
   }
