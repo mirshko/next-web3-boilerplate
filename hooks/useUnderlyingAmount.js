@@ -7,8 +7,7 @@ import { ethers } from "ethers";
 
 export default function useUnderlyingAmount(
   rangeAddress,
-  vault,
-  isIncludingFees
+  vault
 ) {
   const [tokenAmounts, setTokenAmounts] = useState({ amount0: 0, amount1: 0 });
   const [tokenAmountsExcludingFees, setTokenAmountsExcludingFees] = useState({
@@ -73,7 +72,7 @@ export default function useUnderlyingAmount(
     } catch (e) {
       console.log("getTokenAmounts", e);
     }
-  }, [ranger]);
+  }, [rangeAddress, vault.address]);
 
-  return { tokenAmounts, tokenAmountsExcludingFees, totalSupply };
+  return { rangeAddress, tokenAmounts, tokenAmountsExcludingFees, totalSupply };
 }

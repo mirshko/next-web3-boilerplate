@@ -3,12 +3,14 @@ import { Card, Tooltip, Spin, Checkbox, Tabs } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useWeb3React } from "@web3-react/core";
 import PositionsRow from "./positionsRow";
+import PositionsRowV2 from "./positionsRowV2";
 import PositionsRowArbiscan from "./positionsRowArbiscan";
 import PositionsHistory from "./positionsHistory"
+import usePositionsHistory from "../../hooks/usePositionsHistory";
 
 // show all positions
 // unlike the rest, it should show positions from other pools as well
-const Positions = ({ vaults, vault, positions, checkPositions, price }) => {
+const Positions = ({ vaults, vault, positions, checkPositions, price, refresh }) => {
   const { account} = useWeb3React();
   const [isServerSidePnl, setServerSidePnl] = useState(false)
   const thStyle = {
@@ -19,6 +21,10 @@ const Positions = ({ vaults, vault, positions, checkPositions, price }) => {
     textDecorationColor: 'grey',
     textDecorationLine: 'underline'
   }
+  console.log('refresh',refresh)
+  const history = usePositionsHistory(account, refresh);
+  const serverPos = history.status ?? {};
+  
   return (
     <Card style={{ marginTop: 8 }}>
       <Tabs
@@ -77,8 +83,23 @@ const Positions = ({ vaults, vault, positions, checkPositions, price }) => {
                             </React.Fragment>
                           );
                         })
-                      : positions.map((pos)=>{
-                          return (
+                      : <>
+                      {Object.keys(serverPos).map((debtAddress) => {
+                          if ( !debtAddress || serverPos[debtAddress].debt == 0 ) return (<></>)
+                          else return (
+                            <PositionsRowV2
+                              key={debtAddress + "v2"}
+                              position={serverPos[debtAddress]}
+                              debtAddress={debtAddress}
+                              price={price}
+                              checkPositions={checkPositions}
+                              refresh={refresh}
+                            />)
+                        })
+                      }
+                      {positions.map((pos)=>{
+                          if(serverPos && serverPos.hasOwnProperty(pos.ticker.toLowerCase())) return <></>
+                          else return (
                             <PositionsRow
                               key={pos.ticker}
                               position={pos}
@@ -86,6 +107,7 @@ const Positions = ({ vaults, vault, positions, checkPositions, price }) => {
                               checkPositions={checkPositions}
                             />)
                         })
+                      }</>
                     }
                   </tbody>
                 </table>

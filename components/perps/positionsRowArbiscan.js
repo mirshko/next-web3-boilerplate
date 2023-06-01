@@ -3,7 +3,7 @@ import useAssetData from "../../hooks/useAssetData";
 import useUnderlyingAmount from "../../hooks/useUnderlyingAmount";
 import CloseTrPositionButton from "../closeTrPositionButton";
 import useAddresses from "../../hooks/useAddresses";
-import usePerpsEventLogs from "../../hooks/usePerpsEventLogs";
+import usePerpsEventLogsV2 from "../../hooks/usePerpsEventLogsV2";
 import { Space } from "antd";
 import { CaretUpOutlined, CaretDownOutlined } from "@ant-design/icons";
 
@@ -15,7 +15,7 @@ const PositionsRowArbiscan = ({ address, vault, price, checkPositions }) => {
     useUnderlyingAmount(address, vault);
 
   // avoid spamming arbiscan by providing a valid address only when the debt is non null, rate limit is 5 req/s
-  const posEvent = usePerpsEventLogs(address, vault.address, asset.debt);
+  const posEvent = usePerpsEventLogsV2(address, vault.address, asset.debt);
 
   if (asset.debt == 0) return <></>;
 

@@ -11,16 +11,6 @@ import {
 } from "@ant-design/icons";
 import { useRouter } from "next/router";
 
-function getItem(label, key, icon, children, type) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    type,
-  };
-}
-
 const NavMenu = ({ bgColor }) => {
   const router = useRouter();
   const [current, setCurrent] = useState();
@@ -32,20 +22,6 @@ const NavMenu = ({ bgColor }) => {
     router.push(e.key);
   };
 
-  const items = [
-    //{ label: 'Vaults', key: '/', icon: <BankOutlined /> },
-    //{ label: 'Ranger', key: '/ranger', icon: <BugOutlined /> },
-    { label: "Protected Perps™", key: "/", icon: <SwapOutlined /> },
-    { label: "ezVaults", key: "/ezvaults", icon: <BankOutlined /> },
-    //{ label: 'Protected Farming™', key: '/protectedyield', icon: <DollarOutlined /> },
-    {
-      label: "Staking",
-      key: "https://goodentry.io/staking",
-      icon: <FundOutlined />,
-    },
-    { label: "Dashboard", key: "/dashboard", icon: <DashboardOutlined /> },
-  ];
-
   return (
     <Menu
       onClick={onClick}
@@ -54,8 +30,13 @@ const NavMenu = ({ bgColor }) => {
       selectedKeys={[current]}
       defaultOpenKeys={["sub1"]}
       mode="horizontal"
-      items={items}
-    />
+      
+    >
+      <Menu.Item key="/"><SwapOutlined /> Protected Perps</Menu.Item>
+      <Menu.Item key="/ezvaults"><BankOutlined /> ezVaults</Menu.Item>
+      <Menu.Item key="/https://goodentry.io/staking"><FundOutlined  /> Staking</Menu.Item>
+      <Menu.Item key="/dashboard"><DashboardOutlined   /> Dashboard</Menu.Item>
+    </Menu>
   );
 };
 

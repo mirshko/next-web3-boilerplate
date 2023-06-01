@@ -23,25 +23,25 @@ Chart.register(
   Legend,
 );
 
-const StatsChart = ({vault, showPriceNotFees}) => {
+const StatsChart = ({vault, showPriceNotFees, gevault}) => {
   const [geData, setGeData] = useState([])
   const theme = useTheme();
-
+  
   useEffect(() => {
     const getData = async () => {
       try {
         const histData = await axios.get("https://roe.nicodeva.xyz/stats/arbitrum/history.json");
         console.log(histData)
-        if (histData.data && histData.data[vault.geVault]){
-          console.log(histData.data[vault.geVault])
-          setGeData(histData.data[vault.geVault])
+        if (histData.data && histData.data[gevault.address]){
+          console.log(histData.data[gevault.address])
+          setGeData(histData.data[gevault.address])
         }
       } catch(e){
         console.log("Fetch historical data", e)
       }
     }
-    if (vault && vault.geVault) getData()
-  }, [vault.geVault])
+    if (gevault && gevault.address) getData()
+  }, [gevault.address])
   
   const options = {
       maintainAspectRatio: false,

@@ -5,6 +5,7 @@ import VaultPerpsForm from "../components/perps/vaultPerpsForm";
 import Positions from "../components/perps/positions";
 import Infobar from "../components/perps/infobar";
 import Chart from "../components/perps/chart";
+import TradingViewWidget from "../components/perps/tv";
 import useAddresses from "../hooks/useAddresses";
 import useUniswapPrice from "../hooks/useUniswapPrice";
 import useCandles from "../hooks/useCandles";
@@ -18,6 +19,7 @@ const ProtectedPerps = () => {
   const [currentVault, selectVault] = useState(0);
   const [positions, setPositions] = useState([]);
   const [interval, setInterval] = useState("1h");
+  const [refreshCounter, setRefreshCounter] = useState(0);
   const ADDRESSES = useAddresses();
   const gap = 12;
   let vaults = ADDRESSES["lendingPools"];
@@ -35,6 +37,7 @@ const ProtectedPerps = () => {
   );
 
   const checkPositions = () => {
+    setRefreshCounter(refreshCounter+1)
     const positionsData = JSON.parse( localStorage.getItem("GEpositions") ?? '{}' );
     if ( positionsData && positionsData[account] ) {
       let pos = [];
@@ -60,13 +63,14 @@ const ProtectedPerps = () => {
             price={price}
           />
         </Card>
-        <Chart
+        <TradingViewWidget
           interval={interval}
           setInterval={setInterval}
           candles={candles}
           positions={positions}
+          symbol={vaults[currentVault].tvSymbol}
         />
-        <Positions vaults={vaults} vault={vaults[currentVault]} positions={positions} checkPositions={checkPositions} price={price} />
+        <Positions vaults={vaults} vault={vaults[currentVault]} positions={positions} checkPositions={checkPositions} price={price} refresh={refreshCounter} />
       </div>
       <div style={{ width: 343, marginLeft: gap}}>
         <VaultPerpsForm
