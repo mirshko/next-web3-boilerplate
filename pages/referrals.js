@@ -24,11 +24,14 @@ const Referrals = ({}) => {
   const getRef = async () => {
     try {
       const refs = (await axios.get("https://roe.nicodeva.xyz/stats/arbitrum/referrals.json")).data;
+      setReferrer() 
+      setRefName()
+      setAffiliates()
       if (refs.hasOwnProperty(account)){
         const myrefs = refs[account];
-        myrefs.hasOwnProperty("ref") ? setReferrer(myrefs["ref"]) : setReferrer() 
-        myrefs.hasOwnProperty("name") ? setRefName(myrefs["name"]) : setRefName() 
-        myrefs.hasOwnProperty("affiliates") ? setAffiliates(myrefs["affiliates"]) : setAffiliates([])
+        if (myrefs.hasOwnProperty("ref") ) setReferrer(myrefs["ref"])
+        if (myrefs.hasOwnProperty("name") ) setRefName(myrefs["name"])
+        if (myrefs.hasOwnProperty("affiliates") ) setAffiliates(myrefs["affiliates"])
       }
     }
     catch(e){
@@ -71,7 +74,6 @@ const Referrals = ({}) => {
   }
   
   useEffect(()=>{
-    console.log("check", account)
     if(account) getRef()
   }, [account])
   
