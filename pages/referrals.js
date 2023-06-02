@@ -10,84 +10,70 @@ const Referrals = ({}) => {
   const router = useRouter();
   let { ref } = router.query;
   const { account, library } = useWeb3React();
-  const [refCode, setRefCode] = useState();
+  const [refName, setRefName] = useState();
+  const [referrer, setReferrer] = useState();
+  const [affiliates, setAffiliates] = useState([]);
   const [inputValue, setInputValue] = useState();
   const [validationStatus, setStatus] = useState();
   const [inputRef, setInputRef] = useState(ref);
   const [refValidationStatus, setRefStatus] = useState();
   const [error, setError] = useState();
   const [isProcessing, setProcessing] = useState(false);
+    
   
-  const setRef = (newRefCode) => {
-    const rc = JSON.parse(localStorage.getItem("refCode") || '{}')
-    rc[account] = newRefCode
-    localStorage.setItem("refCode", JSON.stringify(rc));
-    setRefCode(newRefCode);
+  const getRef = async () => {
+    try {
+      const refs = (await axios.get("https://roe.nicodeva.xyz/stats/arbitrum/referrals.json")).data;
+      if (refs.hasOwnProperty(account)){
+        const myrefs = refs[account];
+        myrefs.hasOwnProperty("ref") ? setReferrer(myrefs["ref"]) : setReferrer() 
+        myrefs.hasOwnProperty("name") ? setRefName(myrefs["name"]) : setRefName() 
+        myrefs.hasOwnProperty("affiliates") ? setAffiliates(myrefs["affiliates"]) : setAffiliates([])
+      }
+    }
+    catch(e){
+      console.log("Err fetching referrals", e)
+    }
   }
   
   
-  useEffect(() => {
-    const checkRef = async () => {
-      const rc = JSON.parse(localStorage.getItem("refCode") || '{}')
-      if( rc && account in rc ) setRefCode(rc[account]);
-    }
-    if (account) checkRef();
-  }, [account])
-  
-  
-  const setReferee = async () => {
-    if (!inputRef || !account) return;
+  const setMyRefName = async () => {
+    if (!inputValue|| !account) return;
     setProcessing(true);
-    // sign message to validate ref as account ref (to prevent spoofing)
     try {
       const signer = library.getSigner(account);
-      const sig = await signer.signMessage("SetReferee:"+inputRef)
-console.log(sig)
-      const refnames = (await axios.get("https://roe.nicodeva.xyz/stats/arbitrum/referrals.json?account="+account+"&ref="+inputRef+"&sig="+sig)).data;
-      console.log(refnames)
-      // server will pick up the referer name in logs and save it, for now
-
-      var newRefCode;
-      for (const i in refnames){
-        if (i == account) {
-          newRefCode = refnames[i]
-          if (!refnames[i].ref) newRefCode.ref = inputRef; // set new referee if not existing
-          break;
-        }
-      }
-      if (newRefCode) setRef(newRefCode);
-      else setRefCode()
+      const sig = await signer.signMessage("SetName:"+inputValue)
+      const refnames = (await axios.get("https://roe.nicodeva.xyz/stats/arbitrum/referrals.json?account="+account+"&name="+inputValue+"&sig="+sig)).data;
+      await new Promise(resolve => setTimeout(resolve, 4000));
+      getRef()
     }
-    catch(e) {console.log('set ref', e)}
+    catch(e){
+      console.log("Err setting referrals", e)
+    }
     setProcessing(false);
-  }
+  }  
   
   
-  const search = async () => {
-    if (!account) return;
+  const setMyReferrer = async () => {
+    if (!inputRef|| !account) return;
     setProcessing(true);
     try {
-      if ( ! /^[a-zA-Z0-9]+$/.test(inputValue) ){
-        setStatus('error');
-        setError('Only characters and numbers allowed');
-        throw new Error("Non alphanum referral");
-      }
-      
-      const refnames = (await axios.get("https://roe.nicodeva.xyz/stats/arbitrum/referrals.json?account="+account+"&name="+inputValue)).data;
-      // server will also pick up the query in the logs and register for next time
-      if (refnames[inputValue]){
-        // already existing?
-        setStatus('error');
-        setError('Referral Code already taken.');
-      }
-      else {
-        // server side script will update the list sometime, meanwhile register here
-        setRef({name: inputValue, account: account, referrals: []})
-      }
+      const signer = library.getSigner(account);
+      const sig = await signer.signMessage("SetReferrer:"+inputRef)
+      const refnames = (await axios.get("https://roe.nicodeva.xyz/stats/arbitrum/referrals.json?account="+account+"&ref="+inputRef+"&sig="+sig)).data;
+      await new Promise(resolve => setTimeout(resolve, 4000));
+      getRef()
     }
-    catch(e) {console.log(e)}
+    catch(e){
+      console.log("Err setting referrer", e)
+    }
     setProcessing(false);
   }
+  
+  useEffect(()=>{
+    console.log("check", account)
+    if(account) getRef()
+  }, [account])
   
   
   return (<div>
@@ -95,16 +81,16 @@ console.log(sig)
     <Typography.Text>Earn rewards with the GoodEntry <a href='#'>Referral Program</a>.</Typography.Text>
     <Row gutter={48} style={{marginTop: 24}}>
       <Col md={12}>
-        <Card title="Referee">
-        {refCode && refCode.ref ?
-          <div>You referee is <strong>{refCode.ref}</strong>
+        <Card title="Referrer">
+        { referrer ?
+          <div>Your referrer is <strong>{referrer}</strong>
           </div>
           :
           <div>
             <Input.Search 
               style={{ marginTop: 24}}
               enterButton={isProcessing ? <LoadingOutlined /> : <>Set Referee</>}
-              onSearch={setReferee}
+              onSearch={setMyReferrer}
               onChange={(e)=>{setRefStatus(null); setInputRef(e.target.value)}}
             />
             {refValidationStatus ? <span style={{ color: '#dc4446'}}>Invalid Referee</span> : <></>}
@@ -113,18 +99,18 @@ console.log(sig)
         </Card>
         <Card title="Referral Code" style={{ marginTop: 24 }}>
         {
-          refCode && refCode.name ? 
+          refName ? 
             <p>
-              Your referral code is <strong>{refCode.name}</strong><br /><br />
+              Your referral code is <strong>{refName}</strong><br /><br />
               Share GoodEntry with your friends and earn rewards!
             </p>
             : <div>
-                You don&apos;t have a referral code yet.<br />Create a new one to and start earning rewards!<br />
+                You don&apos;t have a referral code yet.<br />Create a new one to invite friends and start earning rewards!<br />
                 <div style={{display: 'flex', alignItems: 'center'}}>
                   <Input.Search
                     style={{ marginTop: 24}}
-                    enterButton={isProcessing ? <LoadingOutlined /> : <>Create Referral</>}
-                    onSearch={search}
+                    enterButton={isProcessing ? <LoadingOutlined /> : <>Register Referral Code</>}
+                    onSearch={setMyRefName}
                     onChange={(e)=>{setStatus(null); setInputValue(e.target.value)}}
                     status={validationStatus}
                   />
@@ -137,8 +123,11 @@ console.log(sig)
       <Col md={12}>
         <Card title="Affiliates">
         {
-          refCode && refCode.affiliates ? refCode.affiliates.map( affiliate => {
-            return (<h3 key={affiliate}>{affiliate}</h3>)
+          affiliates ? affiliates.map( affiliate => {
+            return (<>
+                <span key={affiliate}>{affiliate}</span>
+                <br />Bonus per round: 0
+              </>)
           })
           : <>You don&apos;t have any affiliates. Share your referral link and start earning rewards!</>
         }
