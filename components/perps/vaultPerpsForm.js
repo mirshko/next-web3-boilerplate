@@ -6,6 +6,7 @@ import getUserLendingPoolData from "../../hooks/getUserLendingPoolData";
 import useUnderlyingAmount from "../../hooks/useUnderlyingAmount";
 import useOptionsPositionManager from "../../hooks/useOptionsPositionManager";
 import useLendingPoolContract from "../../hooks/useLendingPoolContract";
+import useTokenHVol from "../../hooks/useTokenHVol";
 import DepositWithdrawalModalMultiAssets from "../depositWithdrawalModalMultiAssets";
 import VaultPerpsStrikes from "./vaultPerpsStrikes";
 import PayoutChart from "./payoutChart";
@@ -259,10 +260,8 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
   
   // BlackScholes
   // on the daily options deribit volatility sells for half the weekly HVOL ?
-  var hvol = 0.28;
-  var rfr = 0.04;
-  if (baseAsset.name == "GMX") hvol = 0.62;
-  if (baseAsset.name == "ARB") hvol = 0.55;
+  var hvol = useTokenHVol(vault.ohlcUrl)
+  var rfr = 0.045;
   const bsUpperStrike = bs.blackScholes(price, upperStrikeAsset.price, 1/365, hvol, rfr, "call");
   const bsLowerStrike = bs.blackScholes(price, lowerStrikeAsset.price, 1/365, hvol, rfr, "put");
   
@@ -454,7 +453,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
     </Card>
     <Card style={{ minWidth: 343, marginTop: 12 }}>
       <span style={{fontWeight: 600}}>Volatility Price</span> <QuestionCircleOutlined /><br />
-        {baseAsset.name} HVOL: {(hvol * 100).toFixed(0)}%<br />
+        {baseAsset.name} 7d HVOL: {(hvol * 100).toFixed(2)}%<br />
       Theoretical 1DTE price:<span style={{float: 'right'}}>Current</span><br/>
       Call-{upperStrikeAsset.price}: ${(bsUpperStrike).toFixed(3)}<span style={{float: 'right'}}>${(upperStrikeAsset.debtApr/100/365*price).toFixed(3)}</span><br />
       Put-{lowerStrikeAsset.price}: ${(bsLowerStrike).toFixed(3)}<span style={{float: 'right'}}>${(lowerStrikeAsset.debtApr/100/365*price).toFixed(3)}</span><br />
