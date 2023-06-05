@@ -130,7 +130,7 @@ const Referrals = ({}) => {
           <div style={{ display: 'flex', gap: 8, alignItems: 'center', width: '100%', flexGrow: 2, marginBottom: 16}}>
             <div style={{ width: 150, display: 'flex', justifyContent: 'flex-end', flexShrink: 0 }}>
               {refName 
-                ? <div style={{fontWeight: 500}}>Ref Code</div> 
+                ? <div style={{fontWeight: 500, color: 'white'}}>Ref Code</div> 
                 : <Button type='primary' style={{fontWeight: 500}} onClick={setMyReferrer} loading={isProcessing}>Create Ref Code</Button> 
               }
             </div>
@@ -147,7 +147,7 @@ const Referrals = ({}) => {
             refName 
               ? <div style={{ display: 'flex', gap: 8, alignItems: 'center', width: '100%', flexGrow: 2, marginBottom: 12}}>
                   <div style={{ width: 150, display: 'flex', justifyContent: 'flex-end', flexShrink: 0 }}>
-                    <div style={{fontWeight: 500}}>Ref Link</div> 
+                    <div style={{fontWeight: 500, color: 'white'}}>Ref Link</div> 
                   </div>
                   <Input 
                         value={refLink+refName}
@@ -166,9 +166,9 @@ const Referrals = ({}) => {
           <thead>
             <tr style={{ padding: 0}}>
               <th style={{ padding: 0}}></th>
-              <th align='left' style={{color: 'white', padding: 0}}>Account</th>
-              <th align='left' style={{color: 'white', padding: 0}}>TVL</th>
-              <th align='left' style={{color: 'white', padding: 0}}>Rewards Earned ($GOOD)</th>
+              <th align='left' style={{color: 'white', padding: 0, fontWeight: 400}}>Account</th>
+              <th align='left' style={{color: 'white', padding: 0, fontWeight: 400}}>TVL</th>
+              <th align='left' style={{color: 'white', padding: 0, fontWeight: 400}}>Rewards Earned ($GOOD)</th>
             </tr>
           </thead>
           <tbody>
