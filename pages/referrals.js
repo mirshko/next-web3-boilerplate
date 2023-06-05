@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Button, Row, Col, Typography, Card, Input } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { Button, Row, Col, Typography, Card, Input, notification } from "antd";
+import { LoadingOutlined, CopyOutlined } from "@ant-design/icons";
 import { useWeb3React } from "@web3-react/core";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -9,7 +9,9 @@ import { ethers } from "ethers";
 const Referrals = ({}) => {
   const router = useRouter();
   let { ref } = router.query;
+  console.log(router, router.query, ref)
   const { account, library } = useWeb3React();
+
   const [refName, setRefName] = useState();
   const [referrer, setReferrer] = useState();
   const [affiliates, setAffiliates] = useState([]);
@@ -19,6 +21,7 @@ const Referrals = ({}) => {
   const [refValidationStatus, setRefStatus] = useState();
   const [error, setError] = useState();
   const [isProcessing, setProcessing] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
     
   
   const getRef = async () => {
@@ -73,66 +76,117 @@ const Referrals = ({}) => {
     setProcessing(false);
   }
   
+  
   useEffect(()=>{
     if(account) getRef()
-  }, [account])
-  
+    if (ref) setInputRef(ref)
+  }, [account, ref])
+
+
+  const copyNotification = () => {
+    api.info({
+      message: 'Copied to Clipboard.',
+      placement: "bottom",
+    });
+  };
+
+  const refLink = "https://alpha.goodentry.io/referrals?ref="
   
   return (<div>
+  {contextHolder}
     <Typography.Title>Referrals</Typography.Title>
     <Typography.Text>Earn rewards with the GoodEntry <a href='#'>Referral Program</a>.</Typography.Text>
-    <Row gutter={48} style={{marginTop: 24}}>
+    <Row gutter={8} style={{marginTop: 24}}>
       <Col md={12}>
-        <Card title="Referrer">
-        { referrer ?
-          <div>Your referrer is <strong>{referrer}</strong>
+        <Row gutter={8} style={{marginBottom: 8}}>
+          <Col sm={12}>
+            <Card bodyStyle={{ display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
+              <span style={{ fontSize: 'small' }}>Total Referral(s)</span>
+              <span style={{ fontSize: 'x-large', color: 'white', fontWeight: 'bold'}}>42</span>
+            </Card>
+          </Col>
+          <Col sm={12}>
+            <Card bodyStyle={{ display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
+              <span style={{ fontSize: 'small' }}>Total Referral Rewards</span>
+              <span style={{ fontSize: 'x-large', color: 'white', fontWeight: 'bold'}}>42</span>
+            </Card>
+          </Col>
+        </Row>
+      
+        <Card title={<span style={{color: '#8A9098'}}>REFERRER</span>}>        
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', width: '100%', flexGrow: 2, marginBottom: 16 }}>
+            <div style={{ width: 150, display: 'flex', justifyContent: 'flex-end' }}>
+              {referrer 
+                ? <div style={{fontWeight: 500}}>Referrer</div> 
+                : <Button type='primary' style={{ width: 150, fontWeight: 500 }} onClick={setMyReferrer} loading={isProcessing}>Set My Referrer</Button> 
+              }
+            </div>
+            { referrer 
+              ? <>Referrer</> 
+              : <Input value={inputRef} onChange={(e)=>{setRefStatus(null); console.log('change to', e.target.value); setInputRef(e.target.value)}} /> 
+            }
           </div>
-          :
-          <div>
-            <Input.Search 
-              style={{ marginTop: 24}}
-              enterButton={isProcessing ? <LoadingOutlined /> : <>Set Referee</>}
-              onSearch={setMyReferrer}
-              onChange={(e)=>{setRefStatus(null); setInputRef(e.target.value)}}
-            />
-            {refValidationStatus ? <span style={{ color: '#dc4446'}}>Invalid Referee</span> : <></>}
+          
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', width: '100%', flexGrow: 2, marginBottom: 16}}>
+            <div style={{ width: 150, display: 'flex', justifyContent: 'flex-end', flexShrink: 0 }}>
+              {refName 
+                ? <div style={{fontWeight: 500}}>Ref Code</div> 
+                : <Button type='primary' style={{fontWeight: 500}} onClick={setMyReferrer} loading={isProcessing}>Create Ref Code</Button> 
+              }
+            </div>
+            {refName 
+              ? <Input value={refName}
+                  suffix={<div style={{cursor: 'pointer'}} onClick={() => {navigator.clipboard.writeText(refName); copyNotification()}}>
+                    <CopyOutlined style={{color: 'white'}}/>
+                  </div>}
+                />
+              : <Input onChange={(e)=>{setRefStatus(null); setInputRef(e.target.value)}} /> 
+            }
           </div>
-        }
-        </Card>
-        <Card title="Referral Code" style={{ marginTop: 24 }}>
-        {
-          refName ? 
-            <p>
-              Your referral code is <strong>{refName}</strong><br /><br />
-              Share GoodEntry with your friends and earn rewards!
-            </p>
-            : <div>
-                You don&apos;t have a referral code yet.<br />Create a new one to invite friends and start earning rewards!<br />
-                <div style={{display: 'flex', alignItems: 'center'}}>
-                  <Input.Search
-                    style={{ marginTop: 24}}
-                    enterButton={isProcessing ? <LoadingOutlined /> : <>Register Referral Code</>}
-                    onSearch={setMyRefName}
-                    onChange={(e)=>{setStatus(null); setInputValue(e.target.value)}}
-                    status={validationStatus}
-                  />
+          {
+            refName 
+              ? <div style={{ display: 'flex', gap: 8, alignItems: 'center', width: '100%', flexGrow: 2, marginBottom: 12}}>
+                  <div style={{ width: 150, display: 'flex', justifyContent: 'flex-end', flexShrink: 0 }}>
+                    <div style={{fontWeight: 500}}>Ref Link</div> 
+                  </div>
+                  <Input 
+                        value={refLink+refName}
+                        suffix={<div style={{cursor: 'pointer'}} onClick={() => {navigator.clipboard.writeText(refLink+refName); copyNotification()}}>
+                          <CopyOutlined style={{color: 'white'}}/>
+                        </div>}
+                      />
                 </div>
-                {validationStatus ? <span style={{ color: '#dc4446'}}>{error}</span> : <></>}
-              </div>
-        }
+              : <></>
+          }
         </Card>
       </Col>
       <Col md={12}>
-        <Card title="Affiliates">
-        {
-          affiliates ? affiliates.map( affiliate => {
-            return (<>
-                <span key={affiliate}>{affiliate}</span>
-                <br />Bonus per round: 0
-              </>)
-          })
-          : <>You don&apos;t have any affiliates. Share your referral link and start earning rewards!</>
-        }
+        <Card title={<span style={{color: '#8A9098'}}>AFFILIATES</span>}>
+        <table >
+          <thead>
+            <tr style={{ padding: 0}}>
+              <th style={{ padding: 0}}></th>
+              <th align='left' style={{color: 'white', padding: 0}}>Account</th>
+              <th align='left' style={{color: 'white', padding: 0}}>TVL</th>
+              <th align='left' style={{color: 'white', padding: 0}}>Rewards Earned ($GOOD)</th>
+            </tr>
+          </thead>
+          <tbody>
+          {
+            affiliates ? affiliates.map( (affiliate, i) => {
+              console.log(affiliate, i)
+              return (<tr key={affiliate}>
+                  <td style={{ padding: 0}}>{i}</td>
+                  <td style={{ padding: 0}}>{affiliate.substring(0,6)}...{affiliate.substring(36,42)}</td>
+                  <td style={{ padding: 0}}>-</td>
+                  <td style={{ padding: 0}}>-</td>
+                </tr>)
+            })
+            : <>You don&apos;t have any affiliates. Share your referral link and start earning rewards!</>
+          }
+          </tbody>
+        </table>
+
         </Card>
       </Col>
     </Row>
