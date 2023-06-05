@@ -176,7 +176,7 @@ const Referrals = ({}) => {
             affiliates ? affiliates.map( (affiliate, i) => {
               console.log(affiliate, i)
               return (<tr key={affiliate}>
-                  <td style={{ padding: 0}}>{i}</td>
+                  <td style={{ padding: 0}}>{i+1}</td>
                   <td style={{ padding: 0}}>{affiliate.substring(0,6)}...{affiliate.substring(36,42)}</td>
                   <td style={{ padding: 0}}>-</td>
                   <td style={{ padding: 0}}>-</td>
