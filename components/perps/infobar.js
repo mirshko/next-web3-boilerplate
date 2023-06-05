@@ -53,7 +53,7 @@ const Infobar = ({vaults, current, selectVault }) => {
   return (<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 40 }}>
     <VaultsDropdown selectVault={selectVault} vaults={vaults} currentVault={currentVault} />
     
-    <span style={{ fontSize: 'larger' }}>{price.toFixed(3)}</span>
+    <span style={{ fontSize: 'larger', color: 'white' }}>{price.toFixed(3)}</span>
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <span style={{ fontSize: 'small', color: 'grey' }}>24h Change</span>
       <span style={{ color: change > 0 ? green:red }}>{change.toFixed(2)} {changePercent.toFixed(2)}%</span>
@@ -61,17 +61,17 @@ const Infobar = ({vaults, current, selectVault }) => {
     
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <span style={{ fontSize: 'small', color: 'grey' }}>24h High</span>
-      <span style={{ }}>{parseFloat(dailyCandle[2]??0).toFixed(2)}</span>
+      <span style={{ color: 'white' }}>{parseFloat(dailyCandle[2]??0).toFixed(2)}</span>
     </div> 
     
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <span style={{ fontSize: 'small', color: 'grey' }}>24h Low</span>
-      <span style={{ }}>{parseFloat(dailyCandle[3]??0).toFixed(2)}</span>
+      <span style={{ color: 'white'}}>{parseFloat(dailyCandle[3]??0).toFixed(2)}</span>
     </div>
     
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <span style={{ fontSize: 'small', color: 'grey' }}>Avail. Margin</span>
-      <span style={{ }}>$ {parseFloat(10*availableCollateral).toFixed(2)}</span>
+      <span style={{ color: 'white'}}>$ {parseFloat(10*availableCollateral).toFixed(2)}</span>
     </div>
     
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>

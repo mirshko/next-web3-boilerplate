@@ -303,14 +303,14 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
     />
     <Card style={{ marginBottom: 8 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12}}>
-        <span style={{fontWeight: 600}}>Good Wallet</span>
+        <span style={{fontWeight: 600, color: 'white'}}>Good Wallet</span>
         <DepositWithdrawalModalMultiAssets vault={vault} />
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'grey'}}>
         <span>
           Margin Available:{" "}
         </span>
-        <span style={{ float: "right" }}>
+        <span style={{ float: "right", color: 'white' }}>
           ${parseFloat(10 * availableCollateral).toFixed(2)} / {parseFloat(10*availableCollateral/(baseAsset.oraclePrice?baseAsset.oraclePrice:1)).toFixed(3)} {baseAsset.name}
         </span>
       </div>
@@ -318,7 +318,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
         <span>
           Margin Usage:{" "}
         </span>
-        <span style={{ float: "right" }}>
+        <span style={{ float: "right", color: 'white' }}>
           {parseFloat(marginUsage).toFixed(2)}%
           {marginAfterUsage > marginUsage && parseFloat(inputValue) > 0 ? (
             <> &rarr; {marginAfterUsage.toFixed(2)}%</>
@@ -328,7 +328,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
         </span>
       </div>
     </Card>
-    <Card style={{ marginBottom: 8 }}>
+    <Card style={{ marginBottom: 8, color: 'white' }}>
       <div>
         {contextHolder}
         <Button
@@ -452,9 +452,9 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
       />
     </Card>
     <Card style={{ minWidth: 343, marginTop: 12 }}>
-      <span style={{fontWeight: 600}}>Volatility Price</span> <QuestionCircleOutlined /><br />
-        {baseAsset.name} 7d HVOL: {(hvol * 100).toFixed(2)}%<br />
-      Theoretical 1DTE price:<span style={{float: 'right'}}>Current</span><br/>
+      <span style={{fontWeight: 600, color: 'white'}}>{baseAsset.name} 7d HVOL<span style={{ float: 'right'}}>{(hvol * 100).toFixed(2)}%</span></span> 
+      <br />
+      Theoretical 1DTE price<span style={{float: 'right'}}>Current</span><br/>
       Call-{upperStrikeAsset.price}: ${(bsUpperStrike).toFixed(3)}<span style={{float: 'right'}}>${(upperStrikeAsset.debtApr/100/365*price).toFixed(3)}</span><br />
       Put-{lowerStrikeAsset.price}: ${(bsLowerStrike).toFixed(3)}<span style={{float: 'right'}}>${(lowerStrikeAsset.debtApr/100/365*price).toFixed(3)}</span><br />
       
