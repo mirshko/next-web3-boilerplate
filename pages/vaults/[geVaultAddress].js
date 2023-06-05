@@ -61,7 +61,7 @@ const GeVaults = ({}) => {
           <Typography.Title style={{ marginTop: 12 }}>
             {gevault.name}
           </Typography.Title>
-          <div style={{ width: '350px', marginTop: 12}}>
+          <div style={{ width: '350px', marginTop: 12, color: 'white'}}>
             <div style={{ display: 'flex', justifyContent: 'space-between'}}>
               <span>Current Deposits</span>
               <span>${parseFloat(gevault.tvl).toFixed(0)}</span>

@@ -21,7 +21,7 @@ const NavRight = () => {
         href="https://gitbook.goodentry.io/"
         target="_blank"
         rel="noreferrer"
-        style={{ marginRight: 24 }}
+        style={{ marginRight: 24, color: "#8A9098" }}
       >
         Docs
       </a>
@@ -29,7 +29,7 @@ const NavRight = () => {
         href="https://crew3.xyz/c/goodentrylabs/questboard"
         target="_blank"
         rel="noreferrer"
-        style={{ marginRight: 24 }}
+        style={{ marginRight: 24, color: "#8A9098" }}
       >
         Quests
       </a>
@@ -37,7 +37,7 @@ const NavRight = () => {
         href="https://discord.com/invite/goodentry"
         target="_blank"
         rel="noreferrer"
-        style={{ marginRight: 24 }}
+        style={{ marginRight: 24, color: "#8A9098" }}
       >
         <img alt="discord" src="/images/discord-white.svg" height={13} />
       </a>
@@ -45,7 +45,7 @@ const NavRight = () => {
         href="https://twitter.com/goodentrylabs"
         target="_blank"
         rel="noreferrer"
-        style={{ marginRight: 24 }}
+        style={{ marginRight: 24, color: "#8A9098" }}
       >
         <TwitterOutlined style={{ fontSize: "larger" }} />
       </a>
@@ -53,7 +53,7 @@ const NavRight = () => {
         href="https://goodentrylabs.medium.com/"
         target="_blank"
         rel="noreferrer"
-        style={{ marginRight: 24 }}
+        style={{ marginRight: 24, color: "#8A9098" }}
       >
         <MediumOutlined style={{ fontSize: "larger"}} />
       </a>
@@ -61,7 +61,7 @@ const NavRight = () => {
         href="https://github.com/GoodEntry-io/GoodEntryMarkets"
         target="_blank"
         rel="noreferrer"
-        style={{ marginRight: 24 }}
+        style={{ marginRight: 24, color: "#8A9098" }}
       >
         <GithubOutlined style={{ fontSize: "larger"}} />
       </a>

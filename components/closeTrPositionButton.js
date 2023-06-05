@@ -45,14 +45,15 @@ const CloseTrPositionButton = ({ address, vault, opmAddress, checkPositions }) =
         p.close = new Date();
         positionsData[account]["closed"].push(p)
       }
-      localStorage.setItem("GEpositions", JSON.stringify(positionsData) );
-      checkPositions();
+      localStorage.setItem("GEpositions", '{}' );
       
       showSuccessNotification(
         "Position closed",
         "Position closed successful",
         hash
       );
+      await new Promise(resolve => setTimeout(resolve, 3000)); // artificial waiting time for server to process event
+      checkPositions();
     } catch (e) {
       console.log("Error closing position", e);
       showErrorNotification(e.code, e.reason);

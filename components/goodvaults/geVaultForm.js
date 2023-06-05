@@ -107,7 +107,7 @@ const GeVaultForm = ({vault, gevault}) => {
   ]
   
   
-  return(<Card style={{marginLeft: 64}}>
+  return(<Card style={{marginLeft: 64, color: 'white'}}>
     {contextHolder}
     <div style={{marginBottom: 24}}>
       <Button
@@ -149,7 +149,7 @@ const GeVaultForm = ({vault, gevault}) => {
         onChange={(e) => setInputValue(e.target.value)}
         key="inputamount"
         value={inputValue}
-        style={{ backgroundColor: "#1D2329", padding: 8 }}
+        style={{ backgroundColor: "#1D2329", padding: 8, color: 'white' }}
       />
     </div>
     <div style={{ marginTop: 24, marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
