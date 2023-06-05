@@ -34,7 +34,7 @@ const NavRight = () => {
         Quests
       </a>
       <a
-        href="https://discord.gg/goodentry"
+        href="https://discord.com/invite/goodentry"
         target="_blank"
         rel="noreferrer"
         style={{ marginRight: 24 }}

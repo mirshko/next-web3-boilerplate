@@ -29,7 +29,7 @@ const Banner = () => {
       </div>
       Good Entry is in alpha mode. Please give us your feedbacks on our&nbsp;
       <a
-        href="https://discord.com/channels/1077873590445289523/1085438896466300959"
+        href="https://discord.com/invite/goodentry"
         target="_blank"
         rel="noreferrer"
         style={{ color: "white" }}
