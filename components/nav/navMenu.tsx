@@ -34,7 +34,7 @@ const NavMenu = ({ bgColor }) => {
     >
       <Menu.Item key="/"><SwapOutlined /> Protected Perps</Menu.Item>
       <Menu.Item key="/ezvaults"><BankOutlined /> ezVaults</Menu.Item>
-      <Menu.Item key="/https://goodentry.io/staking"><FundOutlined  /> Staking</Menu.Item>
+      <Menu.Item key="https://goodentry.io/staking"><FundOutlined  /> Staking</Menu.Item>
       <Menu.Item key="/dashboard"><DashboardOutlined   /> Dashboard</Menu.Item>
     </Menu>
   );
