@@ -294,6 +294,41 @@
         ],
         "ticks": [
           {
+            "address": "0x01BDF7129636B2d98241146f3DB4F58dC41982cE",
+            "roeAddress": "0xD1C52D6F4F0e6DBA71B3Ff12963e303BeA8F0C25",
+            "debtAddress": "0xcE6C9351F67ab4D723d30486cD0907076D99c8bb",
+            "price": "20",
+            "tokenId": 640021
+          },
+          {
+            "address": "0x70f9bBB20b013c679f9550B4dce4e2c8a5674360",
+            "roeAddress": "0x380255DAa69f18e228f518d38A42DD530F826265",
+            "debtAddress": "0xa5E2a0EF4d0129a41f4A4F62feF8D6E5BDD0CFD8",
+            "price": "25",
+            "tokenId": 640023
+          },
+          {
+            "address": "0x0dE58Aad74e85369E6F85244Db33c4B1a22EA8C5",
+            "roeAddress": "0x2fb58f2c18a6E42c2BA836B7E07816921C94D855",
+            "debtAddress": "0x96AD0000E4D21B09fd69b396Fe0521be24b0A280",
+            "price": "30",
+            "tokenId": 640025
+          },
+          {
+            "address": "0x9Ced10d1F30d956AE8a1b23AE82b83344F0e2E2e",
+            "roeAddress": "0x98b2C9757dd18d3Fd1F435bD0AA8daa2412B135d",
+            "debtAddress": "0x275eae21e2D7B3226C27cD3101fA79C7a000b329",
+            "price": "35",
+            "tokenId": 640027
+          },
+          {
+            "address": "0x166442342edB8D14bc9120b3e639096F344bb2Be",
+            "roeAddress": "0x8B744180787581F192529Fa32b8802047e68EB01",
+            "debtAddress": "0x015946A1509d45386B6B67265Ac039F53C21BDFe",
+            "price": "40",
+            "tokenId": 640029
+          },
+          {
             "address": "0xf421A1C9c4C8f38fa22F74e1a2D1d0594f3ba4AF",
             "roeAddress": "0x413db7eF5c27050155F52D94013b78F50224BF3D",
             "debtAddress": "0xfF167EF7aCe5148828244Fe9ce698002a05FAA4D",
