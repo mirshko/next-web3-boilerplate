@@ -162,31 +162,34 @@ const Referrals = ({}) => {
       </Col>
       <Col md={12}>
         <Card title={<span style={{color: '#8A9098'}}>AFFILIATES</span>}>
-        <table >
-          <thead>
-            <tr style={{ padding: 0}}>
-              <th style={{ padding: 0}}></th>
-              <th align='left' style={{color: 'white', padding: 0, fontWeight: 400}}>Account</th>
-              <th align='left' style={{color: 'white', padding: 0, fontWeight: 400}}>TVL</th>
-              <th align='left' style={{color: 'white', padding: 0, fontWeight: 400}}>Rewards Earned ($GOOD)</th>
-            </tr>
-          </thead>
-          <tbody>
-          {
-            affiliates ? affiliates.map( (affiliate, i) => {
-              console.log(affiliate, i)
-              return (<tr key={affiliate}>
-                  <td style={{ padding: 0}}>{i+1}</td>
-                  <td style={{ padding: 0}}>{affiliate.substring(0,6)}...{affiliate.substring(36,42)}</td>
-                  <td style={{ padding: 0}}>-</td>
-                  <td style={{ padding: 0}}>-</td>
-                </tr>)
-            })
-            : <>You don&apos;t have any affiliates. Share your referral link and start earning rewards!</>
+          <table >
+            <thead>
+              <tr style={{ padding: 0}}>
+                <th style={{ padding: 0}}></th>
+                <th align='left' style={{color: 'white', padding: 0, fontWeight: 400}}>Account</th>
+                <th align='left' style={{color: 'white', padding: 0, fontWeight: 400}}>TVL</th>
+                <th align='left' style={{color: 'white', padding: 0, fontWeight: 400}}>Rewards Earned ($GOOD)</th>
+              </tr>
+            </thead>
+            <tbody>
+            {
+              affiliates ? affiliates.map( (affiliate, i) => {
+                console.log(affiliate, i)
+                return (<tr key={affiliate}>
+                    <td style={{ padding: 0}}>{i+1}</td>
+                    <td style={{ padding: 0}}>{affiliate.substring(0,6)}...{affiliate.substring(36,42)}</td>
+                    <td style={{ padding: 0}}>-</td>
+                    <td style={{ padding: 0}}>-</td>
+                  </tr>)
+              })
+              : <></>
+            }
+            </tbody>
+          </table>
+          { !affiliates || affiliates.length == 0 
+              ? <><br/>You don&apos;t have any affiliates. Share your referral link and start earning rewards!</>
+              : <></>
           }
-          </tbody>
-        </table>
-
         </Card>
       </Col>
     </Row>

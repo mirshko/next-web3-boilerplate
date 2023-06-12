@@ -7,17 +7,25 @@ import useAddresses from "../hooks/useAddresses";
 const GoodVaults = ({}) => {
   const ADDRESSES = useAddresses();
   let vaults = ADDRESSES["lendingPools"];
+  
+  const gev = [];
+  const gev_disabled = []
+  for( let v of vaults){
+    for (let gv of v.geVault){
+      gv.vault = v
+      if(gv.status == "Withdraw Only") gev_disabled.push(gv)
+      else gev.push(gv)
+    }
+  }
+  const allgev = [...gev, ...gev_disabled];
 
   return (
     <div style={{ width: 1400 }}>
       <Typography.Title>ezVaults</Typography.Title>
       <Row gutter={24} style={{ marginTop: 24 }}>
-        {vaults.map((vault) => {
-          if (!vault.geVault) return (<></>)
-          return vault.geVault.map( (gevault) => {
-            return (<GeVaultBox vault={vault} key={gevault.name} gevault={gevault} />)
-          })
-        })}
+        {
+          allgev.map((gv) => <GeVaultBox vault={gv.vault} key={gv.name} gevault={gv} />)
+        }
       </Row>
     </div>
   );

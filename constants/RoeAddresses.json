@@ -20,7 +20,8 @@
         "tvl": "95k",
         "rangeManager": "0x172EE56600B2Df3fDBFCC3e2F968E60a333dc3C4",
         "geVault": [
-          {"name": "ETH-USDC alpha", "address": "0x59fA26382De900F29B581553F31C6Da103884ffA", "status": "Withdraw Only"}
+          {"name": "ETH-USDC", "address": "0x0d3cAA624E3a0076A6bc96Ba8D632D37F460Bc74", "status": "Rewards"},
+          {"name": "ETH-USDC Alpha", "address": "0x59fA26382De900F29B581553F31C6Da103884ffA", "status": "Withdraw Only"}
         ],
         "ranges": [
           {
@@ -208,7 +209,8 @@
         "tvl": "45k",
         "rangeManager": "0x8a5b3e5aC3bd5c5c80d875C2b89Ec5980F326FA6",
         "geVault": [
-          {"name": "GMX-USDC alpha", "address": "0x10ca4492b9A4b74964C9b4763B87eFD0689aB0bE", "status": "Withdraw Only"}
+          {"name": "GMX-USDC", "address": "0xa82577af74ae9D450DC04dF62Fc5C14748a0B3Ae", "status": "Rewards"},
+          {"name": "GMX-USDC Alpha", "address": "0x10ca4492b9A4b74964C9b4763B87eFD0689aB0bE", "status": "Withdraw Only"}
         ],
         "ranges": [
           {
@@ -466,7 +468,8 @@
         "tvl": "45k",
         "rangeManager": "0xA9227643f940d412ebC019D99219677EbbE5Aa2f",
         "geVault": [
-          {"name": "ARB-USDC alpha", "address": "0x31C3871B369bE1B2C3A26f963bcc407ee208099E", "status": "Withdraw Only"}
+          {"name": "ARB-USDC", "address": "0x14475be7D59895739207a9E5518903f4B94345B7", "status": "Rewards"},
+          {"name": "ARB-USDC Alpha", "address": "0x31C3871B369bE1B2C3A26f963bcc407ee208099E", "status": "Withdraw Only"}
         ],
         "ranges": [
           {

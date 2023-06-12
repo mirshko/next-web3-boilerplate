@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Card, Col, Popover, Divider } from "antd";
-import { QuestionCircleOutlined } from "@ant-design/icons";
+import { QuestionCircleOutlined, WarningOutlined } from "@ant-design/icons";
 import Slider from "../design/slider";
 import { useRouter } from 'next/router';
 import useGeVault from "../../hooks/useGeVault";
@@ -25,9 +25,15 @@ const GeVaultBox = ({vault, gevault}) => {
   if (!gevault.address || !vault.geVault) return <></>  
   
   const RewardsTag = () => {
-    return (<div style={{backgroundColor: "#0A371B", color: theme.colorPrimary, borderRadius: 4, padding: "6px 8px", display: 'flex', alignItems: 'center', fontWeight: 600 }}>
+    return (<div style={{backgroundColor: "#0A371B", color: theme.colorPrimary, borderRadius: 4, padding: "6px 8px", display: 'flex', alignItems: 'center', fontWeight: 600, fontSize: "smaller" }}>
       <img src="/logo.svg" height={18} alt='Good Entry Logo' style={{ marginRight:4 }} />
       Rewards
+    </div>)
+  }  
+  const DisabledTag = () => {
+    return (<div style={{ backgroundColor: "#DC4446", borderRadius: 4, padding: "6px 8px", display: 'flex', alignItems: 'center', fontWeight: 600, fontSize: "smaller" }}>
+      <WarningOutlined style={{ marginRight:4 }} />
+      Withdraw Only
     </div>)
   }
   
@@ -48,16 +54,28 @@ const GeVaultBox = ({vault, gevault}) => {
       onClick={()=>{router.push("/vaults/"+gevault.name)}}
     >
       <Card
-        style= {{}}
+        style= {{
+          boxShadow: (highlightBox ? "0px 0px 30px rgba(15, 253, 106, 0.4)" : "" ) ,
+          border: (highlightBox ? "1px solid #0FFD6A" : ""),
+        }}
         bodyStyle= {{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "space-between", height: '100%', gap: 12, 
-          boxShadow: (highlightBox ? "0px 0px 30px rgba(15, 253, 106, 0.4)" : "" ) ,
-          border: (highlightBox ? "1px solid #0FFD6A" : ""),
         }}
       >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          { gevault.status == "Rewards" ? <RewardsTag/> : <></> }
+          { gevault.status == "Withdraw Only" ? <DisabledTag /> : <></> }
+        </div>
         <span
           style={{ fontSize: "x-large", marginLeft: 8 }}
         >
