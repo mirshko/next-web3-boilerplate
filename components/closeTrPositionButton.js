@@ -5,7 +5,7 @@ import { useWeb3React } from "@web3-react/core";
 import { ethers } from "ethers";
 import { useTxNotification } from "../hooks/useTxNotification";
 
-const CloseTrPositionButton = ({ address, vault, opmAddress, checkPositions }) => {
+const CloseTrPositionButton = ({ address, vault, opmAddress, checkPositions, direction }) => {
   const { account } = useWeb3React();
   const [isSpinning, setSpinning] = useState(false);
   const [showSuccessNotification, showErrorNotification, contextHolder] =
@@ -35,7 +35,7 @@ const CloseTrPositionButton = ({ address, vault, opmAddress, checkPositions }) =
         account,
         address,
         0,
-        vault.token0.address
+        direction == "Long" ? vault.token0.address : vault.token1.address
       );
       
       let positionsData = JSON.parse(localStorage.getItem("GEpositions") ?? '{}' );

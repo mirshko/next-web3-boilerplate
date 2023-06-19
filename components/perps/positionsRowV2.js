@@ -79,7 +79,7 @@ const PositionsRowV2 = ({ position, checkPositions, debtAddress }) => {
         </div>
       </td>
       <td style={tdStyle}>
-        <CloseTrPositionButton address={asset.address} vault={vault} checkPositions={checkPositions} />
+        <CloseTrPositionButton address={asset.address} vault={vault} checkPositions={checkPositions} direction={direction} />
       </td>
     </tr>
   );

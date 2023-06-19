@@ -8,6 +8,7 @@ import Chart from "../components/perps/chart";
 import TradingViewWidget from "../components/perps/tv";
 import useAddresses from "../hooks/useAddresses";
 import useUniswapPrice from "../hooks/useUniswapPrice";
+import usePositionsHistory from "../hooks/usePositionsHistory";
 import useCandles from "../hooks/useCandles";
 import useTheme from "../hooks/useTheme";
 import { useWeb3React } from "@web3-react/core";
@@ -21,6 +22,7 @@ const ProtectedPerps = () => {
   const [interval, setInterval] = useState("1h");
   const [refreshCounter, setRefreshCounter] = useState(0);
   const ADDRESSES = useAddresses();
+  const history = usePositionsHistory(account, refreshCounter);
   const gap = 12;
   let vaults = ADDRESSES["lendingPools"];
 
@@ -78,6 +80,7 @@ const ProtectedPerps = () => {
           price={price}
           opmAddress={ADDRESSES["optionsPositionManager"]}
           checkPositions={checkPositions}
+          positions={history}
         />
         <Card style={{ minWidth: 343, marginTop: gap }}>
           <span style={{fontWeight: 600}}>Useful Links</span><br />

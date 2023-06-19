@@ -18,7 +18,7 @@ import { useWeb3React } from "@web3-react/core";
 import { useTxNotification } from "../../hooks/useTxNotification";
 var bs = require("black-scholes");
 
-const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
+const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions, positions }) => {
   const [assetInfo, setAssetData] = useState();
   const [strike, setStrike] = useState({});
   const [lowerStrike, setLowerStrike] = useState({});
@@ -104,6 +104,16 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
 
   const belowMin = parseFloat(inputValue) < 20;
   const aboveMargin = parseFloat(inputValue) > availableCollateral * 10;
+  
+  var debt0 = 0;
+  var debt1 = 0;
+  if(positions.status)
+    for (let k in positions.status){
+      if (positions.status[k].vault == vault.address) {
+        debt0 += parseFloat(positions.status[k].amount0) / 1e18
+        debt1 += parseFloat(positions.status[k].amount1) / 1e6
+      }
+    }
   
   useEffect(()=>{
     let hasRS = false;
@@ -287,7 +297,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
         )}
     </>)
   }
-
+console.log(baseAsset)
   return (
   <>
     <OpenPositionModal 
@@ -308,23 +318,19 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions }) => {
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'grey'}}>
         <span>
-          Margin Available:{" "}
+          Collateral:
         </span>
         <span style={{ float: "right", color: 'white' }}>
-          ${parseFloat(10 * availableCollateral).toFixed(2)} / {parseFloat(10*availableCollateral/(baseAsset.oraclePrice?baseAsset.oraclePrice:1)).toFixed(3)} {baseAsset.name}
+          {(parseFloat(baseAsset.deposited) - debt0).toFixed(3)} {baseAsset.name} + 
+          {(parseFloat(quoteAsset.deposited) - debt0).toFixed(3)} {quoteAsset.name}
         </span>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'grey'}}>
         <span>
-          Margin Usage:{" "}
+          Margin Available:
         </span>
         <span style={{ float: "right", color: 'white' }}>
-          {parseFloat(marginUsage).toFixed(2)}%
-          {marginAfterUsage > marginUsage && parseFloat(inputValue) > 0 ? (
-            <> &rarr; {marginAfterUsage.toFixed(2)}%</>
-          ) : (
-            ""
-          )}
+          ${parseFloat(10 * availableCollateral).toFixed(2)}
         </span>
       </div>
     </Card>
