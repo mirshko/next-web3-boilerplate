@@ -35,7 +35,7 @@ const CloseTrPositionButton = ({ address, vault, opmAddress, checkPositions, dir
         account,
         address,
         0,
-        direction == "Long" ? vault.token0.address : vault.token1.address
+        direction == "Long" ? vault.token1.address : vault.token0.address
       );
       
       let positionsData = JSON.parse(localStorage.getItem("GEpositions") ?? '{}' );
