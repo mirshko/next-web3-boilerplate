@@ -10,7 +10,7 @@ const usePositionsHistory = (account, refresh) => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       //console.log('Check positions')
       try {
-        const url = "https://roe.nicodeva.xyz/stats/arbitrum/getx.json"
+        const url = "https://roe.nicodeva.xyz/stats/arbitrum/getx.json?timestamp="+(new Date().getTime())
         var dataraw = (await axios.get(url)).data;
 
         if (dataraw[account]) setdata(dataraw[account])
