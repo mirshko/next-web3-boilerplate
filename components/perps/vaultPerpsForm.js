@@ -212,6 +212,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions, positions })
         }
       }
       localStorage.setItem("GEpositions", JSON.stringify(positionsData) );
+      await new Promise(resolve => setTimeout(resolve, 3000)); // artificial waiting time for server to process event
       checkPositions();
 
       showSuccessNotification(
@@ -297,7 +298,7 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions, positions })
         )}
     </>)
   }
-console.log(baseAsset)
+
   return (
   <>
     <OpenPositionModal 
