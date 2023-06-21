@@ -31,7 +31,7 @@ const GeVaultBox = ({vault, gevault}) => {
     </div>)
   }  
   const DisabledTag = () => {
-    return (<div style={{ backgroundColor: "#DC4446", borderRadius: 4, padding: "6px 8px", display: 'flex', alignItems: 'center', fontWeight: 600, fontSize: "smaller" }}>
+    return (<div style={{ backgroundColor: "#DC4446", color: 'white', borderRadius: 4, padding: "6px 8px", display: 'flex', alignItems: 'center', fontWeight: 600, fontSize: "smaller" }}>
       <WarningOutlined style={{ marginRight:4 }} />
       Withdraw Only
     </div>)
