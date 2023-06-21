@@ -52,7 +52,7 @@ const downloadImage = (blob, fileName) => {
         </div>
         <span style={{ color: pnl > 0 ? "#55d17c" : "#e57673", fontSize: 'x-large', fontWeight: 'bold' }}>
           {pnl > 0 ? "+" : ""}
-          {pnlPercent.toFixed(2)}%
+          {(pnlPercent * 10).toFixed(2)}%
         </span>
         <div style={{ display: 'flex', alignItems: 'center', gap: 36, marginTop: 12}}>
           <div>
