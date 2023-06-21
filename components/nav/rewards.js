@@ -17,7 +17,7 @@ const Rewards = ({}) => {
           height={16}
           width={16}
           alt="Good Token" />
-    onClick={()=>{})}}
+    onClick={()=>{}}
   >
     0.0
   </Button>
