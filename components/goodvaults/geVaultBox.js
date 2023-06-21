@@ -109,7 +109,7 @@ const GeVaultBox = ({vault, gevault}) => {
                     V3 Fees (7d annualized):{" "}
                     <span style={{ float: "right" }}>{parseFloat(gevaultDetails.feeApr).toFixed(2)} %</span>
                     <br />
-                    Token Incentives: <span style={{ float: "right" }}>0.00 %</span>
+                    Token Incentives: <span style={{ float: "right" }}>{parseFloat(gevaultDetails.airdropApr).toFixed(2)} %</span>
                   </div>
                 }
               >

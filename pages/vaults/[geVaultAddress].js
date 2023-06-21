@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useWeb3React } from "@web3-react/core";
-import { ThunderboltOutlined } from "@ant-design/icons";
+import { ThunderboltOutlined, WarningOutlined } from "@ant-design/icons";
 import { Card, Typography, Row, Col } from "antd";
 import Slider from "../../components/design/slider";
 import TickChart from "../../components/goodvaults/tickChart";
@@ -28,6 +28,7 @@ const GeVaults = ({}) => {
     }
   }
   const gevault = useGeVault(vault, gev);
+  console.log(gevault)
 
   const RewardsTag = () => {
     return (<div style={{backgroundColor: "#0A371B", color: "#0FFD6A", borderRadius: 4, padding: "6px 8px", display: 'flex', alignItems: 'center', fontWeight: 600 }}>
@@ -39,6 +40,13 @@ const GeVaults = ({}) => {
     return (<div style={{backgroundColor: "#0A371B", color: "#0FFD6A", borderRadius: 4, padding: "6px 8px", display: 'flex', alignItems: 'center', fontWeight: 600, fontSize: 11 }}>
       <ThunderboltOutlined style={{marginRight: 4}}/>
       ezVault
+    </div>)
+  }
+    
+  const DisabledTag = () => {
+    return (<div style={{ backgroundColor: "#DC4446", color: 'white', borderRadius: 4, padding: "6px 8px", display: 'flex', alignItems: 'center', fontWeight: 600, fontSize: "smaller" }}>
+      <WarningOutlined style={{ marginRight:4 }} />
+      Withdraw Only
     </div>)
   }
 
@@ -57,6 +65,7 @@ const GeVaults = ({}) => {
       <Row style={{ width: 1200}}>
         <Col md={12}>
           <div style={{display: 'flex', gap: 12}}><VaultTag />
+            { gevault.status == "Withdraw Only" ? <DisabledTag /> : <></> }
           </div>
           <Typography.Title style={{ marginTop: 12 }}>
             {gevault.name}

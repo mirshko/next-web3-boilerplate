@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Card, Button, Input, Spin, Divider, Dropdown } from "antd";
-import {DownloadOutlined, UploadOutlined, DownOutlined} from "@ant-design/icons"
+import {DownloadOutlined, UploadOutlined, DownOutlined } from "@ant-design/icons"
 import { useWeb3React } from "@web3-react/core";
 import useGeVault from "../../hooks/useGeVault";
 import useAssetData from "../../hooks/useAssetData";
@@ -37,7 +37,7 @@ const GeVaultForm = ({vault, gevault}) => {
     else balance = assetData.wallet
   }
 
-  const isButtonDisabled = !inputValue || parseFloat(inputValue) > balance
+  const isButtonDisabled = !inputValue || parseFloat(inputValue) > balance || geVault.status == "Withdraw Only"
     
   const deposit = async () => {
     setSpinning(true);

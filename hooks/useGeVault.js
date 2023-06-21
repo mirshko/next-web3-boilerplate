@@ -25,10 +25,11 @@ export default function useGeVault(vault, gevault) {
 
   const feesRate = goodStats && goodStats[statsPeriod][address] ? parseFloat(goodStats[statsPeriod][address].feesRate) : 0;
   const supplyRate = goodStats && goodStats[statsPeriod][address] ? parseFloat(goodStats[statsPeriod][address].supplyRate) : 0;
-  
+  const airdropRate = goodStats && goodStats[statsPeriod] ? parseFloat(goodStats[statsPeriod].airdropRate) : 0;
+
   const tvl2 = goodStats && goodStats[statsPeriod][address] ? parseFloat(goodStats[statsPeriod][address].tvl) / 1e8 : 0;
   const maxTvl2 = goodStats && goodStats[statsPeriod][address] ? parseFloat(goodStats[statsPeriod][address].maxTvl || 0) / 1e8 : 0;
-  const totalRate = feesRate + supplyRate
+  const totalRate = feesRate + supplyRate + (gevault.status == "Rewards" ? airdropRate : 0);
 
   var data = {
     address: address,
@@ -40,10 +41,12 @@ export default function useGeVault(vault, gevault) {
     fee1: fee1,
     feeApr: feesRate,
     supplyApr: supplyRate,
+    airdropApr: airdropRate,
     totalApr: totalRate,
     wallet: userBalance,
     walletValue: userValue,
     contract: gevaultContract,
+    status: gevault.status,
     icon: "/icons/" + vault.name.toLowerCase() + ".svg",
   }
   
