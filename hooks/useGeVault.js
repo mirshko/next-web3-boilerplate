@@ -36,7 +36,7 @@ export default function useGeVault(vault, gevault) {
   var data = {
     address: address,
     name: gevault.name,
-    tvl: tvl2,
+    tvl: tvl,
     maxTvl: maxTvl,
     totalSupply: totalSupply,
     fee0: fee0,
@@ -55,23 +55,21 @@ export default function useGeVault(vault, gevault) {
   useEffect( () => {
     const getData = async () => {
       try {
-        console.log(gevaultContract.address, gevaultContract)
         let tS = await tpContract.totalSupply()
-        console.log('--0', tS)
         let tSupply = ethers.utils.formatUnits(tS, 18);
         setTotalSupply(tSupply);
-        console.log("--1", tSupply)
+        
         let tTvl = await gevaultContract.getTVL();
-        console.log('--15', tTvl)
         let tValue = ethers.utils.formatUnits(tTvl, 8);
         setTvl(tValue);
-        console.log("--2", tValue)
+        
         let uBal = ethers.utils.formatUnits(await gevaultContract.balanceOf(account), 18)
         setUserBalance(uBal);
         setUserValue(tValue == 0 ? 0 : tValue * uBal / tSupply);
+        
         let tCap = ethers.utils.formatUnits(await gevaultContract.tvlCap(), 8).split('.')[0]
-        console.log("--3", tCap)
         setMaxTvl(tCap);
+        
         setFee0( (await gevaultContract.getAdjustedBaseFee(true) )/100 );
         setFee1( (await gevaultContract.getAdjustedBaseFee(false) )/100 );
       }
