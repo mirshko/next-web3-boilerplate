@@ -37,7 +37,7 @@ const GeVaultForm = ({vault, gevault}) => {
     else balance = assetData.wallet
   }
 
-  const isButtonDisabled = !inputValue || parseFloat(inputValue) > balance || geVault.status == "Withdraw Only"
+  const isButtonDisabled = !inputValue || parseFloat(inputValue) > balance || (geVault.status == "Withdraw Only" && direction == "Deposit")
     
   const deposit = async () => {
     setSpinning(true);
