@@ -10,7 +10,9 @@ export default function useUniswapPrice(poolAddress, decimalsDiff) {
   useEffect(() => {
     const getPrice = async () => {
       try {
+        console.log(poolContract.address, poolContract)
         const slot0 = await poolContract.slot0();
+        console.log('slot0', slot0)
         const p =
           slot0.sqrtPriceX96
             .pow(2)
@@ -25,7 +27,7 @@ export default function useUniswapPrice(poolAddress, decimalsDiff) {
 
     const intervalId = setInterval(() => {
       if (poolAddress && poolContract) getPrice();
-    }, 5000);
+    }, 10000);
     return () => {
       clearInterval(intervalId);
     };

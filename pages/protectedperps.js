@@ -9,7 +9,6 @@ import TradingViewWidget from "../components/perps/tv";
 import useAddresses from "../hooks/useAddresses";
 import useUniswapPrice from "../hooks/useUniswapPrice";
 import usePositionsHistory from "../hooks/usePositionsHistory";
-import useCandles from "../hooks/useCandles";
 import useTheme from "../hooks/useTheme";
 import { useWeb3React } from "@web3-react/core";
 
@@ -32,7 +31,6 @@ const ProtectedPerps = () => {
   else if (interval == "4h") intervalBybit = "240";
   else if (interval == "1d") intervalBybit = "D";
 
-  let candles = useCandles(vaults[currentVault].ohlcUrl + intervalBybit);
   let price = useUniswapPrice(
     vaults[currentVault].uniswapPool,
     vaults[currentVault].token0.decimals - vaults[currentVault].token1.decimals
@@ -66,9 +64,6 @@ const ProtectedPerps = () => {
           />
         </Card>
         <TradingViewWidget
-          interval={interval}
-          setInterval={setInterval}
-          candles={candles}
           positions={positions}
           symbol={vaults[currentVault].tvSymbol}
         />

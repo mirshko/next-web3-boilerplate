@@ -20,9 +20,9 @@ const useCandles = (url) => {
     }
     
     
-    const intervalId = setInterval(() => {
+    /*const intervalId = setInterval(() => {
       if (url) getData();
-    }, 5000);
+    }, 5000);*/
     return () => { clearInterval(intervalId); };
   }, [url]);
 

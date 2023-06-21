@@ -39,7 +39,7 @@ const Infobar = ({vaults, current, selectVault }) => {
     }
     const intervalId = setInterval(() => {
       if (ohlcUrl) getData();
-    }, 5000);
+    }, 20000);
     return () => { clearInterval(intervalId); };
   }, [ohlcUrl])
 

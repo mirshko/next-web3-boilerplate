@@ -27,6 +27,7 @@
     "black-scholes": "^1.1.0",
     "chart.js": "^4.2.1",
     "chartjs-plugin-annotation": "^2.1.2",
+    "html2canvas": "^1.4.1",
     "lightweight-charts": "^3.8.0",
     "logrocket": "^3.0.1",
     "logrocket-react": "^5.0.1",

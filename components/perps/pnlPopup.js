@@ -1,9 +1,32 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Modal, Divider } from "antd";
-import { TwitterOutlined } from "@ant-design/icons";
+import { TwitterOutlined, DownloadOutlined } from "@ant-design/icons";
+import html2canvas from "html2canvas";
 
 const PnlPopup = ({ direction, price, token0, pnl, pnlPercent, entry, children }) => {
   const [pnlModalVisible, setPnlModalVisible] = useState();
+  const exportRef = useRef();
+  
+  const exportAsImage = async (element, imageFileName) => {
+    const canvas = await html2canvas(element);
+    const image = canvas.toDataURL("image/png", 1.0);
+    downloadImage(image, imageFileName);
+    };
+const downloadImage = (blob, fileName) => {
+    const fakeLink = window.document.createElement("a");
+    fakeLink.style = "display:none;";
+    fakeLink.download = fileName;
+
+    fakeLink.href = blob;
+
+    document.body.appendChild(fakeLink);
+    fakeLink.click();
+    document.body.removeChild(fakeLink);
+
+    fakeLink.remove();
+  };
+
+  
   
   return (
     <>
@@ -17,12 +40,12 @@ const PnlPopup = ({ direction, price, token0, pnl, pnlPercent, entry, children }
         open={pnlModalVisible} 
         onCancel={()=>{setPnlModalVisible(false)}}
         footer={null}
-        bodyStyle={{ padding: 16, backgroundImage: 'url("/images/GEspaceBG.png")'}}
       >
+      <div id="sharePnl"  ref={exportRef} style={{ padding: 16, backgroundImage: 'url("/images/GEspaceBG.png")' }}>
         <img src="/Good Entry Logo.svg" height={28}/>
         <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', gap: 16, marginBottom: 12 }}>
           <span style={{ fontSize: 'x-large', fontWeight: 600 }}>{token0.name}-USDC</span>
-          <div style={{ backgroundColor: direction == "short" > 0 ? "#55d17c" : "#e57673", borderRadius: 4, padding: 2, fontSize: 'x-small' }}>
+          <div style={{ backgroundColor: direction == "short" > 0 ? "#55d17c" : "#e57673", color: 'white', borderRadius: 4, padding: 2, fontSize: 'x-small' }}>
             {direction.toUpperCase()} 10x
           </div>
           
@@ -46,6 +69,13 @@ const PnlPopup = ({ direction, price, token0, pnl, pnlPercent, entry, children }
           Tell your friends about your trading experience!
           <span style={{ float: 'right'}}>
             <a
+              onClick={() => exportAsImage(exportRef.current, "GoodEntry-"+(new Date().getTime()))}
+            >
+              <DownloadOutlined style={{ fontSize: "larger" }} />
+            </a>
+          </span>
+          <span style={{ float: 'right', marginRight: 12}}>
+            <a
               href="https://twitter.com/goodentrylabs"
               target="_blank"
               rel="noreferrer"
@@ -54,6 +84,7 @@ const PnlPopup = ({ direction, price, token0, pnl, pnlPercent, entry, children }
             </a>
           </span>
         </div>
+      </div>
       </Modal>
     </>
       )
