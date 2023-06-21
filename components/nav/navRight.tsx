@@ -1,7 +1,8 @@
 // components/layout.js
 import { useWeb3React } from "@web3-react/core";
 import { TwitterOutlined, MediumOutlined, GithubOutlined } from "@ant-design/icons";
-import Account from "./Account";
+import Account from "./account";
+import Rewards from "./rewards";
 
 import NavChain from "./navChain";
 import useEagerConnect from "../../hooks/useEagerConnect";
@@ -17,14 +18,6 @@ const NavRight = () => {
 
   return (
     <div style={{ display: "flex", alignItems: "center", fontWeight: 600 }}>
-      <a
-        href="https://gitbook.goodentry.io/"
-        target="_blank"
-        rel="noreferrer"
-        style={{ marginRight: 24, color: "#8A9098" }}
-      >
-        Docs
-      </a>
       <a
         href="https://crew3.xyz/c/goodentrylabs/questboard"
         target="_blank"
@@ -65,6 +58,7 @@ const NavRight = () => {
       >
         <GithubOutlined style={{ fontSize: "larger"}} />
       </a>
+      <Rewards />
       <NavChain />
       <Account triedToEagerConnect={triedToEagerConnect} />
     </div>

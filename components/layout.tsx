@@ -14,7 +14,6 @@ const MyLayout = ({ children }) =>  {
   
   return (
   <div className={inter.className}>
-    <Banner />
     <Layout style={{ display: 'flex', alignItems: 'center', minHeight: '100vh'
       }}>
         <Layout.Header 
