@@ -21,7 +21,7 @@ const Rewards = ({}) => {
             height={16}
             width={16}
             alt="Good Token" />
-      onClick={()=>{}}
+      onClick={()=>{setVisible(true)}}
     >
       {rewards.user_good ? (rewards.user_good).toFixed(2) : 0.0 }
     </Button>
@@ -31,9 +31,6 @@ const Rewards = ({}) => {
       footer={null}
       >
       50M $GOOD rewards will be airdropped after a 4 months liquidity mining program.
-      <br />
-      <br />
-      Breakdown: 
     </Modal>
   </>
   )
