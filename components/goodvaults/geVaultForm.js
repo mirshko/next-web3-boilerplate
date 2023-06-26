@@ -13,7 +13,7 @@ import { ethers } from "ethers";
 /// Asserts that ETH is always token0 (as per arbitrum)
 const GeVaultForm = ({vault, gevault}) => {
   if (vault.token0.name == "WETH") vault.token0.name = "ETH";
-  const { account } = useWeb3React();
+  const { account, chainId } = useWeb3React();
   const [direction, setDirection] = useState("Deposit");
   const [token, setToken] = useState(vault.token0.name)
   const [inputValue, setInputValue] = useState()
@@ -37,11 +37,12 @@ const GeVaultForm = ({vault, gevault}) => {
     else balance = assetData.wallet
   }
 
-  const isButtonDisabled = !inputValue || parseFloat(inputValue) > balance || (geVault.status == "Withdraw Only" && direction == "Deposit")
+  const isButtonDisabled = !inputValue || parseFloat(inputValue) > balance || (geVault.status == "Withdraw Only" && direction == "Deposit") || chainId != 42161
     
   const deposit = async () => {
     setSpinning(true);
     try {
+      if (chainId != 42161) throw new Error("Invalid Chain")
       let result;
       if (token == "ETH"){
         result = await geVault.contract.deposit(assetData.address, 0, {value: ethers.utils.parseUnits(inputValue, 18)});

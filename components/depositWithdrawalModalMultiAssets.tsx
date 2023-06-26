@@ -55,8 +55,10 @@ const DepositWithdrawalModalMultiAssets = ({ vault }) => {
     setErrorTx(false);
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
     try {
+      if (chainId != 42161) throw new Error("Invalid Chain");
       if (action == "Deposit") {
         if (asset.name == "ETH") {
+          setRunningTx(2);
           let result = await wethGateway.depositETH(vault.address, account, 0, {
             value: ethers.utils.parseUnits(inputValue, 18),
           });
