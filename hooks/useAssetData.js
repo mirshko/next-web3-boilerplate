@@ -45,6 +45,7 @@ export default function useAssetData(address, vaultAddress) {
           asset = {
             type: "ticker",
             name: "Ticker-" + k.price,
+            tokenId: k.tokenId,
             icon: "/icons/" + lp.name.toLowerCase() + ".svg",
             ...k,
           };
@@ -62,15 +63,15 @@ export default function useAssetData(address, vaultAddress) {
   if (asset.name && asset.type != "ticker" && asset.type != "geVault")
     asset.icon = "/icons/" + asset.name.toLowerCase() + ".svg";
   const goodStats = useGoodStats();
-  const feeApr = goodStats && goodStats["7d"][address] ? goodStats["7d"][address].feesRate + goodStats["7d"][address].supplyRate : 0;
+  const feeApr = goodStats && goodStats["7d"][address] ? parseFloat(goodStats["7d"][address].feesAPR) : 0;
   const assetContract = useTokenContract(address);
   const roeToken = useTokenContract(asset.roeAddress);
   
   asset = {
     supplyApr: supplyRate,
     feeApr: feeApr || 0,
-    debtApr: variableRate,
-    totalApr: parseFloat(supplyRate) + parseFloat(feeApr || 0),
+    debtApr: parseFloat(variableRate || 0),
+    totalApr: parseFloat(supplyRate) + parseFloat(feeApr),
     wallet: 0,
     deposited: 0,
     debt: debt,

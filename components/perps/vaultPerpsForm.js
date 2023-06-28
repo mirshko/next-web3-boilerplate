@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Input, Spin, Slider, Card, Modal } from "antd";
+import { Button, Input, Spin, Slider, Card, Modal, Popover } from "antd";
 import { RiseOutlined, FallOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import useAssetData from "../../hooks/useAssetData";
 import getUserLendingPoolData from "../../hooks/getUserLendingPoolData";
@@ -368,7 +368,23 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions, positions })
           }}
         >
           <div>
-            Activation Price<span style={{ float: "right" }}>Funding / 1h</span>
+            Activation Price
+            <span style={{ float: "right" }}>
+              Funding / 1h{" "}
+              <Popover
+                placement="top"
+                title="Estimated Hourly Funding"
+                style={{ border: "1px solid blue"}}
+                content={
+                  <div style={{ width: 250 }}>
+                    Borrow interest + Avg 7d tick swap fees<br /><br />
+                    Be careful as swap fees can be high if price chops around strike!
+                  </div>
+                }
+              >
+                <QuestionCircleOutlined />
+              </Popover>
+            </span>
           </div>
           <div>
             {!account || price > 0 ? (

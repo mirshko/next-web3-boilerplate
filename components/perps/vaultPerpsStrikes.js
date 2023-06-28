@@ -16,18 +16,19 @@ const VaultPerpsStrikes = ({ asset, onClick, isSelected }) => {
       border: "1px solid " + theme.colorPrimary,
       ...style,
     };
+  const fundingRate = (asset.debtApr+asset.feeApr) / 365 / 24;
 
   return (
     <div
       onClick={() => {
-        onClick({ price: asset.price, address: asset.address, fundingRate: (asset.debtApr / 365 / 24).toFixed(4) });
+        onClick({ price: asset.price, address: asset.address, fundingRate: fundingRate.toFixed(4) });
       }}
       style={style}
     >
       {asset.price}
       {/*<span>{parseFloat(asset.tvl).toFixed(0)}</span>*/}
       <span style={{ float: "right" }}>
-        {(asset.debtApr / 365 / 24).toFixed(4)}%
+        {fundingRate.toFixed(4)}%
       </span>
     </div>
   );
