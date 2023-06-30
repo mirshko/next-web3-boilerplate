@@ -61,7 +61,7 @@ const StatsChart = ({vault, showPriceNotFees, gevault}) => {
       },
       title: {
         display: true,
-        text: 'Historical Performance',
+        text: gevault.name,
       },
     }
   };
@@ -70,12 +70,16 @@ const StatsChart = ({vault, showPriceNotFees, gevault}) => {
     labels: geData.map(item => { return (new Date(item.date*1000)).toLocaleDateString('en-GB').substring(0, 5)}),
   };
   
+  
+  const randomColor = Math.floor(Math.random()*256); // random + #A00000 to avoid too dark colors
+  console.log(randomColor)
+
   if (showPriceNotFees){
     data.datasets = [
       {
-        label: 'Vault token price',
+        label: gevault.name + ' token price',
         data: geData.map(item => item.price),
-        borderColor: 'rgba(254, 73, 88, 0.7)',
+        borderColor: 'hsl('+randomColor+',100%, 50%)',
         backgroundColor: 'rgba(255, 99, 132, 0)',
       },
     ]
