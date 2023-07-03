@@ -696,6 +696,153 @@
           "debtAddress": "0x974F906419b1922A0c686dCE68291A360652126f",
           "ammRouter": "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506"
         }
+      },
+      {
+        "name": "BTC-USDC",
+        "ohlcUrl": "https://api.bybit.com/v5/market/index-price-kline?category=linear&symbol=BTCUSDT&interval=",
+        "address": "0x714dBe5C00b99f9AC220b45124568d047CB56E62",
+        "uniswapPool": "0xac70bd92f89e6739b3a08db9b6081a923912f73d",
+        "tvSymbol" : "BYBIT:BTCUSDC",
+        "poolId": 20,
+        "tvl": "45k",
+        "rangeManager": "0x1129950143BDE0252f39345FA80643213D394208",
+        "geVault": [
+          {"name": "BTC-USDC", "address": "0xdcc16DEfe27cd4c455e5520550123B4054D1b432", "status": "Rewards"}
+        ],
+        "ranges": [],
+        "ticks": [
+          {
+            "address": "0x1Ee660d2A37e4D7bAb9De74f6B33b0FE1e28386E",
+            "roeAddress": "0xb7Bd17d142285B375757891A27eFbDa27767a529",
+            "debtAddress": "0xF7c0652210266856a6dC070b2bC0e221F0f9F5c3",
+            "price": "Ticker USDC WBTC 24500-25500",
+            "tokenId": 697098
+          },
+          {
+            "address": "0x65B894266AB1dc89155F8ab693ba46EaeEfa5006",
+            "roeAddress": "0x7b75A677560ffb46997430544AdFdc5324a21e7a",
+            "debtAddress": "0x42ef7f1FB74c6Ad3D6cca2cA4207a5381c2c74e8",
+            "price": "Ticker USDC WBTC 25500-26500",
+            "tokenId": 697100
+          },
+          {
+            "address": "0x1e722F33eA399F4aE46b2862ab86C23AE55293B2",
+            "roeAddress": "0xD4cdb89386e62deE7510B2f9E27099501d271292",
+            "debtAddress": "0xa8d3A91aeeA2f06c2FaF51Be225a5319c848E0E6",
+            "price": "Ticker USDC WBTC 26500-27500",
+            "tokenId": 697102
+          },
+          {
+            "address": "0xe5E981AB35Dd6D5d136E8bCE02f8ef9135ab2E5d",
+            "roeAddress": "0x57CCd67Cae69F927094e51EdcF8311a9aD98ACB3",
+            "debtAddress": "0xb9956f2B6784F5C1105227717BCFf849Ba8a22eE",
+            "price": "Ticker USDC WBTC 27500-28500",
+            "tokenId": 697104
+          },
+          {
+            "address": "0xcD52675E3a2b82cf9D5E4B5e438E56f90Ad5e7C0",
+            "roeAddress": "0x2e157dE046f421156d5BCCa211a77d9CD2674b44",
+            "debtAddress": "0xB27D69856d5b939aCd0293ebe9fADcBb7C32ceB1",
+            "price": "Ticker USDC WBTC 28500-29500",
+            "tokenId": 697106
+          },
+          {
+            "address": "0x6E4B9534CA7804DbDF0f41bA82D2CD19bC70AE94",
+            "roeAddress": "0xFB6478bA1B9028F8f1393A8cB322B1a9adD59686",
+            "debtAddress": "0x341071a9268F34b3119b74A2A250E6bb32aF60C6",
+            "price": "Ticker USDC WBTC 29500-30500",
+            "tokenId": 697108
+          },
+          {
+            "address": "0x37a16AaA5Adf758cAe6214436fC8fBf62A6904b5",
+            "roeAddress": "0x7eb7597b14087e033cEd127767b3e006F81004b5",
+            "debtAddress": "0x44FB0C43f4bc66628D945d866d10e03f05c7cB58",
+            "price": "Ticker USDC WBTC 30500-31500",
+            "tokenId": 697124
+          },
+          {
+            "address": "0x5Cb917A9DE0E974a22af60235DbBcdCDfAB0f92A",
+            "roeAddress": "0x0561E18Bd6046b6C046FC8a23699Fb7E585D0dE4",
+            "debtAddress": "0x2e961868De285f7B007d5Eb106C1a06f769439e1",
+            "price": "Ticker USDC WBTC 31500-32500",
+            "tokenId": 697126
+          },
+          {
+            "address": "0x246Ea45c63770deb26f3061bF38fC163A1b19B07",
+            "roeAddress": "0x6Caa72CFDa757b200AF50B003Afb713A1fA4a297",
+            "debtAddress": "0x989F6820aB3BC0BE540d3cec33E12390eC4F0535",
+            "price": "Ticker USDC WBTC 32500-33500",
+            "tokenId": 697128
+          },
+          {
+            "address": "0xe517bB703e9bB15a1CF73672404ea1faABD9E413",
+            "roeAddress": "0x02Bbc5EC7ACCE6E7f2821aF81D930e9FDB690Bd3",
+            "debtAddress": "0x29aC818bA268F6F54ACd70f38d8cA86b58976DB6",
+            "price": "Ticker USDC WBTC 33500-34500",
+            "tokenId": 697130
+          },
+          {
+            "address": "0x3b22Bee5BCa7E18AC23C98453546E50F765E7415",
+            "roeAddress": "0xcD768cB3B0d76A54B92e1915F53244556B3332E8",
+            "debtAddress": "0xc43cfdeF872b5Ef50670462C531dBcfBF114561B",
+            "price": "Ticker USDC WBTC 34500-35500",
+            "tokenId": 697132
+          },
+          {
+            "address": "0x648cA7c6b3C3aF3364aef00e1b85564Eb5Dd0DbA",
+            "roeAddress": "0x218dbC93eE4CDB5CBe6a0F24d263021812ab981f",
+            "debtAddress": "0x12C1098236298379B0a405ad0eD780735cf34149",
+            "price": "Ticker USDC WBTC 35500-36500",
+            "tokenId": 697134
+          },
+          {
+            "address": "0xb652404899313897aEBfb97382A83106C885A9a8",
+            "roeAddress": "0x10AA04a384A505A5870A9Fe4B7F83e446Af4dC50",
+            "debtAddress": "0x4a0763d13cd0D8E9080e8365dAaF147FAF5bf5C8",
+            "price": "Ticker USDC WBTC 36500-37500",
+            "tokenId": 697136
+          },
+          {
+            "address": "0xa5b14eBD518771A3BC90efDc6aaA70A0aFcF0eFb",
+            "roeAddress": "0x4C71580eFdf3d7c30B172b5bbf0CAAB2Bf4d20a1",
+            "debtAddress": "0x1D1417e4882e73b8365c5d6c7bA53E25F8A34723",
+            "price": "Ticker USDC WBTC 37500-38500",
+            "tokenId": 697140
+          },
+          {
+            "address": "0xc054F46861289050cc5530792FF55996E2c48226",
+            "roeAddress": "0xDfdb04684a2E1Be661fa33E2BE402fc1b9a40C23",
+            "debtAddress": "0x69F6caec5934A37D3C12962464996d1D6f7774A0",
+            "price": "Ticker USDC WBTC 38500-39500",
+            "tokenId": 697142
+          },
+          {
+            "address": "0xa5Ce0E4A2A63b38F01Af26f84D4B5966d9246aBd",
+            "roeAddress": "0x6Ed4452Bc95f66A74257EB2eF6f3ab83F2Dc2620",
+            "debtAddress": "0xe5C85aBa1977200004deEfE1F634862902998091",
+            "price": "Ticker USDC WBTC 39500-40500",
+            "tokenId": 697144
+          }
+        ],
+        "token0": {
+          "name": "wBTC",
+          "address": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+          "roeAddress": "0x68E602c8312e49aa117f34c32D9b550B1Ff6059c",
+          "debtAddress": "0x4f680B4C5918a100563123189a6cd40d766EB018",
+          "decimals": 8
+        },
+        "token1": {
+          "name": "USDC",
+          "address": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+          "roeAddress": "0x145f1508C506F73658800E7af4b8850318bFDc9B",
+          "debtAddress": "0x9BcAfB60e38D6303140b3489bfd0D723e8C693f0",
+          "decimals": 6
+        },
+        "lpToken": {
+          "name": "SushiSwap BTC-USDC SLP",
+          "address": "0xFf13348778cc2cEd614F6F73A8e488AC11292f25",
+          "ammRouter": "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506"
+        }
       }
     ]
   }
