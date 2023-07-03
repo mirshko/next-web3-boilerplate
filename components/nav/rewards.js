@@ -30,7 +30,7 @@ const Rewards = ({}) => {
       open={visible} onOk={()=>{setVisible(false)}} onCancel={()=>{setVisible(false)}}
       footer={null}
       >
-      50M $GOOD rewards will be airdropped after a 4 months liquidity mining program.
+      50M $GOOD rewards will be airdropped after a 4 month liquidity mining program.
     </Modal>
   </>
   )
