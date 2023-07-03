@@ -439,7 +439,7 @@
         }
       },
       {
-        "name": "BTC-USDC",
+        "name": "wBTC-USDC",
         "ohlcUrl": "https://api.bybit.com/v5/market/index-price-kline?category=linear&symbol=BTCUSDT&interval=",
         "address": "0x714dBe5C00b99f9AC220b45124568d047CB56E62",
         "uniswapPool": "0xac70bd92f89e6739b3a08db9b6081a923912f73d",
