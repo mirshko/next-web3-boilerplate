@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { Card, Button, Input, Spin, Divider, Dropdown } from "antd";
 import {DownloadOutlined, UploadOutlined, DownOutlined } from "@ant-design/icons"
 import { useWeb3React } from "@web3-react/core";
@@ -21,6 +21,10 @@ const GeVaultForm = ({vault, gevault}) => {
   const [showSuccessNotification, showErrorNotification, contextHolder] =
     useTxNotification();
   const geVault = useGeVault(vault, gevault);
+
+  useEffect(() => {
+    setToken(vault.token0.name);
+  }, [vault]);
 
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
   
