@@ -18,6 +18,7 @@ const PositionsHistory = ({ account, refresh }) => {
     <thead>
       <tr>
         <th align="left" style={{...thStyle, paddingLeft: 0}}>Date</th>
+        <th align="left" style={thStyle}>Tx</th>
         <th align="left" style={thStyle}>Instrument</th>
         <th align="left" style={thStyle}>Action</th>
         <th align="left" style={thStyle}>Change Base</th>
