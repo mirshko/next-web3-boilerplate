@@ -19,8 +19,20 @@ export default function useAssetData(address, vaultAddress) {
   const [variableRate, setVariableRate] = useState(0);
   const [supplyRate, setSupplyRate] = useState(0);
   const [deposited, setDeposited] = useState(0);
+  
+  
   const ADDRESSES = useAddresses(vaultAddress);
   let lp = ADDRESSES["lendingPools"][0] || {};
+
+  // if vault Address not defined, happens sometimes like with tx history
+  if (ADDRESSES["lendingPools"].length > 1){
+    for (let k of ADDRESSES["lendingPools"]){
+      if(k.token0.address == address) {
+        lp = k; break;
+      }
+    }
+    
+  }
   var asset = {
     address: address,
     icon: "/favicon.ico",
