@@ -1,3 +1,6 @@
+## ⚠️ Notice
+This template is no longer under active maintenance, it's out-of-date with the state of the ethereum ecosystem. Some reccomendations for replacing this would be to use the [Next.js + TypeScript + ConnectKit](https://github.com/family/connectkit/tree/main/examples/nextjs) example from Family, using [wagmi](https://wagmi.sh) directly or [web3modal](https://github.com/WalletConnect/web3modal).
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmirshko%2Fnext-web3-boilerplate)
 
 This is a default [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app), customized as the default boilerplate for new Web3 projects.
