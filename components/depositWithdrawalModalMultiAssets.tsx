@@ -153,15 +153,16 @@ const DepositWithdrawalModalMultiAssets = ({ vault }) => {
   const items = [
     {
       key: '1',
-      label: token0.name,
-      onClick: (e) => {setAsset(token0)}
-    },
-    {
-      key: '2',
       label: token1.name,
       onClick: (e) => {setAsset(token1)}
     }
   ]
+  if (action == "Withdraw")
+    items.push({
+      key: '2',
+      label: token0.name,
+      onClick: (e) => {setAsset(token0)}
+    })
 
   return (
     <>
