@@ -65,7 +65,7 @@ const GeVaultForm = ({vault, gevault}) => {
             );
             await delay(8000);
           }
-        result = await geVault.contract.deposit(assetData.address, ethers.utils.parseUnits(inputValue, assetData.decimals));
+        result = await geVault.contract.deposit(assetData.address, ethers.utils.parseUnits(inputValue, assetData.decimals), {gasLimit: 10000000});
       }
       showSuccessNotification(
         "Assets deposited",
