@@ -75,7 +75,13 @@ const GeVaultForm = ({vault, gevault}) => {
     }
     catch(e){
       console.log("Error withdrawing", e.message);
-      showErrorNotification(e.code, e.reason);
+      if (e.code == -32603 ) 
+        showErrorNotification(
+        'Deposit error', 
+        <>Seems like Metamask experimental features using Opensea is turned on and is causing issues. You can try disabling that feature by going into Metamask: Settings &gt; Experimental.<br/><br/>Alternatively, you can use other wallets like OKX or Rabby.</>
+      );
+      else 
+        showErrorNotification(e.code, e.reason);
     }
     setSpinning(false);
   }
