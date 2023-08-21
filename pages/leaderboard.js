@@ -5,13 +5,11 @@ import useLeaderboard from '../hooks/useLeaderboard';
 // Display all user assets and positions in all ROE LPs
 const Leaderboard = ({}) => {
   const lb = useLeaderboard();
-  while ( lb[Object.keys(lb)[0]] > 100000 ) delete lb[Object.keys(lb)[0]];
+  while ( lb[Object.keys(lb)[0]] > 10000 ) delete lb[Object.keys(lb)[0]];
   
-  return (<div style={{ minWidth: 800 }}>
-    <Typography.Title level={1}>Leaderboard</Typography.Title>
-    <Typography.Text>7d rolling window leaderboard.</Typography.Text>
-    
-    <Card style={{ width: 800}}>
+  return (<div style={{ minWidth: 1200, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <img src="/images/1500x500.jpg" alt="GoodEntry Banner" width="800" style={{borderRadius: 5}}/>
+    <Card style={{ width: 800, marginTop: 24}}>
       <table>
         <thead>
           <tr>
