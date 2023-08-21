@@ -40,7 +40,7 @@ const Tx = ({}) => {
                 <td><a href={"https://arbiscan.io/tx/"+tx.hash} target="_black" rel="noreferrer">{tx.hash.substring(0, 6)}...</a></td>
                 <td>{tx.user.substring(0, 6)}...{tx.user.substring(38,42)}</td>
                 <td align="right">{tokname}-{tx.strike}</td>
-                <td align="right">{tx.hasSwapped ? "ITM" : "OTM"} {tx.underlying.amount0 > 0 ? "Long" : "Short"}</td>
+                <td align="right">{tx.hasSwapped ? "ITM" : "OTM"}</td>
                 <td align="right">{(parseInt(tx.amountDebt)/10**18).toFixed(0)}</td>
               </tr>)
             })
