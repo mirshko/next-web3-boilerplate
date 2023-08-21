@@ -1,6 +1,6 @@
 // components/layout.js
 import { useWeb3React } from "@web3-react/core";
-import { TwitterOutlined, MediumOutlined, GithubOutlined } from "@ant-design/icons";
+import { TwitterOutlined, MediumOutlined, GithubOutlined, TrophyOutlined } from "@ant-design/icons";
 import Account from "./account";
 import Rewards from "./rewards";
 
@@ -25,6 +25,12 @@ const NavRight = () => {
         style={{ marginRight: 24, color: "#8A9098" }}
       >
         Quests
+      </a>
+      <a
+        href="/leaderboard"
+        style={{ marginRight: 24, color: "#8A9098" }}
+      >
+        <TrophyOutlined style={{ fontSize: "larger" }} />
       </a>
       <a
         href="https://discord.com/invite/goodentry"
