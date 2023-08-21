@@ -23,7 +23,7 @@ const Leaderboard = ({}) => {
             Object.keys(lb).map( (k,i) => {
               if (lb[k] > 10000 || i >= 20) return <></>
 
-              return (<tr>
+              return (<tr key={i}>
                 <td>{i+1}</td>
                 <td>{k.substring(0, 6)}...{k.substring(34,42)}</td>
                 <td align="right">{lb[k]}</td>
