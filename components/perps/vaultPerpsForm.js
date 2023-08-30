@@ -154,10 +154,9 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions, positions })
       let v = ethers.BigNumber.from(tickerAmount)
 
       const abi = ethers.utils.defaultAbiCoder;
-      let swapSource = ethers.constants.AddressZero;
-      // if buying ITM, need to swap - force corect source to prevent unexpected behaviour if position opened when price crosses tick
-      swapSource =
-        tokenAmountsExcludingFees.amount0 == 0
+
+      let swapSource =
+        direction == "Long"
           ? vault.token1.address
           : vault.token0.address;
 
