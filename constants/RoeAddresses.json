@@ -11,7 +11,7 @@
     "wethGateway": "0x090E950666D3F2c5cf7fc98135D94287c83E0a85",
     "lendingPools": [
       {
-        "name": "WETH-USDC",
+        "name": "WETH-USDC.e",
         "ohlcUrl": "https://api.bybit.com/v5/market/kline?category=spot&symbol=ETHUSDC&interval=",
         "address": "0x1259F436D981c1DA8b279205b5dc405B1f6Bf80b",
         "uniswapPool": "0xc31e54c7a869b9fcbecc14363cf510d1c41fa443",
@@ -20,8 +20,8 @@
         "tvl": "95k",
         "rangeManager": "0x172EE56600B2Df3fDBFCC3e2F968E60a333dc3C4",
         "geVault": [
-          {"name": "ETH-USDC", "address": "0x0d3cAA624E3a0076A6bc96Ba8D632D37F460Bc74", "status": "Rewards"},
-          {"name": "ETH-USDC Alpha", "address": "0x59fA26382De900F29B581553F31C6Da103884ffA", "status": "Withdraw Only"}
+          {"name": "ETH-USDC.e", "address": "0x0d3cAA624E3a0076A6bc96Ba8D632D37F460Bc74", "status": "Rewards"},
+          {"name": "ETH-USDC.e Alpha", "address": "0x59fA26382De900F29B581553F31C6Da103884ffA", "status": "Withdraw Only"}
         ],
         "ranges": [
           {
@@ -185,14 +185,14 @@
           "decimals": 18
         },
         "token1": {
-          "name": "USDC",
+          "name": "USDC.e",
           "address": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
           "roeAddress": "0xf46040DaE1b41E9f88cC95dfee4FA74F0E409D47",
           "debtAddress": "0xc2b907d3560419d1baDCe3f0F235EE3A931129cD",
           "decimals": 6
         },
         "lpToken": {
-          "name": "SushiSwap WETH-USDC SLP",
+          "name": "SushiSwap WETH-USDC.e SLP",
           "address": "0x905dfcd5649217c42684f23958568e533c711aa3",
           "roeAddress": "0x58889D796105857Cb187e83B11a71c90fa840F32",
           "debtAddress": "0xC48A2d41f457Fc21d91865276336FE40D9dac887",
@@ -200,7 +200,7 @@
         }
       },
       {
-        "name": "ARB-USDC",
+        "name": "ARB-USDC.e",
         "ohlcUrl": "https://api.bybit.com/v5/market/index-price-kline?category=linear&symbol=ARBUSDT&interval=",
         "address": "0x06e81a9d8b9BDF50A48666a90c03Dd1Ed0e12eeb",
         "uniswapPool": "0xcda53b1f66614552f834ceef361a8d12a0b8dad8",
@@ -209,8 +209,8 @@
         "tvl": "45k",
         "rangeManager": "0xA9227643f940d412ebC019D99219677EbbE5Aa2f",
         "geVault": [
-          {"name": "ARB-USDC", "address": "0x14475be7D59895739207a9E5518903f4B94345B7", "status": "Rewards"},
-          {"name": "ARB-USDC Alpha", "address": "0x31C3871B369bE1B2C3A26f963bcc407ee208099E", "status": "Withdraw Only"}
+          {"name": "ARB-USDC.e", "address": "0x14475be7D59895739207a9E5518903f4B94345B7", "status": "Rewards"},
+          {"name": "ARB-USDC.e Alpha", "address": "0x31C3871B369bE1B2C3A26f963bcc407ee208099E", "status": "Withdraw Only"}
         ],
         "ranges": [
           {
@@ -424,14 +424,14 @@
           "decimals": 18
         },
         "token1": {
-          "name": "USDC",
+          "name": "USDC.e",
           "address": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
           "roeAddress": "0x8596EeB5B15a27A574644000cE0EE5a490b8c0bd",
           "debtAddress": "0x75Ce4e7f0546694ccDEc258769373321f2ea140A",
           "decimals": 6
         },
         "lpToken": {
-          "name": "SushiSwap GMX-USDC SLP",
+          "name": "SushiSwap GMX-USDC.e SLP",
           "address": "0xB2FA688396F35c93Ba4f054866eF8527902fec07",
           "roeAddress": "0x7FCAA02131342e5b37363a71e9F75a62bb08B0f5",
           "debtAddress": "0x974F906419b1922A0c686dCE68291A360652126f",
@@ -439,7 +439,7 @@
         }
       },
       {
-        "name": "wBTC-USDC",
+        "name": "wBTC-USDC.e",
         "ohlcUrl": "https://api.bybit.com/v5/market/index-price-kline?category=linear&symbol=BTCUSDT&interval=",
         "address": "0x714dBe5C00b99f9AC220b45124568d047CB56E62",
         "uniswapPool": "0xac70bd92f89e6739b3a08db9b6081a923912f73d",
@@ -448,7 +448,7 @@
         "tvl": "45k",
         "rangeManager": "0x1129950143BDE0252f39345FA80643213D394208",
         "geVault": [
-          {"name": "BTC-USDC", "address": "0xdcc16DEfe27cd4c455e5520550123B4054D1b432", "status": "Rewards"}
+          {"name": "BTC-USDC.e", "address": "0xdcc16DEfe27cd4c455e5520550123B4054D1b432", "status": "Rewards"}
         ],
         "ranges": [],
         "ticks": [
@@ -573,20 +573,20 @@
           "decimals": 8
         },
         "token1": {
-          "name": "USDC",
+          "name": "USDC.e",
           "address": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
           "roeAddress": "0x145f1508C506F73658800E7af4b8850318bFDc9B",
           "debtAddress": "0x9BcAfB60e38D6303140b3489bfd0D723e8C693f0",
           "decimals": 6
         },
         "lpToken": {
-          "name": "SushiSwap BTC-USDC SLP",
+          "name": "SushiSwap BTC-USDC.e SLP",
           "address": "0xFf13348778cc2cEd614F6F73A8e488AC11292f25",
           "ammRouter": "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506"
         }
       },
       {
-        "name": "GMX-USDC",
+        "name": "GMX-USDC.e",
         "ohlcUrl": "https://api.bybit.com/v5/market/index-price-kline?category=linear&symbol=GMXUSDT&interval=",
         "address": "0x25f1fEB4de0AC6A6421Ac211949e771c1b3C85bc",
         "uniswapPool": "0xbed2589fefae17d62a8a4fdac92fa5895cae90d2",
@@ -595,8 +595,8 @@
         "tvl": "45k",
         "rangeManager": "0x8a5b3e5aC3bd5c5c80d875C2b89Ec5980F326FA6",
         "geVault": [
-          {"name": "GMX-USDC", "address": "0xa82577af74ae9D450DC04dF62Fc5C14748a0B3Ae", "status": "Rewards"},
-          {"name": "GMX-USDC Alpha", "address": "0x10ca4492b9A4b74964C9b4763B87eFD0689aB0bE", "status": "Withdraw Only"}
+          {"name": "GMX-USDC.e", "address": "0xa82577af74ae9D450DC04dF62Fc5C14748a0B3Ae", "status": "Rewards"},
+          {"name": "GMX-USDC.e Alpha", "address": "0x10ca4492b9A4b74964C9b4763B87eFD0689aB0bE", "status": "Withdraw Only"}
         ],
         "ranges": [
           {
@@ -830,14 +830,14 @@
           "decimals": 18
         },
         "token1": {
-          "name": "USDC",
+          "name": "USDC.e",
           "address": "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
           "roeAddress": "0x908194859F95BFc2384f23e541f73fE68Cd615f2",
           "debtAddress": "0xEb0aefC0bbfa27eE85256d534bCF3AbDc972648C",
           "decimals": 6
         },
         "lpToken": {
-          "name": "SushiSwap GMX-USDC SLP",
+          "name": "SushiSwap GMX-USDC.e SLP",
           "address": "0xB2FA688396F35c93Ba4f054866eF8527902fec07",
           "roeAddress": "0xF5B11F5c69072a7E3E395E3d31719329c1c5B8a1",
           "debtAddress": "0xF817fF8f35d3FBd27Ac5ba54B1EB0D006627D2F9",
