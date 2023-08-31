@@ -145,14 +145,10 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions, positions })
     setSpinning(true);
     try {
       let tickerAmount = parseFloat(inputValue)
-      if (tokenTraded != 'USDC') tickerAmount = tickerAmount / baseAsset.oraclePrice;
-      tickerAmount = tickerAmount /
-          (parseFloat(tokenAmountsExcludingFees.amount0) ||
-            parseFloat(tokenAmountsExcludingFees.amount1)) *
-            totalSupply; // whichever of unerlying is non null 
+      let tickerValue = (parseFloat(tokenAmountsExcludingFees.amount0) * baseAsset.oraclePrice + parseFloat(tokenAmountsExcludingFees.amount1) * quoteAsset.oraclePrice) * 1e18 / totalSupply;
+      tickerAmount = tickerAmount * 1e18 / tickerValue; // whichever of unerlying is non null 
       tickerAmount = parseInt(tickerAmount / 1e8).toString() + "00000000";
       let v = ethers.BigNumber.from(tickerAmount)
-
       const abi = ethers.utils.defaultAbiCoder;
 
       let swapSource =
