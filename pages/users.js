@@ -21,6 +21,7 @@ const Users = ({}) => {
     }
     getData();
   },[])
+  console.log(userStats)
   
   return (<div style={{ minWidth: 1200 }}>
     <Row gutter={24}>
@@ -48,7 +49,7 @@ const Users = ({}) => {
                     Object.keys(userStats[vault.address]).map(userAddress => {
                       if (
                         userAddress.substring(0,2) != "0x" 
-                        || (hideHighHF && userStats[vault.address][userAddress].healthFactor > 1.05)
+                        || (hideHighHF && userStats[vault.address][userAddress].healthFactor > 1.001)
                         || userStats[vault.address][userAddress].totalCollateral == 0
                       ) return <></>;
                       return (
