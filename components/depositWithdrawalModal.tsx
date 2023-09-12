@@ -178,15 +178,16 @@ const DepositWithdrawalModal = ({
               ),
               key: "Supply",
             },
-            {
-              label: (
-                <span style={{ width: "50%" }}>
-                  <DownloadOutlined />
-                  Withdraw {useEth ? "ETH" : asset.name}
-                </span>
-              ),
-              key: "Withdraw",
-            },
+            // TODO Withdraw issue incident 12.09.2023
+            // {
+            //   label: (
+            //     <span style={{ width: "50%" }}>
+            //       <DownloadOutlined />
+            //       Withdraw {useEth ? "ETH" : asset.name}
+            //     </span>
+            //   ),
+            //   key: "Withdraw",
+            // },
           ]}
         />
 
