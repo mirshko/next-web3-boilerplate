@@ -238,7 +238,9 @@ const VaultPerpsForm = ({ vault, price, opmAddress, checkPositions, positions })
     parseFloat(inputValue) > maxOI ||
     aboveMargin ||
     hasReverseStrike ||
-    belowMin;
+    belowMin ||
+      // TODO Withdraw issue incident 12.09.2023
+      true;
 
   let openPositionButtonErrorTitle = "...";
 

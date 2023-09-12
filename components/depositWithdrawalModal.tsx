@@ -169,16 +169,16 @@ const DepositWithdrawalModal = ({
             setAction(activeKey);
           }}
           items={[
-            {
-              label: (
-                <span style={{ width: "50%" }}>
-                  <UploadOutlined />
-                  Supply {useEth ? "ETH" : asset.name}
-                </span>
-              ),
-              key: "Supply",
-            },
             // TODO Withdraw issue incident 12.09.2023
+            // {
+              // label: (
+              //   <span style={{ width: "50%" }}>
+              //     <UploadOutlined />
+              //     Supply {useEth ? "ETH" : asset.name}
+              //   </span>
+              // ),
+              // key: "Supply",
+            // },
             // {
             //   label: (
             //     <span style={{ width: "50%" }}>
@@ -252,7 +252,7 @@ const DepositWithdrawalModal = ({
             disabled={
               !inputValue ||
               parseFloat(inputValue) == 0 ||
-              parseFloat(inputValue) > parseFloat(availableBal)
+              parseFloat(inputValue) > parseFloat(availableBal) || true
             }
           >
             {isSpinning ? <Spin /> : <>{actionComponent}</>}

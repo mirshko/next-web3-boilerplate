@@ -67,7 +67,7 @@ const CloseTrPositionButton = ({ address, vault, opmAddress, checkPositions, dir
       {isSpinning ? (
         <Spin />
       ) : (
-        <Button size="small" onClick={closePosition}>
+        <Button size="small" onClick={closePosition} disabled>
           Close
         </Button>
       )}
